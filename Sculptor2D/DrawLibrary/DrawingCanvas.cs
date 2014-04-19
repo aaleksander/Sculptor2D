@@ -1,0 +1,283 @@
+﻿/*
+ * Сделано в SharpDevelop.
+ * Пользователь: anufrievaa
+ * Дата: 04/16/2014
+ * Время: 13:43
+ * 
+ * Для изменения этого шаблона используйте Сервис | Настройка | Кодирование | Правка стандартных заголовков.
+ */
+using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using DrawLibrary.Graphics;
+using DrawLibrary.Tools;
+
+namespace DrawLibrary
+{
+
+    
+    /// <summary>
+    /// событие об изменении статуса хоста
+    /// </summary>
+    public class CanvasEventArgs
+    {
+        public CanvasEventArgs(string s) 
+        {
+    		Text = s; 
+    	}
+        public String Text {get; private set;}
+    }
+
+	/// <summary>
+	/// Холст для рисования
+	/// </summary>
+	public class DrawingCanvas: Canvas
+	{
+		
+        // Collection contains instances of GraphicsBase-derived classes.
+        private VisualCollection _graphicsList;
+        
+		public DrawingCanvas(): base()
+		{
+			_graphicsList = new VisualCollection(this);
+			
+            // создадим список
+            tools = new ToolBase[(int)ToolType.Max];
+
+            tools[(int)ToolType.Pointer] = new ToolPointer();
+            tools[(int)ToolType.Editor] = new ToolEditor();
+            tools[(int)ToolType.Line] = new ToolLine();
+            tools[(int)ToolType.Polygone] = new ToolPolygone();
+            //tools[(int)ToolType.Rectangle] = new ToolRectangle();
+            //tools[(int)ToolType.Ellipse] = new ToolEllipse();
+            
+            
+
+            //toolText = new ToolText(this);
+            //tools[(int)ToolType.Text] = toolText;   // kept as class member for in-place editing			
+            
+            //события мыши
+            this.FocusVisualStyle = null;
+            this.Focus();
+
+            this.Loaded += new RoutedEventHandler(DrawingCanvas_Loaded);
+            this.MouseDown += new MouseButtonEventHandler(DrawingCanvas_MouseDown);
+            this.MouseMove += new MouseEventHandler(DrawingCanvas_MouseMove);
+            this.MouseUp += new MouseButtonEventHandler(DrawingCanvas_MouseUp);
+            //this.KeyDown += new KeyEventHandler(DrawingCanvas_KeyDown);
+            this.LostMouseCapture += new MouseEventHandler(DrawingCanvas_LostMouseCapture);
+		}
+
+		#region события хоста
+		public delegate void CanvasEventHandler(object sender, CanvasEventArgs e);
+		public event CanvasEventHandler CanvasEvent;
+
+		protected virtual void SendEvent(String aText)
+        {
+            if (CanvasEvent != null)
+                CanvasEvent(this, new CanvasEventArgs(aText));
+        }		
+		#endregion
+
+        internal int Count
+        {
+            get
+            {
+                return _graphicsList.Count;
+            }
+        }		
+        
+        internal VisualCollection GraphicsList
+        {
+            get
+            {
+                return _graphicsList;
+            }
+        }       
+
+
+        internal GraphicsBase this[int index]
+        {
+            get
+            {
+                if ( index >= 0  &&  index < Count )
+                {
+                    return (GraphicsBase)_graphicsList[index];
+                }
+
+                return null;
+            }
+        }        
+		
+        void DrawingCanvas_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Focusable = true;      // to handle keyboard messages
+            Focus();
+        }		
+
+        
+		void DrawingCanvas_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (tools[(int)Tool] == null)
+            {//не выбран ни один инструмент
+                return;
+            }
+
+            this.Focus();
+
+            //if ( e.ChangedButton == MouseButton.Left )
+            //{//нажали на левую кнопку
+				tools[(int)Tool].OnMouseDown(this, e);
+                //UpdateState();
+            //}
+            //else if (e.ChangedButton == MouseButton.Right)
+            //{
+                //ShowContextMenu(e);
+            //}
+        }        
+		
+        void DrawingCanvas_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (tools[(int)Tool] == null)
+            {
+                return;
+            }
+
+            //if (e.ChangedButton == MouseButton.Left)
+            //{
+                tools[(int)Tool].OnMouseUp(this, e);
+
+                //UpdateState();
+            //}
+        }
+        
+        void DrawingCanvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (tools[(int)Tool] == null)
+            {
+                return;
+            }
+
+            if ( e.MiddleButton == MouseButtonState.Released  &&  e.RightButton == MouseButtonState.Released )
+            {
+                tools[(int)Tool].OnMouseMove(this, e);
+
+                //UpdateState();
+            }
+            else
+            {
+                //this.Cursor = HelperFunctions.DefaultCursor;
+            }
+        }        
+		
+        /// <summary>
+        /// Mouse capture is lost
+        /// </summary>
+        void DrawingCanvas_LostMouseCapture(object sender, MouseEventArgs e)
+        {
+            if ( this.IsMouseCaptured )
+            {
+            	
+                //CancelCurrentOperation();
+                //UpdateState();
+            }
+        }
+        
+        
+       static DrawingCanvas()
+        {
+            // инициализация свойств
+            PropertyMetadata metaData;
+
+            // Tool
+            metaData = new PropertyMetadata(ToolType.Pointer);
+
+            ToolProperty = DependencyProperty.Register(
+                "Tool", typeof(ToolType), typeof(DrawingCanvas),
+                metaData);
+        }
+
+        public static readonly DependencyProperty ToolProperty;
+
+        private ToolBase[] tools;                   // список инструментов
+
+        #region Tool
+        /// <summary>
+        /// активный на данный момент инструмент
+        /// </summary>
+        public ToolType Tool
+        {
+            get
+            {
+                return (ToolType)GetValue(ToolProperty);
+            }
+            set
+            {
+                if ((int)value >= 0 && (int)value < (int)ToolType.Max)
+                {
+                    SetValue(ToolProperty, value);                    
+                    SendEvent("Я включил " + Tool.ToString());
+                    //TODO:включаем нужный курсор
+                    //tools[(int)Tool].SetCursor(this);
+                }
+            }
+        }
+
+        #endregion Tool
+        
+        
+        #region Visual Children Overrides
+
+        /// <summary>
+        /// Get number of children: VisualCollection count.
+        /// If in-place editing textbox is active, add 1.
+        /// </summary>
+        protected override int VisualChildrenCount
+        {
+            get 
+            { 
+                int n = _graphicsList.Count; 
+
+//                if ( toolText.TextBox != null )
+  //              {
+  //                  n++;
+  //              }
+
+                return n;
+            }
+        }
+
+        /// <summary>
+        /// Get visual child - one of GraphicsBase objects
+        /// or in-place editing textbox, if it is active.
+        /// </summary>
+        protected override Visual GetVisualChild(int index)
+        {
+            if (index < 0 || index >= _graphicsList.Count )
+            {
+//                if (toolText.TextBox != null && index == graphicsList.Count )
+//                {
+//                    return toolText.TextBox;
+//                }
+
+                throw new ArgumentOutOfRangeException("index");
+            }
+
+            return _graphicsList[index];
+        }
+        #endregion Visual Children Overrides        
+        
+        
+        public void UnselectAll()
+        {
+        	foreach(var g in _graphicsList)
+        	{
+        		((GraphicsBase)g).IsSelected = false;
+        	}
+        		
+        }
+        
+	}
+}
