@@ -36,6 +36,7 @@ namespace Sculptor2D
 			buttonToolEditor.PreviewMouseDown += new MouseButtonEventHandler(ToolButton_PreviewMouseDown);
 			buttonToolLine.PreviewMouseDown += new MouseButtonEventHandler(ToolButton_PreviewMouseDown);
 			buttonToolPolygone.PreviewMouseDown += new MouseButtonEventHandler(ToolButton_PreviewMouseDown);
+			buttonToolBrush.PreviewMouseDown += new MouseButtonEventHandler(ToolButton_PreviewMouseDown);
 			
 			canvas.CanvasEvent += new DrawingCanvas.CanvasEventHandler(Canvas_CanvasEvent);
 		}

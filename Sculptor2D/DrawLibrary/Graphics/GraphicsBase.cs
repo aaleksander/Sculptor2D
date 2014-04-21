@@ -23,10 +23,6 @@ namespace DrawLibrary.Graphics
     	Max
     }
 
-//TODO: !!! реализовать машину состояний, чтобы Tool не мучался.
-//т.е. Tool просто посылает OverMouse, или Down, или Up определенному объекту и все
-//Canvas может принимать несколько событий: Move, Down, Up, Drag и передавать их объектам
-
 	/// <summary>
 	/// Description of GraphicsBase.
 	/// </summary>
@@ -70,7 +66,7 @@ namespace DrawLibrary.Graphics
             { 
                 return _isHit; 
             }
-            set 
+            set
             {
                 _isHit = value;
 
@@ -79,20 +75,8 @@ namespace DrawLibrary.Graphics
         }	
 		private bool _isHit;  
 
-		/// <summary>
-		/// преобразует объект в состояние "Глина". обратное преобразование невозможно
-		/// </summary>
-		/// <returns></returns>
-		//TODO: закончить
-		public GraphicsClay toClay()
-		{
-			_isClay = true;
-			
-			return new GraphicsClay(this);
-		}
-		private bool _isClay;
 
-        /// <summary>
+		/// <summary>
         /// Move handle to new point (resizing)
         /// </summary>
         public virtual void MoveHandleTo(Point point, int handleNumber){}

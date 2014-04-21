@@ -67,12 +67,16 @@
     </Compile>
     <Compile Include="Commands\CommandReference.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
+    <Compile Include="DrawLibrary\Brushes\BrushBase.cs" />
     <Compile Include="DrawLibrary\DrawingCanvas.cs" />
+    <Compile Include="DrawLibrary\Geometry.cs" />
     <Compile Include="DrawLibrary\Graphics\GraphicsBase.cs" />
+    <Compile Include="DrawLibrary\Graphics\GraphicsClay.cs" />
     <Compile Include="DrawLibrary\Graphics\GraphicsLine.cs" />
     <Compile Include="DrawLibrary\Graphics\GraphicsMultiPoint.cs" />
     <Compile Include="DrawLibrary\Graphics\GraphicsPolygon.cs" />
     <Compile Include="DrawLibrary\Tools\ToolBase.cs" />
+    <Compile Include="DrawLibrary\Tools\ToolBrush.cs" />
     <Compile Include="DrawLibrary\Tools\ToolEditor.cs" />
     <Compile Include="DrawLibrary\Tools\ToolLine.cs" />
     <Compile Include="DrawLibrary\Tools\ToolMultiPoint.cs" />
@@ -100,6 +104,7 @@
     <Folder Include="DrawLibrary\Tools" />
     <Folder Include="Commands" />
     <Folder Include="DrawLibrary\Graphics" />
+    <Folder Include="DrawLibrary\Brushes" />
     <Folder Include="ViewModel" />
     <Folder Include="Model" />
     <Folder Include="Helpers" />

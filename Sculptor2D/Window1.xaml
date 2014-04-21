@@ -135,6 +135,14 @@
                              Converter={StaticResource convToolType}, ConverterParameter=Polygone}"
 					Content="Полигоны">
 				</ToggleButton>
+				<Button Content="В глину" Command="{Binding ElementName=canvas, Path=ToClayCommand}"/>
+			
+				<ToggleButton ToolTip="Лепить" Tag="Brush" Name="buttonToolBrush"
+					IsChecked="{Binding ElementName=canvas, Path=Tool, Mode=OneWay,
+                             Converter={StaticResource convToolType}, ConverterParameter=Brush}"
+					Content="Лепить">
+				</ToggleButton>
+			
 			</ToolBar>
 		</ToolBarTray>
 	

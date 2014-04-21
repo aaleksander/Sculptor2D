@@ -23,6 +23,7 @@ namespace DrawLibrary.Graphics
 			
 			//TODO: сделать в виде свойства, чтобы можно было сразу перерисовывать
 			_brush = new SolidColorBrush(Colors.Green);
+			
 			//TODO:Свойство "Обводка" - Pen
 		}
 	}

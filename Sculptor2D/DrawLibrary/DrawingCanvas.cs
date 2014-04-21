@@ -7,10 +7,12 @@
  * Для изменения этого шаблона используйте Сервис | Настройка | Кодирование | Правка стандартных заголовков.
  */
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Commands;
 using DrawLibrary.Graphics;
 using DrawLibrary.Tools;
 
@@ -33,7 +35,7 @@ namespace DrawLibrary
 	/// <summary>
 	/// Холст для рисования
 	/// </summary>
-	public class DrawingCanvas: Canvas
+	public class DrawingCanvas: Canvas, INotifyPropertyChanged
 	{
 		
         // Collection contains instances of GraphicsBase-derived classes.
@@ -50,6 +52,7 @@ namespace DrawLibrary
             tools[(int)ToolType.Editor] = new ToolEditor();
             tools[(int)ToolType.Line] = new ToolLine();
             tools[(int)ToolType.Polygone] = new ToolPolygone();
+            tools[(int)ToolType.Brush] = new ToolBrush();
             //tools[(int)ToolType.Rectangle] = new ToolRectangle();
             //tools[(int)ToolType.Ellipse] = new ToolEllipse();
             
@@ -69,6 +72,18 @@ namespace DrawLibrary
             //this.KeyDown += new KeyEventHandler(DrawingCanvas_KeyDown);
             this.LostMouseCapture += new MouseEventHandler(DrawingCanvas_LostMouseCapture);
 		}
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		public void onPropertyChanged(string aProp){			
+			_onPropertyChanged(new PropertyChangedEventArgs(aProp));						
+		}		
+
+		protected void _onPropertyChanged(PropertyChangedEventArgs e)
+		{
+			if( PropertyChanged != null )
+				PropertyChanged(this, e);
+		}		
 
 		#region события хоста
 		public delegate void CanvasEventHandler(object sender, CanvasEventArgs e);
@@ -129,7 +144,9 @@ namespace DrawLibrary
 
             //if ( e.ChangedButton == MouseButton.Left )
             //{//нажали на левую кнопку
-				tools[(int)Tool].OnMouseDown(this, e);
+			tools[(int)Tool].OnMouseDown(this, e);
+			
+			onPropertyChanged("SelectedObject");
                 //UpdateState();
             //}
             //else if (e.ChangedButton == MouseButton.Right)
@@ -276,8 +293,50 @@ namespace DrawLibrary
         	{
         		((GraphicsBase)g).IsSelected = false;
         	}
-        		
         }
-        
+
+        public GraphicsBase SelectedObject
+        {//TODO: Что делать, если объектов несколько?
+        	get{
+        		foreach(var o in _graphicsList)
+        		{
+        			var  oo = (GraphicsBase) o;
+        			if( oo.IsSelected )
+        				return oo;
+        		}
+        		return null;
+        	}
+        }
+
+        #region Команда "превратить в глину"
+		private DelegateCommand<GraphicsMultiPoint> toClayCommand;
+		public ICommand ToClayCommand
+		{
+            get
+            {
+                if (toClayCommand == null)
+                {
+                    toClayCommand = new DelegateCommand<GraphicsMultiPoint>(ToClay, CanToClay);
+                }
+                return toClayCommand;
+            }
+		}
+
+		private void ToClay(GraphicsMultiPoint aObj)
+		{	
+			int index = _graphicsList.IndexOf(SelectedObject);
+
+			GraphicsList.Insert(index, new GraphicsClay((GraphicsMultiPoint)SelectedObject));
+			
+			_graphicsList.RemoveAt(index + 1);
+			
+		}
+
+		private bool CanToClay(GraphicsMultiPoint a)
+		{
+			return SelectedObject != null;
+			//TODO: добавить проверку на соответствие типов && Type(SelectedObject) is GraphicsMultiPoint;
+		}
+		#endregion
 	}
 }

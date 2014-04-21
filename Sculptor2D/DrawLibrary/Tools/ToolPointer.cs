@@ -46,7 +46,7 @@ namespace DrawLibrary.Tools
         {
         	Point point = e.GetPosition(aCanvas);
 			_startDragging = point;
-				
+
         	var o = GetHitObject(aCanvas, point);
 
         	if( e.LeftButtonPressed() ) //нажали над каким-то  объектом

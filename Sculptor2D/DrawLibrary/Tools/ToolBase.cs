@@ -26,6 +26,7 @@ namespace DrawLibrary.Tools
 //        Ellipse,
         Line,    //линия
         Polygone,
+        Brush,
 //        PolyLine,
 //        Text,
         
