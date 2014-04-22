@@ -20,17 +20,13 @@ namespace DrawLibrary.Tools
     public enum ToolType
     {
         None,    //ничего
-        Pointer, //указатель        
+        Pointer, //указатель
         Editor,	 //редактор точек
-//        Rectangle,
-//        Ellipse,
         Line,    //линия
         Polygone,
-        Brush,
-//        PolyLine,
-//        Text,
-        
 
+        Brush,
+        
 		Max //это, чтобы знать, где конец перечисления
     };		
 	

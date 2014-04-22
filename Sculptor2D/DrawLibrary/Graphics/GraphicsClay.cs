@@ -7,8 +7,11 @@
  * Для изменения этого шаблона используйте Сервис | Настройка | Кодирование | Правка стандартных заголовков.
  */
 using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using DrawLibrary.Brushes;
+using Sculptor2D.Helpers;
+using System.Linq;
 
 namespace DrawLibrary.Graphics
 {
@@ -19,23 +22,71 @@ namespace DrawLibrary.Graphics
 	{
 		public GraphicsClay(GraphicsMultiPoint aGr):base()
 		{
-			double maxLen = 20; //максимально возможный отрезок
-			Points.Add(aGr.Points[0]);
-			for(int i=1; i<aGr.Count; i++)
+			//копируем все вершины
+			foreach(var p in aGr.Points)
 			{
-				AddPointToClay(aGr.Points[i], maxLen);
+				AddPoint(p.X, p.Y);
 			}
 			
-			_isClosed = aGr.IsClosed;
+			IsClosed = aGr.IsClosed;
+			
+			UpdateClay();
+		}
+
+		/// <summary>
+		/// разбить ребра, чтобы вершины не сильно разбегались друг от друга
+		/// </summary>
+		public void UpdateClay()
+		{
+			double maxLen = 10; //максимально возможная длина отрезка
+			double minLen = 3;  //минимально возможная длина отрезка
+			
+			Collection<Point> tmp = new Collection<Point>();
+
+			foreach(var p in Points)
+			{
+				tmp.Add(new Point(p.X, p.Y));
+			}
+//			Points.ToList().ForEach(x => tmp.Add(new Point(x.X, x.Y)));
+			
+			Points.Clear();
+			
+			Points.Add(tmp[0]);
+			for(int i=1; i<tmp.Count; i++)
+			{
+				Points.AddClay(tmp[i], maxLen);
+			}
 
 			if( IsClosed )
 			{
-				AddPointToClay(Points[0], maxLen);
+				Points.AddClay(tmp[0], maxLen);
+				Points.RemoveAt(Points.Count - 1); //удалим последнюю точку, она не нужна
 			}
+			
+			//TODO: удалить вершины, которые слишком близко (взять две вершины, и если они очень близко - заменить на одну посередине.
+			bool f = true;
+			while (f == true)
+			{
+				f = false;
+				for(int i=0; i<Points.Count - 1; i++)
+				{
+					Point p1 = Points[i];
+					Point p2 = Points[i + 1];
+					if( Geometry.dist(p1, p2) < minLen )
+					{
+						f = true;
+						Point p = new Point((p1.X + p2.X)/2, (p1.Y + p2.Y)/2);
+						Points.RemoveAt(i);
+						Points.RemoveAt(i); //не плюс один потому что мы уже удалили и i+1 сместился на i
+						Points.Insert(i, p);
+					}
+						
+				}
+			}			
 			
 			RefreshDrawing();
 		}
-		
+
 		/// <summary>
 		/// получает на вход точку и создает до нее несколько отрезков
 		/// </summary>
@@ -55,7 +106,7 @@ namespace DrawLibrary.Graphics
 			AddPointToClay(p1, maxLen);
 			AddPointToClay(aPoint, maxLen);
 		}
-		
+
 		/// <summary>
 		/// На объект действует какая-то кисть
 		/// </summary>
@@ -67,12 +118,15 @@ namespace DrawLibrary.Graphics
 			for(int i=0; i<Points.Count; i++)
 			{
 				p = Points[i];
-				vector = Geometry.GetVector(aBrush.Point, p);
-				dist = Geometry.dist(aBrush.Point, p);
-				Points[i] = new Point(p.X + vector.X/dist, p.Y + vector.Y/dist);
+				vector = Geometry.GetVector(aBrush.LastPoint, p);
+				vector.X *= 3;
+				vector.Y *= 3;
+				dist = Geometry.dist(aBrush.LastPoint, p);
+				if( dist < 50 )
+					Points[i] = new Point(p.X + vector.X/dist, p.Y + vector.Y/dist);
 				//Points[i].X += vector.X;
 				//Points[i].Y += vector.Y;
-			}
+			}			
 			
 			RefreshDrawing();
 		}

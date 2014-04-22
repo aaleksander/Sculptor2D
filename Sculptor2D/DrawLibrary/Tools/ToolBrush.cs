@@ -20,24 +20,56 @@ namespace DrawLibrary.Tools
 	/// </summary>
 	public class ToolBrush: ToolBase
 	{
-		private BrushBase _brush = new BrushBase(); //текущая кисть
-		
+		private BrushBase _brush = new BrushBase(); //текущая кисть	
+
 		public override void OnMouseMove(DrawingCanvas aCanvas, MouseEventArgs e)
         {
         	IsDragging = e.AnyButtonPressed();
 
-			_brush.Point = e.GetPosition(aCanvas);;
-			
+        	_brush.AddPath(e.GetPosition(aCanvas));
+
 			if( e.LeftButtonPressed() )
 			{//делаем "мазок"
+				IsDragging = true;
 				foreach(var clay in aCanvas.GraphicsList)
 				{
 					if( clay is Graphics.GraphicsClay ) //если это "глина"
 					{
-						((GraphicsClay) clay).Brushed(_brush); //посылаем ей "мазок"
+						if( _brush.Modify((GraphicsClay)clay) ) //то кисть ее модифицирует
+							((GraphicsClay)clay).UpdateClay();
 					}
 				}
 			}
         }
+
+		public override void OnMouseUp(DrawingCanvas aCanvas, MouseButtonEventArgs e)
+		{
+			if( IsDragging == true ) //чето мазали, надо обновить
+			{
+				foreach(var clay in aCanvas.GraphicsList)
+				{
+					if( clay is Graphics.GraphicsClay ) //если это "глина"
+					{
+						//((GraphicsClay)clay).UpdateClay();
+					}
+				}
+
+				_brush.ClearPath();
+			}
+		}
+		
+		public BrushType Brush
+		{
+			set{
+				switch(value)
+				{
+						case BrushType.OutMover: _brush = new BrushOutMover(); break;
+						case BrushType.Smoother: _brush = new BrushSmoother(); break;
+				}
+			}
+			get{
+				return _brush.Type;
+			}
+		}
 	}
 }

@@ -62,7 +62,7 @@ namespace DrawLibrary.Graphics
 
 			Color col = (IsHit)? Colors.Red: Colors.Blue;
 			//col.A = 100; //прозрачность
-			aContext.DrawGeometry(_brush, new Pen(new SolidColorBrush(col), 5), geometry);
+			aContext.DrawGeometry(_brush, new Pen(new SolidColorBrush(col), 2), geometry);
         	
             if ( IsSelected )
             {
@@ -70,24 +70,35 @@ namespace DrawLibrary.Graphics
             }           
 		}		
 
-		/// <summary>
-		/// преобразует объект в состояние "Глина". обратное преобразование невозможно
-		/// </summary>
-		/// <returns></returns>
-		//TODO: закончить
-		public virtual GraphicsClay ToClay()
-		{			
-			return new GraphicsClay(this);
-		}
-
 		public void DeleteLastPoint()
 		{
 			_points.RemoveAt(_points.Count - 1);
 			RefreshDrawing();
 		}
 
+		/// <summary>
+		/// вовзвращает вершину из списка по индексу и смещению. Если вылез за конец или начало, то возьмет будто это список - кольцо
+		/// </summary>
+		/// <param name="aIndex"></param>
+		/// <param name="aOffset"></param>
+		/// <returns></returns>
+		/*public Point GetPoint(int aIndex, int aOffset)
+		{//TODO:протестировать. Что делать с незамкнутой?
+			int ind = aIndex + aOffset;
+			if( ind >= 0 && ind < Count )
+				return Points[aIndex];
 
-		
+			if( ind < 0 )
+			{
+				return Points[Count - ind];
+			}
+
+			if( ind > Count )
+			{
+				return Points[ind - Count - 1];
+			}
+		}*/
+
 		public int Count
 		{
 			get{

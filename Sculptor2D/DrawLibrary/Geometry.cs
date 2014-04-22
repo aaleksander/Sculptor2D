@@ -28,7 +28,7 @@ namespace DrawLibrary
 			double t2 = (a.Y - b.Y);
 			return Math.Sqrt(t1*t1 + t2*t2);
 		}
-		
+
 		/// <summary>
 		/// возвращает единичный вектор из точки а в точку б
 		/// </summary>
@@ -44,5 +44,23 @@ namespace DrawLibrary
 			
 			return res;
 		}
+		
+		/// <summary>
+		/// возвращает точку-проекцию точки p на отрезок p1-p2
+		/// </summary>
+		/// <param name="p"></param>
+		/// <param name="p1"></param>
+		/// <param name="p2"></param>
+		/// <returns></returns>
+		public static Point GetProjection(Point p, Point p1, Point p2)
+		{
+		    double fDenominator = (p2.X - p1.X)*(p2.X - p1.X) + (p2.Y - p1.Y)*(p2.Y - p1.Y);
+		    if (fDenominator == 0) // p1 and p2 are the same
+		        return p1;
+		
+		    double t = (p.X*(p2.X - p1.X) - (p2.X - p1.X)*p1.X + p.Y*(p2.Y - p1.Y) - (p2.Y - p1.Y)*p1.Y) / fDenominator;
+		
+		    return new Point(p1.X + (p2.X - p1.X)*t, p1.Y + (p2.Y - p1.Y)*t);
+		}		
 	}
 }

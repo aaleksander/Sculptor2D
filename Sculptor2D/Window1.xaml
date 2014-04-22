@@ -3,12 +3,15 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cnv="clr-namespace:DrawLibrary"
     xmlns:tools="clr-namespace:DrawLibrary.Tools"
+    xmlns:brushes="clr-namespace:DrawLibrary.Brushes"
 	Title="Sculptor2D" Height="600" Width="800"
 	WindowStartupLocation="CenterScreen"
 	>
 	
 <Window.Resources>
 	<tools:ToolTypeConverter x:Key="convToolType"/>
+	<brushes:BrushTypeConverter x:Key="convBrushType"/>
+	
     <Style x:Key="DreamToolBar" TargetType="{x:Type ToolBar}"> 
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="OverridesDefaultStyle" Value="true"/>
@@ -135,18 +138,59 @@
                              Converter={StaticResource convToolType}, ConverterParameter=Polygone}"
 					Content="Полигоны">
 				</ToggleButton>
+
 				<Button Content="В глину" Command="{Binding ElementName=canvas, Path=ToClayCommand}"/>
-			
+
 				<ToggleButton ToolTip="Лепить" Tag="Brush" Name="buttonToolBrush"
 					IsChecked="{Binding ElementName=canvas, Path=Tool, Mode=OneWay,
                              Converter={StaticResource convToolType}, ConverterParameter=Brush}"
 					Content="Лепить">
 				</ToggleButton>
-			
 			</ToolBar>
 		</ToolBarTray>
-	
-		
+
+		<!--Кисти-->
+		<ToolBarTray DockPanel.Dock="Right" Orientation="Vertical" VerticalAlignment="Top" Background="#FF8F8F8F">
+			<ToolBar Style="{StaticResource DreamToolBar}" IsOverflowOpen="True"
+			         Background="#FF8F8F8F" Header="eee">
+                <ToggleButton	ToolTip="Отодвигалка" 
+                             	Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
+                                CommandParameter="OutMover"
+                             	IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
+                             	Converter={StaticResource convBrushType}, ConverterParameter=OutMover}"
+                			 	Content="Отодвигалка" />
+                <ToggleButton ToolTip="Выравнивалка" 
+                              Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
+                              CommandParameter="Smoother"
+                              IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
+                              Converter={StaticResource convBrushType}, ConverterParameter=Smoother}"
+                			  Content="Сглаживалка" />
+				<GroupBox Header="Параметры кисти">
+					<StackPanel Orientation="Vertical">
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="Сила:" Margin="0, 0, 5, 0"/>
+							<TextBlock Text="{Binding ElementName=Power, Path=Value, StringFormat=N0}" />
+						</StackPanel>
+						<Slider Width="100" Maximum="100" Minimum="1" Name="Power"
+							IsEnabled="{Binding ElementName=canvas, Path=Tool, Mode=OneWay,
+                        	     Converter={StaticResource convToolType}, ConverterParameter=Brush}"
+						/>
+
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="Размер:" Margin="0, 0, 5, 0"/>
+							<TextBlock Text="{Binding ElementName=Size, Path=Value, StringFormat=N0}" />
+						</StackPanel>
+						<Slider Width="100" Maximum="100" Minimum="1" Name="Size"
+							IsEnabled="{Binding ElementName=canvas, Path=Tool, Mode=OneWay,
+                        	     Converter={StaticResource convToolType}, ConverterParameter=Brush}"						
+						/>					
+					</StackPanel>
+				</GroupBox>
+				
+			</ToolBar>		
+		</ToolBarTray>
+
+
 		<ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
 			<cnv:DrawingCanvas x:Name="canvas" Background="#00000000" Width="2000" Height="2000"/>
 		</ScrollViewer>

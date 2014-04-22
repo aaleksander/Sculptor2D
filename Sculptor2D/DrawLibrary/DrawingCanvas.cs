@@ -13,13 +13,14 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Commands;
+using DrawLibrary.Brushes;
 using DrawLibrary.Graphics;
 using DrawLibrary.Tools;
 
+
+//TODO: 000: управление параметрами кистей
 namespace DrawLibrary
 {
-
-    
     /// <summary>
     /// событие об изменении статуса хоста
     /// </summary>
@@ -46,20 +47,22 @@ namespace DrawLibrary
 			_graphicsList = new VisualCollection(this);
 			
             // создадим список
-            tools = new ToolBase[(int)ToolType.Max];
+            _tools = new ToolBase[(int)ToolType.Max];
 
-            tools[(int)ToolType.Pointer] = new ToolPointer();
-            tools[(int)ToolType.Editor] = new ToolEditor();
-            tools[(int)ToolType.Line] = new ToolLine();
-            tools[(int)ToolType.Polygone] = new ToolPolygone();
-            tools[(int)ToolType.Brush] = new ToolBrush();
-            //tools[(int)ToolType.Rectangle] = new ToolRectangle();
-            //tools[(int)ToolType.Ellipse] = new ToolEllipse();
-            
-            
+            _tools[(int)ToolType.Pointer] = new ToolPointer();
+            _tools[(int)ToolType.Editor] = new ToolEditor();
+            _tools[(int)ToolType.Line] = new ToolLine();
+            _tools[(int)ToolType.Polygone] = new ToolPolygone();
+            _tools[(int)ToolType.Brush] = new ToolBrush();
 
             //toolText = new ToolText(this);
             //tools[(int)ToolType.Text] = toolText;   // kept as class member for in-place editing			
+            
+            
+            _brushes = new BrushBase[(int) BrushType.Max];
+            //_brushes[(int) BrushType.OutMover] = new BrushOutMover();
+            //_brushes[(int) BrushType.Smoother] = new BrushSmoother();
+            
             
             //события мыши
             this.FocusVisualStyle = null;
@@ -132,10 +135,9 @@ namespace DrawLibrary
             Focus();
         }		
 
-        
-		void DrawingCanvas_MouseDown(object sender, MouseButtonEventArgs e)
+        void DrawingCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (tools[(int)Tool] == null)
+            if (_tools[(int)Tool] == null)
             {//не выбран ни один инструмент
                 return;
             }
@@ -144,7 +146,7 @@ namespace DrawLibrary
 
             //if ( e.ChangedButton == MouseButton.Left )
             //{//нажали на левую кнопку
-			tools[(int)Tool].OnMouseDown(this, e);
+			_tools[(int)Tool].OnMouseDown(this, e);
 			
 			onPropertyChanged("SelectedObject");
                 //UpdateState();
@@ -157,14 +159,14 @@ namespace DrawLibrary
 		
         void DrawingCanvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (tools[(int)Tool] == null)
+            if (_tools[(int)Tool] == null)
             {
                 return;
             }
 
             //if (e.ChangedButton == MouseButton.Left)
             //{
-                tools[(int)Tool].OnMouseUp(this, e);
+                _tools[(int)Tool].OnMouseUp(this, e);
 
                 //UpdateState();
             //}
@@ -172,14 +174,14 @@ namespace DrawLibrary
         
         void DrawingCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (tools[(int)Tool] == null)
+            if (_tools[(int)Tool] == null)
             {
                 return;
             }
 
             if ( e.MiddleButton == MouseButtonState.Released  &&  e.RightButton == MouseButtonState.Released )
             {
-                tools[(int)Tool].OnMouseMove(this, e);
+                _tools[(int)Tool].OnMouseMove(this, e);
 
                 //UpdateState();
             }
@@ -214,11 +216,21 @@ namespace DrawLibrary
             ToolProperty = DependencyProperty.Register(
                 "Tool", typeof(ToolType), typeof(DrawingCanvas),
                 metaData);
+            
+            
+            // Brush
+            /*metaData = new PropertyMetadata(BrushType.None);
+
+            BrushProperty = DependencyProperty.Register(
+                "Brush", typeof(BrushType), typeof(DrawingCanvas),
+                metaData);     */       
         }
 
         public static readonly DependencyProperty ToolProperty;
+        public static readonly DependencyProperty BrushProperty;
 
-        private ToolBase[] tools;                   // список инструментов
+        private ToolBase[] _tools;                   // список инструментов
+        private BrushBase[] _brushes;
 
         #region Tool
         /// <summary>
@@ -244,7 +256,29 @@ namespace DrawLibrary
 
         #endregion Tool
         
-        
+        public BrushType Brush
+        {
+            get
+            {
+            	if( Tool != ToolType.Brush )
+            		return BrushType.None;
+            	
+            	return ((ToolBrush)_tools[(int)Tool]).Brush;
+            }
+            set
+            {
+                if ((int)value >= 0 && (int)value < (int)BrushType.Max)
+                {
+                	((ToolBrush)_tools[(int)Tool]).Brush = value;
+                    SendEvent("Я включил " + Brush.ToString());
+                    //TODO:включаем нужный курсор
+                    //tools[(int)Tool].SetCursor(this);                    
+	             }
+                
+                onPropertyChanged("Brush");
+            }
+        }
+
         #region Visual Children Overrides
 
         /// <summary>
@@ -338,5 +372,35 @@ namespace DrawLibrary
 			//TODO: добавить проверку на соответствие типов && Type(SelectedObject) is GraphicsMultiPoint;
 		}
 		#endregion
+		
+		
+		
+        #region Команды переключения кистей
+		private DelegateCommand<String> setBrushCommand;
+		public ICommand SetBrushCommand
+		{
+            get
+            {
+                if (setBrushCommand == null)
+                {
+                    setBrushCommand = new DelegateCommand<String>(SetBrush, CanSetBrush);
+                }
+                return setBrushCommand;
+            }
+		}
+
+		private void SetBrush(String aBrushName)
+		{	
+			Brush = (BrushType)Enum.Parse(typeof(BrushType), aBrushName);
+		}
+
+		private bool CanSetBrush(String a)
+		{
+			if( Tool != ToolType.Brush )
+				return false;
+			
+			return true;
+		}
+		#endregion		
 	}
 }
