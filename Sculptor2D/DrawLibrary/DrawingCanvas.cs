@@ -7,7 +7,9 @@
  * Для изменения этого шаблона используйте Сервис | Настройка | Кодирование | Правка стандартных заголовков.
  */
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,8 +19,11 @@ using DrawLibrary.Brushes;
 using DrawLibrary.Graphics;
 using DrawLibrary.Tools;
 
+//FUTURE: Блокирование некоторых вершин (участка), относительно друг-друга. Например, вырезы под сборку
+//FUTURE: Слои и интерфейс для них
 
-//TODO: 000: управление параметрами кистей
+//TODO: 000 сделать зумминг и скроллинг с помощью мыши
+//FUTURE: загрузка изображений-подложек
 namespace DrawLibrary
 {
     /// <summary>
@@ -256,28 +261,18 @@ namespace DrawLibrary
 
         #endregion Tool
         
-        public BrushType Brush
+        public BrushBase Brush
         {
             get
             {
             	if( Tool != ToolType.Brush )
-            		return BrushType.None;
+            		return null;
             	
             	return ((ToolBrush)_tools[(int)Tool]).Brush;
             }
-            set
-            {
-                if ((int)value >= 0 && (int)value < (int)BrushType.Max)
-                {
-                	((ToolBrush)_tools[(int)Tool]).Brush = value;
-                    SendEvent("Я включил " + Brush.ToString());
-                    //TODO:включаем нужный курсор
-                    //tools[(int)Tool].SetCursor(this);                    
-	             }
-                
-                onPropertyChanged("Brush");
-            }
+
         }
+
 
         #region Visual Children Overrides
 
@@ -319,8 +314,8 @@ namespace DrawLibrary
             return _graphicsList[index];
         }
         #endregion Visual Children Overrides        
-        
-        
+
+
         public void UnselectAll()
         {
         	foreach(var g in _graphicsList)
@@ -330,7 +325,7 @@ namespace DrawLibrary
         }
 
         public GraphicsBase SelectedObject
-        {//TODO: Что делать, если объектов несколько?
+        {//FIXME: Что делать, если объектов несколько?
         	get{
         		foreach(var o in _graphicsList)
         		{
@@ -369,7 +364,7 @@ namespace DrawLibrary
 		private bool CanToClay(GraphicsMultiPoint a)
 		{
 			return SelectedObject != null;
-			//TODO: добавить проверку на соответствие типов && Type(SelectedObject) is GraphicsMultiPoint;
+			//FIXME: добавить проверку на соответствие типов && Type(SelectedObject) is GraphicsMultiPoint;
 		}
 		#endregion
 		
@@ -391,8 +386,45 @@ namespace DrawLibrary
 
 		private void SetBrush(String aBrushName)
 		{	
-			Brush = (BrushType)Enum.Parse(typeof(BrushType), aBrushName);
+			var t = (BrushType)Enum.Parse(typeof(BrushType), aBrushName);
+            if ((int)t >= 0 && (int)t < (int)BrushType.Max)
+            {
+            	((ToolBrush)_tools[(int)Tool]).Brush = GetBrushFromCache(t);
+                SendEvent("Я включил " + Brush.ToString());
+                //TODO:включаем нужный курсор
+                //tools[(int)Tool].SetCursor(this);
+             }
+            
+             onPropertyChanged("Brush");
 		}
+
+
+		/// <summary>
+		/// возвращает индекс кисти из кэша, либо создает новый, помещает в кэш и все равно возвращает индекс
+		/// </summary>
+		/// <param name="aType"></param>
+		/// <returns></returns>
+		private BrushBase GetBrushFromCache(BrushType aType)
+		{
+			BrushBase res = null;
+			//ищем в кэше
+			try
+			{
+				res = _cacheBrush.First<BrushBase>(x => x.Type == aType);
+			}
+			catch(InvalidOperationException)
+			{//не нашли, создаем
+				switch(aType)
+				{
+					case BrushType.OutMover: res = new BrushOutMover(); break;
+					case BrushType.Smoother: res = new BrushSmoother(); break;
+				}
+				_cacheBrush.Add(res);
+			}
+			return res;
+		}
+
+		private Collection<BrushBase> _cacheBrush = new Collection<BrushBase>();
 
 		private bool CanSetBrush(String a)
 		{

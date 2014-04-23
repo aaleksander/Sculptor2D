@@ -38,8 +38,8 @@ namespace DrawLibrary.Graphics
 		/// </summary>
 		public void UpdateClay()
 		{
-			double maxLen = 10; //максимально возможная длина отрезка
-			double minLen = 3;  //минимально возможная длина отрезка
+			double maxLen = 5; //максимально возможная длина отрезка
+			double minLen = 2;  //минимально возможная длина отрезка
 			
 			Collection<Point> tmp = new Collection<Point>();
 
@@ -63,7 +63,7 @@ namespace DrawLibrary.Graphics
 				Points.RemoveAt(Points.Count - 1); //удалим последнюю точку, она не нужна
 			}
 			
-			//TODO: удалить вершины, которые слишком близко (взять две вершины, и если они очень близко - заменить на одну посередине.
+			//удаляем вершины, которые слишком близко (взять две вершины, и если они очень близко - заменить на одну посередине.
 			bool f = true;
 			while (f == true)
 			{
@@ -79,8 +79,7 @@ namespace DrawLibrary.Graphics
 						Points.RemoveAt(i);
 						Points.RemoveAt(i); //не плюс один потому что мы уже удалили и i+1 сместился на i
 						Points.Insert(i, p);
-					}
-						
+					}						
 				}
 			}			
 			
@@ -130,5 +129,7 @@ namespace DrawLibrary.Graphics
 			
 			RefreshDrawing();
 		}
+
+		//TODO: не должны рисоваться маркеры для вершин
 	}
 }

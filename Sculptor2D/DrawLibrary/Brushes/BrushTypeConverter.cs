@@ -21,7 +21,10 @@ namespace DrawLibrary.Brushes
         public object Convert(object value, Type targetType,
                               object parameter, CultureInfo culture)
         {
-            string name = Enum.GetName(typeof(BrushType), value);
+			if( value == null )
+				return false;
+
+			string name = Enum.GetName(typeof(BrushType), ((BrushBase)value).Type);
 
             return ( name == (string)parameter );
         }

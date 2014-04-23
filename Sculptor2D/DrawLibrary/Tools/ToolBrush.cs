@@ -57,18 +57,14 @@ namespace DrawLibrary.Tools
 				_brush.ClearPath();
 			}
 		}
-		
-		public BrushType Brush
+
+		public BrushBase Brush
 		{
 			set{
-				switch(value)
-				{
-						case BrushType.OutMover: _brush = new BrushOutMover(); break;
-						case BrushType.Smoother: _brush = new BrushSmoother(); break;
-				}
+				_brush = value;
 			}
 			get{
-				return _brush.Type;
+				return _brush;
 			}
 		}
 	}

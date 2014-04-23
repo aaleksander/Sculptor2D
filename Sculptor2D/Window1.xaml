@@ -167,20 +167,25 @@
                 			  Content="Сглаживалка" />
 				<GroupBox Header="Параметры кисти">
 					<StackPanel Orientation="Vertical">
+						
+						<!--Слайдер "СИЛА"-->
 						<StackPanel Orientation="Horizontal">
 							<TextBlock Text="Сила:" Margin="0, 0, 5, 0"/>
 							<TextBlock Text="{Binding ElementName=Power, Path=Value, StringFormat=N0}" />
 						</StackPanel>
 						<Slider Width="100" Maximum="100" Minimum="1" Name="Power"
+						        Value="{Binding ElementName=canvas, Path=Brush.Power, Mode=TwoWay}"
 							IsEnabled="{Binding ElementName=canvas, Path=Tool, Mode=OneWay,
                         	     Converter={StaticResource convToolType}, ConverterParameter=Brush}"
 						/>
 
+						<!--Слайдер "РАЗМЕР"-->
 						<StackPanel Orientation="Horizontal">
 							<TextBlock Text="Размер:" Margin="0, 0, 5, 0"/>
 							<TextBlock Text="{Binding ElementName=Size, Path=Value, StringFormat=N0}" />
 						</StackPanel>
 						<Slider Width="100" Maximum="100" Minimum="1" Name="Size"
+						        Value="{Binding ElementName=canvas, Path=Brush.Size, Mode=TwoWay}"
 							IsEnabled="{Binding ElementName=canvas, Path=Tool, Mode=OneWay,
                         	     Converter={StaticResource convToolType}, ConverterParameter=Brush}"						
 						/>					

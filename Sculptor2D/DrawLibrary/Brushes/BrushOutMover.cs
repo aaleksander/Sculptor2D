@@ -20,7 +20,7 @@ namespace DrawLibrary.Brushes
 		public BrushOutMover(): base()
 		{
 			_type = BrushType.OutMover;
-			Power = 2;
+			Power = 30;
 		}		
 		
 		public override bool Modify(DrawLibrary.Graphics.GraphicsClay aObj)
@@ -35,7 +35,7 @@ namespace DrawLibrary.Brushes
 				if( d < Size ) //Точка попала в область действия кисти
 				{
 					vec = Geometry.GetVector(last, p);				
-					aObj.Points[i] = new Point(p.X + vec.X/d*Power, p.Y + vec.Y/d*Power);
+					aObj.Points[i] = new Point(p.X + vec.X/d*(Power/10), p.Y + vec.Y/d*(Power/10));
 					res = true;
 				}
 			}

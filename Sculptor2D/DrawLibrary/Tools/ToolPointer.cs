@@ -14,6 +14,8 @@ using System.Windows.Media;
 using DrawLibrary.Graphics;
 using Helpers;
 
+
+//перемещение вершины
 namespace DrawLibrary.Tools
 {
 	/// <summary>
