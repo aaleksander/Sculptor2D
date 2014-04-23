@@ -153,20 +153,35 @@
 		<ToolBarTray DockPanel.Dock="Right" Orientation="Vertical" VerticalAlignment="Top" Background="#FF8F8F8F">
 			<ToolBar Style="{StaticResource DreamToolBar}" IsOverflowOpen="True"
 			         Background="#FF8F8F8F" Header="eee">
-                <ToggleButton	ToolTip="Отодвигалка" 
+                <ToggleButton	ToolTip="Отталкивает линии" 
                              	Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
                                 CommandParameter="OutMover"
                              	IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
                              	Converter={StaticResource convBrushType}, ConverterParameter=OutMover}"
                 			 	Content="Отодвигалка" />
-                <ToggleButton ToolTip="Выравнивалка" 
+				
+                <ToggleButton ToolTip="Выпрямляет линии" 
                               Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
                               CommandParameter="Smoother"
                               IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
                               Converter={StaticResource convBrushType}, ConverterParameter=Smoother}"
                 			  Content="Сглаживалка" />
+
+                <ToggleButton ToolTip="Старается приблизить очертания контура к форме мазка кисти" 
+                              Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
+                              CommandParameter="Smoother"
+                              IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
+                              Converter={StaticResource convBrushType}, ConverterParameter=Smoother}"
+                			  Content="Повторялка" />
 				
-                <ToggleButton ToolTip="Перемещалка" 
+                <ToggleButton ToolTip="Стягивает все контуры к кисти" 
+                              Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
+                              CommandParameter="Smoother"
+                              IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
+                              Converter={StaticResource convBrushType}, ConverterParameter=Smoother}"
+                			  Content="Сужалка" />
+				
+                <ToggleButton ToolTip="Передвигает кусок контура" 
                               Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
                               CommandParameter="Mover"
                               IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,

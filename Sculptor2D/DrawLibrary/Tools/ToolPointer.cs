@@ -34,8 +34,9 @@ namespace DrawLibrary.Tools
 				_dragObject = null;
 				for(int i=0; i<aCanvas.Count; i++ )
 				{ //просто подсвечиваем
-					var o = aCanvas[i];
-				   	o.IsHit = o.Contains(point);
+					GraphicsBase o = aCanvas[i];
+					if( o != null )
+				   		o.IsHit = o.Contains(point);
 				}
 			}
 
@@ -90,9 +91,14 @@ namespace DrawLibrary.Tools
         {        	
 			for(int i = aCanvas.Count - 1; i >= 0; i-- ) //объекты сверху должны "попасть" под мышку первыми
 			{
-				var o = aCanvas[i];
-				if( o.Contains(aPoint) )
-					return o;
+				GraphicsBase o = aCanvas[i];
+				if( o != null )
+				{
+					if( o.Contains(aPoint) )
+					{
+						return o;
+					}
+				}
 			}
 			return null;
         }

@@ -7,6 +7,7 @@
  * Для изменения этого шаблона используйте Сервис | Настройка | Кодирование | Правка стандартных заголовков.
  */
 using System;
+//using System.Drawing;
 using System.Windows;
 using System.Windows.Media;
 
@@ -36,8 +37,8 @@ namespace DrawLibrary.Graphics
 
         public void RefreshDrawing()
         {
-            DrawingContext dc = this.RenderOpen();
-
+            DrawingContext dc = this.RenderOpen();            
+            
             Draw(dc);
 
             dc.Close();

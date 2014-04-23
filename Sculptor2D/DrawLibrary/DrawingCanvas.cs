@@ -9,7 +9,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -47,15 +46,21 @@ namespace DrawLibrary
 	/// </summary>
 	public class DrawingCanvas: Canvas, INotifyPropertyChanged
 	{
-		
         // Collection contains instances of GraphicsBase-derived classes.
         private VisualCollection _graphicsList;
-        
+
+        //private DrawingVisual _cursor;
+
 		public DrawingCanvas(): base()
 		{
 			_graphicsList = new VisualCollection(this);
 			
-            // создадим список
+//			_cursor = new DrawingVisual();
+//			_cursor.Transform = new TranslateTransform(0, 0);			
+//			UpdateCursor();
+//			GraphicsList.Add(_cursor);			
+			
+            // создадим список инструментов
             _tools = new ToolBase[(int)ToolType.Max];
 
             _tools[(int)ToolType.Pointer] = new ToolPointer();
@@ -83,6 +88,18 @@ namespace DrawLibrary
             this.MouseUp += new MouseButtonEventHandler(DrawingCanvas_MouseUp);
             //this.KeyDown += new KeyEventHandler(DrawingCanvas_KeyDown);
             this.LostMouseCapture += new MouseEventHandler(DrawingCanvas_LostMouseCapture);
+		}
+		
+		private void UpdateCursor()
+		{
+			//_graphicsList.Remove(_cursor);
+			
+//			_cursor = new DrawingVisual();
+//            DrawingContext dc = _cursor.RenderOpen();
+//            dc.DrawEllipse(null, new Pen(new SolidColorBrush(Colors.Black), 1), new Point(0, 0), 10, 10);
+//            dc.Close();            
+            
+            //_graphicsList.Add(_cursor);
 		}
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -129,14 +146,14 @@ namespace DrawLibrary
         {
             get
             {
-                if ( index >= 0  &&  index < Count )
+            	if ( index >= 0  &&  index < Count && _graphicsList[index] is GraphicsBase)
                 {
                     return (GraphicsBase)_graphicsList[index];
                 }
 
                 return null;
             }
-        }        
+        }
 		
         void DrawingCanvas_Loaded(object sender, RoutedEventArgs e)
         {
@@ -183,6 +200,12 @@ namespace DrawLibrary
         
         void DrawingCanvas_MouseMove(object sender, MouseEventArgs e)
         {
+        	Point p = e.GetPosition(this);
+        	
+//        	((TranslateTransform)_cursor.Transform).X = p.X;
+//        	((TranslateTransform)_cursor.Transform).Y = p.Y;
+        	UpdateCursor();
+
             if (_tools[(int)Tool] == null)
             {
                 return;
@@ -324,7 +347,8 @@ namespace DrawLibrary
         {
         	foreach(var g in _graphicsList)
         	{
-        		((GraphicsBase)g).IsSelected = false;
+        		if( g is GraphicsBase )
+        			((GraphicsBase)g).IsSelected = false;
         	}
         }
 
@@ -333,9 +357,12 @@ namespace DrawLibrary
         	get{
         		foreach(var o in _graphicsList)
         		{
-        			var  oo = (GraphicsBase) o;
-        			if( oo.IsSelected )
-        				return oo;
+        			if( o is GraphicsBase )
+        			{
+        				var  oo = (GraphicsBase) o;
+        				if( oo.IsSelected )
+        					return oo;
+        			}
         		}
         		return null;
         	}
