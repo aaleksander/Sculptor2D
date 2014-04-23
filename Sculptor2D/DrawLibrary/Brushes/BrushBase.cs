@@ -28,6 +28,7 @@ namespace DrawLibrary.Brushes
 		None,
 		OutMover,  	//отодвигает вершины от себя
 		Smoother,	//сглаживает вершины
+		Mover,		//перемещает вершины
 		
 		Max
 	}
@@ -71,7 +72,7 @@ namespace DrawLibrary.Brushes
 		public Point LastPoint{
 			get{
 				return _path[_path.Count - 1];
-			}			
+			}
 		}
 
 		public void ClearPath()

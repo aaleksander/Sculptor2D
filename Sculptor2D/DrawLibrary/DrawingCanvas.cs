@@ -9,11 +9,14 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Commands;
 using DrawLibrary.Brushes;
 using DrawLibrary.Graphics;
@@ -23,6 +26,7 @@ using DrawLibrary.Tools;
 //FUTURE: Слои и интерфейс для них
 
 //TODO: 000 сделать зумминг и скроллинг с помощью мыши
+//TODO: сделать изображение кисти (кружок под мышкой)
 //FUTURE: загрузка изображений-подложек
 namespace DrawLibrary
 {
@@ -398,7 +402,6 @@ namespace DrawLibrary
              onPropertyChanged("Brush");
 		}
 
-
 		/// <summary>
 		/// возвращает индекс кисти из кэша, либо создает новый, помещает в кэш и все равно возвращает индекс
 		/// </summary>
@@ -416,8 +419,9 @@ namespace DrawLibrary
 			{//не нашли, создаем
 				switch(aType)
 				{
-					case BrushType.OutMover: res = new BrushOutMover(); break;
-					case BrushType.Smoother: res = new BrushSmoother(); break;
+					case BrushType.OutMover: 	res = new BrushOutMover(); break;
+					case BrushType.Smoother: 	res = new BrushSmoother(); break;
+					case BrushType.Mover: 		res = new BrushMover(); break;
 				}
 				_cacheBrush.Add(res);
 			}

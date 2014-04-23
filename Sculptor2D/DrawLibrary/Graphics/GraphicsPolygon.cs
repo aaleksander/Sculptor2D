@@ -21,7 +21,7 @@ namespace DrawLibrary.Graphics
 		{
 			_isClosed = true;
 			
-			_brush = new SolidColorBrush(Colors.Green);
+			_brush = new SolidColorBrush(Colors.LightGreen );
 			
 			//TODO:Свойство "Обводка" - Pen
 		}

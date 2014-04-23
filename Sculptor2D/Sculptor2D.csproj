@@ -46,6 +46,7 @@
     <Reference Include="System.Data.DataSetExtensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -68,6 +69,7 @@
     <Compile Include="Commands\CommandReference.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="DrawLibrary\Brushes\BrushBase.cs" />
+    <Compile Include="DrawLibrary\Brushes\BrushMover.cs" />
     <Compile Include="DrawLibrary\Brushes\BrushOutMover.cs" />
     <Compile Include="DrawLibrary\Brushes\BrushSmoother.cs" />
     <Compile Include="DrawLibrary\Brushes\BrushTypeConverter.cs" />

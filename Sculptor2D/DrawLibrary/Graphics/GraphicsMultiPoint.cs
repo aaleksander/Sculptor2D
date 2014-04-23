@@ -26,7 +26,7 @@ namespace DrawLibrary.Graphics
 		private Collection<Point> _points;
 		protected bool _isClosed = false;
 		protected Brush _brush = null;
-		
+
 		public bool IsClosed{
 			set{
 				_isClosed = value;
@@ -34,6 +34,16 @@ namespace DrawLibrary.Graphics
 			}
 			get{
 				return _isClosed;
+			}
+		}
+
+		public Brush Brush{
+			set{
+				_brush = value;
+				//TODO: Сделать в graphicsBase эту штуку OnPropertyChanged("Brush");
+			}
+			get{
+				return _brush;
 			}
 		}
 		
@@ -64,10 +74,10 @@ namespace DrawLibrary.Graphics
 			//col.A = 100; //прозрачность
 			aContext.DrawGeometry(_brush, new Pen(new SolidColorBrush(col), 2), geometry);
         	
-            if ( IsSelected )
+			if ( IsSelected && !(this is GraphicsClay) )
             {
                 DrawTracker(aContext);
-            }           
+            }
 		}		
 
 		public void DeleteLastPoint()
@@ -103,7 +113,7 @@ namespace DrawLibrary.Graphics
 				return _points[_points.Count - 1];
 			}
 		}
-		
+
         /// <summary>
         /// попадает ли точка в этот объект
         /// </summary>
@@ -123,29 +133,26 @@ namespace DrawLibrary.Graphics
 				return g.FillContains(point, 0.001, ToleranceType.Relative) ||
 					   g.StrokeContains(new Pen(System.Windows.Media.Brushes.Black, 10), point);
         }		
-        
+
         public void AddPoint(double x, double y)
         {
         	_points.Add(new Point(x, y));
         }
-        
+
 		public int AddPoint(Point aP)
 		{
 			_points.Add(aP);
 			
 			return _points.Count;
 		}        
-        
+
 		public override void DrawTracker(DrawingContext aContext)
 		{
 			var br = new SolidColorBrush(Colors.Black);
 			var pn = new Pen(new SolidColorBrush(Colors.White), 1);
 			foreach(var p in _points)
 			{
-				aContext.DrawEllipse(br, pn, new Point(p.X, p.Y), 5, 5);
-				//aContext.DrawRectangle(br, null, new Rect(p.X - 5, p.Y - 5, 10, 10));
-				//aContext.DrawRectangle(null, pn, new Rect(p.X - 4, p.Y - 4, 8, 8));
-				//aContext.DrawRectangle(br, null, new Rect(p.X - 3, p.Y - 3, 6, 6));
+				aContext.DrawEllipse(br, pn, new Point(p.X, p.Y), 4, 4);
 			}
         }
 		

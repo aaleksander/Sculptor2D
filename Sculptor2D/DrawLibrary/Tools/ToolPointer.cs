@@ -14,12 +14,13 @@ using System.Windows.Media;
 using DrawLibrary.Graphics;
 using Helpers;
 
-
+//TODO: редактор точек
+//TODO: масштабирование, вращение фигур
 //перемещение вершины
 namespace DrawLibrary.Tools
 {
 	/// <summary>
-	/// Description of ToolPointer.
+	/// стандартный указатель
 	/// </summary>
 	public class ToolPointer: ToolBase
 	{

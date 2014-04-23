@@ -35,12 +35,15 @@ namespace DrawLibrary
 		/// <param name="a"></param>
 		/// <param name="b"></param>
 		/// <returns></returns>
-		public static Point GetVector(Point a, Point b)
+		public static Point GetVector(Point a, Point b, bool aNormalize=true)
 		{
 			Point res = new Point(b.X - a.X, b.Y - a.Y);
-			double len = Math.Sqrt(res.X*res.X + res.Y*res.Y);
-			res.X /= len;
-			res.Y /= len;
+			if( aNormalize )
+			{
+				double len = Math.Sqrt(res.X*res.X + res.Y*res.Y);
+				res.X /= len;
+				res.Y /= len;
+			}
 			
 			return res;
 		}

@@ -46,6 +46,7 @@ namespace Sculptor2D
 			statusBar.Content = e.Text;			
 		}
 		
+		//TODO: сделать универсальный ввод для пера и мыши.
         void ToolButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             canvas.Tool = (ToolType)Enum.Parse(typeof(ToolType),

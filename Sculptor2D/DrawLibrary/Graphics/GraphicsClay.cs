@@ -30,6 +30,8 @@ namespace DrawLibrary.Graphics
 			
 			IsClosed = aGr.IsClosed;
 			
+			Brush = aGr.Brush;
+			
 			UpdateClay();
 		}
 

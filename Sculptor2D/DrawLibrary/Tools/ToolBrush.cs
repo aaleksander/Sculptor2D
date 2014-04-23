@@ -26,7 +26,8 @@ namespace DrawLibrary.Tools
         {
         	IsDragging = e.AnyButtonPressed();
 
-        	_brush.AddPath(e.GetPosition(aCanvas));
+        	if( IsDragging )
+        		_brush.AddPath(e.GetPosition(aCanvas));
 
 			if( e.LeftButtonPressed() )
 			{//делаем "мазок"
@@ -42,6 +43,11 @@ namespace DrawLibrary.Tools
 			}
         }
 
+		public override void OnMouseDown(DrawingCanvas aCanvas, MouseButtonEventArgs e)
+		{
+			_brush.AddPath(e.GetPosition(aCanvas)); //самая первая точка
+		}
+		
 		public override void OnMouseUp(DrawingCanvas aCanvas, MouseButtonEventArgs e)
 		{
 			if( IsDragging == true ) //чето мазали, надо обновить
@@ -53,9 +59,8 @@ namespace DrawLibrary.Tools
 						//((GraphicsClay)clay).UpdateClay();
 					}
 				}
-
-				_brush.ClearPath();
 			}
+			_brush.ClearPath();
 		}
 
 		public BrushBase Brush

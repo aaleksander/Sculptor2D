@@ -165,6 +165,14 @@
                               IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
                               Converter={StaticResource convBrushType}, ConverterParameter=Smoother}"
                 			  Content="Сглаживалка" />
+				
+                <ToggleButton ToolTip="Перемещалка" 
+                              Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
+                              CommandParameter="Mover"
+                              IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
+                              Converter={StaticResource convBrushType}, ConverterParameter=Mover}"
+                			  Content="Перемещалка" />
+				
 				<GroupBox Header="Параметры кисти">
 					<StackPanel Orientation="Vertical">
 						
