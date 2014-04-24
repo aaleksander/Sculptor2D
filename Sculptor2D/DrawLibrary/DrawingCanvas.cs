@@ -54,12 +54,12 @@ namespace DrawLibrary
 		public DrawingCanvas(): base()
 		{
 			_graphicsList = new VisualCollection(this);
-			
+
 //			_cursor = new DrawingVisual();
 //			_cursor.Transform = new TranslateTransform(0, 0);			
 //			UpdateCursor();
 //			GraphicsList.Add(_cursor);			
-			
+
             // создадим список инструментов
             _tools = new ToolBase[(int)ToolType.Max];
 
@@ -350,6 +350,8 @@ namespace DrawLibrary
         		if( g is GraphicsBase )
         			((GraphicsBase)g).IsSelected = false;
         	}
+
+        	//FIXME: удалить все сервисные объекты
         }
 
         public GraphicsBase SelectedObject
@@ -365,6 +367,18 @@ namespace DrawLibrary
         			}
         		}
         		return null;
+        	}
+        }
+        
+        /// <summary>
+        /// выеделить какой-то объект
+        /// </summary>
+        /// <param name="aObj"></param>
+        public void SelectObject(GraphicsBase aObj, GraphicsMode aMode)
+        {
+        	if( aMode == GraphicsMode.Selected )
+        	{
+        		aObj.IsSelected = true;
         	}
         }
 
@@ -428,6 +442,14 @@ namespace DrawLibrary
             
              onPropertyChanged("Brush");
 		}
+		
+		private bool CanSetBrush(String a)
+		{
+			if( Tool != ToolType.Brush )
+				return false;
+			
+			return true;
+		}
 
 		/// <summary>
 		/// возвращает индекс кисти из кэша, либо создает новый, помещает в кэш и все равно возвращает индекс
@@ -456,14 +478,39 @@ namespace DrawLibrary
 		}
 
 		private Collection<BrushBase> _cacheBrush = new Collection<BrushBase>();
-
-		private bool CanSetBrush(String a)
-		{
-			if( Tool != ToolType.Brush )
-				return false;
-			
-			return true;
-		}
 		#endregion		
+		
+		#region команда "копировать в svg"
+		private DelegateCommand toSVGCommand;
+		public ICommand ToSVGCommand
+		{
+            get
+            {
+                if (toSVGCommand == null)
+                {
+                    toSVGCommand = new DelegateCommand(ToSVG, CanToSVG);
+                }
+                return toSVGCommand;
+            }
+		}
+
+		private void ToSVG()
+		{	
+			GraphicsMultiPoint o = (GraphicsMultiPoint)SelectedObject;
+
+			string text = o.ToSVG();
+			
+			System.Windows.Clipboard.SetText(text);
+			
+			MessageBox.Show("Данные скопированны в буфер обмена");
+		}
+
+		private bool CanToSVG()
+		{
+			if( SelectedObject == null ) //нет выделенных объектов
+				return false;
+			return SelectedObject is GraphicsMultiPoint;
+		}		
+		#endregion
 	}
 }

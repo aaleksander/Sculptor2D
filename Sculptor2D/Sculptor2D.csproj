@@ -80,6 +80,7 @@
     <Compile Include="DrawLibrary\Graphics\GraphicsLine.cs" />
     <Compile Include="DrawLibrary\Graphics\GraphicsMultiPoint.cs" />
     <Compile Include="DrawLibrary\Graphics\GraphicsPolygon.cs" />
+    <Compile Include="DrawLibrary\Graphics\GraphicsService.cs" />
     <Compile Include="DrawLibrary\Tools\ToolBase.cs" />
     <Compile Include="DrawLibrary\Tools\ToolBrush.cs" />
     <Compile Include="DrawLibrary\Tools\ToolEditor.cs" />

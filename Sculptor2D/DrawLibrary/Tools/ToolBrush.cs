@@ -29,6 +29,7 @@ namespace DrawLibrary.Tools
         	if( IsDragging )
         		_brush.AddPath(e.GetPosition(aCanvas));
 
+        	//TODO: если на канве есть выделенные элементы, то редактировать нолько их
 			if( e.LeftButtonPressed() )
 			{//делаем "мазок"
 				IsDragging = true;

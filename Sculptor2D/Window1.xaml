@@ -6,6 +6,8 @@
     xmlns:brushes="clr-namespace:DrawLibrary.Brushes"
 	Title="Sculptor2D" Height="600" Width="800"
 	WindowStartupLocation="CenterScreen"
+	UseLayoutRounding="True"
+	SnapsToDevicePixels="True"
 	>
 	
 <Window.Resources>
@@ -146,6 +148,8 @@
                              Converter={StaticResource convToolType}, ConverterParameter=Brush}"
 					Content="Лепить">
 				</ToggleButton>
+			
+				<Button Command="{Binding ElementName=canvas, Path=ToSVGCommand}" Content="В SVG"/>
 			</ToolBar>
 		</ToolBarTray>
 
@@ -167,30 +171,32 @@
                               Converter={StaticResource convBrushType}, ConverterParameter=Smoother}"
                 			  Content="Сглаживалка" />
 
-                <ToggleButton ToolTip="Старается приблизить очертания контура к форме мазка кисти" 
+                <ToggleButton Visibility="Hidden"
+                			  ToolTip="Старается приблизить очертания контура к форме мазка кисти"
                               Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
                               CommandParameter="Smoother"
                               IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
-                              Converter={StaticResource convBrushType}, ConverterParameter=Smoother}"
+                              Converter={StaticResource convBrushType}, ConverterParameter=None}"
                 			  Content="Повторялка" />
-				
-                <ToggleButton ToolTip="Стягивает все контуры к кисти" 
+
+                <ToggleButton Visibility="Hidden"
+                	          ToolTip="Стягивает все контуры к кисти"
                               Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
                               CommandParameter="Smoother"
                               IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
-                              Converter={StaticResource convBrushType}, ConverterParameter=Smoother}"
+                              Converter={StaticResource convBrushType}, ConverterParameter=None}"
                 			  Content="Сужалка" />
-				
-                <ToggleButton ToolTip="Передвигает кусок контура" 
+
+                <ToggleButton 
+                	          ToolTip="Передвигает кусок контура"
                               Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
                               CommandParameter="Mover"
                               IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
-                              Converter={StaticResource convBrushType}, ConverterParameter=Mover}"
+                              Converter={StaticResource convBrushType}, ConverterParameter=None}"
                 			  Content="Перемещалка" />
-				
+
 				<GroupBox Header="Параметры кисти">
-					<StackPanel Orientation="Vertical">
-						
+					<StackPanel Orientation="Vertical">						
 						<!--Слайдер "СИЛА"-->
 						<StackPanel Orientation="Horizontal">
 							<TextBlock Text="Сила:" Margin="0, 0, 5, 0"/>
@@ -220,7 +226,8 @@
 
 
 		<ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
-			<cnv:DrawingCanvas x:Name="canvas" Background="#00000000" Width="2000" Height="2000"/>
+			<cnv:DrawingCanvas x:Name="canvas" Background="#00000000" Width="2000" Height="2000"
+				/>
 		</ScrollViewer>
 	</DockPanel>
 </Window>

@@ -9,6 +9,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Media;
 using DrawLibrary.Brushes;
 using Sculptor2D.Helpers;
 using System.Linq;
@@ -30,7 +31,9 @@ namespace DrawLibrary.Graphics
 			
 			IsClosed = aGr.IsClosed;
 			
-			Brush = aGr.Brush;
+			Brush = null;
+			if( IsClosed )
+				Brush = new SolidColorBrush(Colors.SandyBrown);			
 			
 			UpdateClay();
 		}

@@ -8,6 +8,8 @@
  */
 using System;
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
+using System.Text;
 using System.Windows;
 using System.Windows.Media;
 
@@ -49,6 +51,7 @@ namespace DrawLibrary.Graphics
 		
 		public override void Draw(DrawingContext aContext)
 		{
+
 			if( _points.Count < 2 )
 				return;
 			//обнулим матрицу трансформации
@@ -74,7 +77,7 @@ namespace DrawLibrary.Graphics
 			//col.A = 100; //прозрачность
 			aContext.DrawGeometry(_brush, new Pen(new SolidColorBrush(col), 2), geometry);
         	
-			if ( IsSelected && !(this is GraphicsClay) )
+			if ( IsSelected )
             {
                 DrawTracker(aContext);
             }
@@ -146,15 +149,106 @@ namespace DrawLibrary.Graphics
 			return _points.Count;
 		}        
 
+		/// <summary>
+		/// возвращает прямоугольник, очерчивающий этот объект (опирается на точки)
+		/// </summary>
+		/// <returns></returns>
+		public Rect GetRect()
+		{
+			double left=0, right=0, top=0, bottom=0;
+			Point p;
+			//ищем крайние точки
+			for(int i=0; i<_points.Count; i++)
+			{
+				p = _points[i];
+				if( i == 0 )
+				{
+					left = p.X;
+					right = p.X;
+					top = p.Y;
+					bottom = p.Y;
+					continue;
+				}
+				if( left > p.X ) left = p.X;
+				if( right < p.X ) right = p.X;
+				if( top > p.Y )	top = p.Y;
+				if( bottom < p.Y ) bottom = p.Y;
+			}
+			
+			return new Rect(left, top, right-left, bottom-top);
+		}
+		
+		/// <summary>
+		/// рисует маркеры, за которые можно наскать объект
+		/// </summary>
+		/// <param name="aContext"></param>
 		public override void DrawTracker(DrawingContext aContext)
 		{
-			var br = new SolidColorBrush(Colors.Black);
-			var pn = new Pen(new SolidColorBrush(Colors.White), 1);
-			foreach(var p in _points)
-			{
-				aContext.DrawEllipse(br, pn, new Point(p.X, p.Y), 4, 4);
-			}
+			var r = GetRect();
+
+			DrawOneTracker(aContext, r.Left - 8, r.Top - 8);
+			DrawOneTracker(aContext, r.Left - 8, r.Bottom + 8);
+			DrawOneTracker(aContext, r.Right + 8, r.Top - 8);
+			DrawOneTracker(aContext, r.Right + 8, r.Bottom + 8);
+			
+			//RenderOptions = RenderOptions.EdgeModeProperty;
+			//aContext.DrawRectangle(br1, p1, new Rect(r.Left, r.Top, size, size));
+			//aContext.DrawRectangle(br1, p1, new Rect(r.Left, r.Bottom, size, size));
+			
+			//aContext.DrawRectangle(null, new Pen(new SolidColorBrush(Colors.Red), 1), getRect());
+
+			
+			
+//			var br = new SolidColorBrush(Colors.Black);
+//			var pn = new Pen(new SolidColorBrush(Colors.White), 1);
+//			foreach(var p in _points)
+//			{
+//				aContext.DrawEllipse(br, pn, new Point(p.X, p.Y), 4, 4);
+//			}
         }
 		
+		/// <summary>
+		/// рисует один прямоугольник
+		/// </summary>
+		/// <param name="aContext"></param>
+		private void DrawOneTracker(DrawingContext aContext, double aX, double aY)
+		{
+			double size = 8;
+			//Рисуем углы
+			var br1 = new SolidColorBrush(Colors.Black);
+			var p1 = new Pen(br1, 1);
+
+    		double halfPenWidth = p1.Thickness / 2;
+
+    		// Create a guidelines set
+    		GuidelineSet guidelines = new GuidelineSet();
+
+    		guidelines.GuidelinesX.Add(aX + halfPenWidth);
+    		guidelines.GuidelinesX.Add(aX + size + halfPenWidth);
+    		guidelines.GuidelinesY.Add(aY + halfPenWidth);
+    		guidelines.GuidelinesY.Add(aY + size + halfPenWidth);
+
+    		aContext.PushGuidelineSet(guidelines);
+    		aContext.DrawRectangle(null, p1, new Rect(aX, aY, size, size));
+    		aContext.Pop();
+		}
+		
+		/// <summary>
+		/// возвращает координаты в виде строки SVG
+		/// </summary>
+		/// <returns></returns>
+		public string ToSVG()
+		{
+			StringBuilder res = new StringBuilder();
+			foreach(var p in Points)
+			{
+				res.Append(string.Format("{0} {1} ", p.X, p.Y));
+			}
+			
+			if( IsClosed )
+				res.Append(" z ");
+			
+			return "M " + res.ToString();
+		}
 	}
 }

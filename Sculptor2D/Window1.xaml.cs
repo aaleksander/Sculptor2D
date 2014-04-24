@@ -16,6 +16,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using DrawLibrary;
+using DrawLibrary.Graphics;
 using DrawLibrary.Tools;
 
 namespace Sculptor2D
@@ -39,6 +40,20 @@ namespace Sculptor2D
 			buttonToolBrush.PreviewMouseDown += new MouseButtonEventHandler(ToolButton_PreviewMouseDown);
 			
 			canvas.CanvasEvent += new DrawingCanvas.CanvasEventHandler(Canvas_CanvasEvent);
+
+			//тестовые данные			
+/*			var p = new GraphicsPolygon();
+			p.AddPoint(500, 100);
+			p.AddPoint(300, 300);
+			p.AddPoint(150, 250);
+			canvas.GraphicsList.Add(p);
+			
+			p = new GraphicsPolygon();
+			p.AddPoint(60, 60);
+			p.AddPoint(400, 50);
+			p.AddPoint(400, 400);
+			p.AddPoint(50, 400);
+			canvas.GraphicsList.Add(p); */
 		}
 
 		void Canvas_CanvasEvent(object sender, CanvasEventArgs e)

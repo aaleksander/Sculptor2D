@@ -21,6 +21,7 @@ namespace DrawLibrary.Graphics
     	None, 		//не выделен, просто рисуется
     	Selected, 	//выделен для перемещения, масштабирования, вращения
     	Points,		//показывает все свои точки
+    	
     	Max
     }
 
@@ -37,30 +38,29 @@ namespace DrawLibrary.Graphics
 
         public void RefreshDrawing()
         {
-            DrawingContext dc = this.RenderOpen();            
+            DrawingContext dc = this.RenderOpen();
             
             Draw(dc);
 
             dc.Close();
         }	
 
-        public virtual void Draw(DrawingContext drawingContext){}        
-		
+        public virtual void Draw(DrawingContext drawingContext){}
+
         public bool IsSelected
         {
             get 
             { 
-                return _isSelected; 
+                return Mode == GraphicsMode.Selected; 
             }
             set 
             {
-                _isSelected = value;
+           		Mode = value? GraphicsMode.Selected: GraphicsMode.None;
 
                 RefreshDrawing();
             }
         }	
-		private bool _isSelected;      
-
+  
         public bool IsHit
         {
             get 

@@ -31,12 +31,20 @@ namespace DrawLibrary.Tools
 
 			if ( e.AllButtonReleases() ) //ничего не тащим, просто двигаемся
 			{
+				//почистить у всех IsHit
+				foreach(var o in aCanvas.GraphicsList)
+					((GraphicsBase)o).IsHit = false;
+				
 				_dragObject = null;
-				for(int i=0; i<aCanvas.Count; i++ )
+				for(int i=aCanvas.Count - 1; i>=0; i-- ) //идем сверху-вниз
 				{ //просто подсвечиваем
 					GraphicsBase o = aCanvas[i];
 					if( o != null )
+					{
 				   		o.IsHit = o.Contains(point);
+				   		if( o.IsHit )
+				   			break; //Горячим может быть только один объект
+					}
 				}
 			}
 
@@ -71,8 +79,8 @@ namespace DrawLibrary.Tools
 
 			if( IsDragging == false && _dragObject != null ) //просто клик по объекту
 			{
-				aCanvas.UnselectAll(); //TODO: добавить проверку shifta (делать анселект, только если шифт не нажат)
-				_dragObject.IsSelected = true;
+				aCanvas.UnselectAll(); //TODO: добавить проверку shifta (делать анселект, только если шифт не нажат)				
+				aCanvas.SelectObject(_dragObject, GraphicsMode.Selected);
 			}
 
 			if( IsDragging == true )
