@@ -24,7 +24,7 @@ using DrawLibrary.Tools;
 //FUTURE: Блокирование некоторых вершин (участка), относительно друг-друга. Например, вырезы под сборку
 //FUTURE: Слои и интерфейс для них
 
-//TODO: 000 сделать зумминг и скроллинг с помощью мыши
+//TODO:000 сделать зумминг и скроллинг с помощью мыши
 //TODO: сделать изображение кисти (кружок под мышкой)
 //FUTURE: загрузка изображений-подложек
 namespace DrawLibrary
@@ -83,11 +83,16 @@ namespace DrawLibrary
             this.Focus();
 
             this.Loaded += new RoutedEventHandler(DrawingCanvas_Loaded);
+            
+            //мышка
             this.MouseDown += new MouseButtonEventHandler(DrawingCanvas_MouseDown);
             this.MouseMove += new MouseEventHandler(DrawingCanvas_MouseMove);
             this.MouseUp += new MouseButtonEventHandler(DrawingCanvas_MouseUp);
-            //this.KeyDown += new KeyEventHandler(DrawingCanvas_KeyDown);
+            
             this.LostMouseCapture += new MouseEventHandler(DrawingCanvas_LostMouseCapture);
+            
+            this.Focus();
+//            this.OnStylusDown += new StylusDownEventHandler(StylusDown);
 		}
 		
 		private void UpdateCursor()
@@ -154,14 +159,17 @@ namespace DrawLibrary
                 return null;
             }
         }
-		
+
         void DrawingCanvas_Loaded(object sender, RoutedEventArgs e)
         {
             this.Focusable = true;      // to handle keyboard messages
             Focus();
         }		
 
-        void DrawingCanvas_MouseDown(object sender, MouseButtonEventArgs e)
+       
+        #region опустить мышку/перо
+
+        void Down(Point aP)
         {
             if (_tools[(int)Tool] == null)
             {//не выбран ни один инструмент
@@ -172,8 +180,8 @@ namespace DrawLibrary
 
             //if ( e.ChangedButton == MouseButton.Left )
             //{//нажали на левую кнопку
-			_tools[(int)Tool].OnMouseDown(this, e);
-			
+			_tools[(int)Tool].OnDown(this, aP);
+
 			onPropertyChanged("SelectedObject");
                 //UpdateState();
             //}
@@ -181,9 +189,25 @@ namespace DrawLibrary
             //{
                 //ShowContextMenu(e);
             //}
+        }
+        
+        void OnStylusDown(object sender, StylusDownEventArgs e)
+        {        	
+        	Down(e.GetPosition(this));
+        }
+
+        void DrawingCanvas_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+        	Down(e.GetPosition(this));        	     
         }        
 		
-        void DrawingCanvas_MouseUp(object sender, MouseButtonEventArgs e)
+        
+        #endregion опустить мышку/перо
+        
+        
+        #region поднять мышку/перо
+        
+        void Up(Point aPoint)
         {
             if (_tools[(int)Tool] == null)
             {
@@ -192,36 +216,53 @@ namespace DrawLibrary
 
             //if (e.ChangedButton == MouseButton.Left)
             //{
-                _tools[(int)Tool].OnMouseUp(this, e);
+                _tools[(int)Tool].OnUp(this, aPoint);
 
                 //UpdateState();
             //}
         }
-        
-        void DrawingCanvas_MouseMove(object sender, MouseEventArgs e)
-        {
-        	Point p = e.GetPosition(this);
-        	
-//        	((TranslateTransform)_cursor.Transform).X = p.X;
-//        	((TranslateTransform)_cursor.Transform).Y = p.Y;
-        	UpdateCursor();
 
+        protected override void OnStylusUp(StylusEventArgs e)
+        {
+        	Up(e.GetPosition(this));
+        }
+        
+        void DrawingCanvas_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+        	Up(e.GetPosition(this));
+        }
+        
+        #endregion отпустили мышку/перо
+
+
+		#region двигаем мышку/перо        
+        void Move(Point aPoint, bool aPressed)
+        {
             if (_tools[(int)Tool] == null)
             {
                 return;
             }
 
-            if ( e.MiddleButton == MouseButtonState.Released  &&  e.RightButton == MouseButtonState.Released )
-            {
-                _tools[(int)Tool].OnMouseMove(this, e);
+			_tools[(int)Tool].OnMove(this, aPoint, aPressed);
+        }
 
-                //UpdateState();
-            }
-            else
-            {
-                //this.Cursor = HelperFunctions.DefaultCursor;
-            }
-        }        
+        protected override void OnStylusInAirMove(StylusEventArgs e)
+        {
+        	Move(e.GetPosition(this), false); //это событие вызывается, когда перо "летает" над планшетом.
+        }
+        
+        protected override void OnStylusMove(StylusEventArgs e)
+        {
+        	Move(e.GetPosition(this), true); //это событие вызывается, когда перо касается планшета
+        }
+        
+        void DrawingCanvas_MouseMove(object sender, MouseEventArgs e)
+        {
+        	Move(e.GetPosition(this), e.LeftButton == MouseButtonState.Pressed);
+        }     
+
+		#endregion двигаем мышку/перо        
+		
 		
         /// <summary>
         /// Mouse capture is lost
@@ -280,7 +321,7 @@ namespace DrawLibrary
                 {
                     SetValue(ToolProperty, value);                    
                     SendEvent("Я включил " + Tool.ToString());
-                    //TODO:включаем нужный курсор
+                    //TODO: включаем нужный курсор
                     //tools[(int)Tool].SetCursor(this);
                 }
             }
@@ -355,7 +396,7 @@ namespace DrawLibrary
         }
 
         public GraphicsBase SelectedObject
-        {//FIXME: Что делать, если объектов несколько?
+        {//FIXME: Что делать, если объектов несколько? Они понадобятся, когда будут булевые операции
         	get{
         		foreach(var o in _graphicsList)
         		{
@@ -436,7 +477,7 @@ namespace DrawLibrary
             {
             	((ToolBrush)_tools[(int)Tool]).Brush = GetBrushFromCache(t);
                 SendEvent("Я включил " + Brush.ToString());
-                //TODO:включаем нужный курсор
+                //TODO: включаем нужный курсор
                 //tools[(int)Tool].SetCursor(this);
              }
             
@@ -471,9 +512,11 @@ namespace DrawLibrary
 					case BrushType.OutMover: 	res = new BrushOutMover(); break;
 					case BrushType.Smoother: 	res = new BrushSmoother(); break;
 					case BrushType.Mover: 		res = new BrushMover(); break;
+					case BrushType.Pincher: 	res = new BrushPincher(); break;
 				}
 				_cacheBrush.Add(res);
 			}
+			res.ClearPath();
 			return res;
 		}
 
@@ -495,7 +538,7 @@ namespace DrawLibrary
 		}
 
 		private void ToSVG()
-		{	
+		{
 			GraphicsMultiPoint o = (GraphicsMultiPoint)SelectedObject;
 
 			string text = o.ToSVG();
@@ -511,6 +554,32 @@ namespace DrawLibrary
 				return false;
 			return SelectedObject is GraphicsMultiPoint;
 		}		
-		#endregion
+		#endregion копировать в svg
+		
+		#region кнопка Escape
+		private DelegateCommand escapeCommand;
+		public ICommand EscapeCommand
+		{
+            get
+            {
+                if (escapeCommand == null)
+                {
+                    escapeCommand = new DelegateCommand(Escape);
+                }
+                return escapeCommand;
+            }
+		}
+
+		private void Escape()
+		{	
+            if (_tools[(int)Tool] == null)
+            {
+                return;
+            }
+
+     
+            _tools[(int)Tool].KeyDown(this, Key.Escape);
+		}	
+		#endregion кнопка escape
 	}
 }

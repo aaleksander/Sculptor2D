@@ -4,11 +4,15 @@
     xmlns:cnv="clr-namespace:DrawLibrary"
     xmlns:tools="clr-namespace:DrawLibrary.Tools"
     xmlns:brushes="clr-namespace:DrawLibrary.Brushes"
+    xmlns:local="clr-namespace:KeyBindingsWPF"
 	Title="Sculptor2D" Height="600" Width="800"
 	WindowStartupLocation="CenterScreen"
 	UseLayoutRounding="True"
 	SnapsToDevicePixels="True"
 	>
+<Window.InputBindings>
+    <local:RelayKeyBinding Key="Escape" Command="{Binding ElementName=canvas, Path=EscapeCommand}"/>
+</Window.InputBindings>
 	
 <Window.Resources>
 	<tools:ToolTypeConverter x:Key="convToolType"/>
@@ -170,6 +174,13 @@
                               IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
                               Converter={StaticResource convBrushType}, ConverterParameter=Smoother}"
                 			  Content="Сглаживалка" />
+				
+                <ToggleButton ToolTip="Делает щипки на контуре" 
+                              Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
+                              CommandParameter="Pincher"
+                              IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
+                              Converter={StaticResource convBrushType}, ConverterParameter=Pincher}"
+                			  Content="Щипалка" />
 
                 <ToggleButton Visibility="Hidden"
                 			  ToolTip="Старается приблизить очертания контура к форме мазка кисти"
@@ -182,9 +193,9 @@
                 <ToggleButton Visibility="Hidden"
                 	          ToolTip="Стягивает все контуры к кисти"
                               Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
-                              CommandParameter="Smoother"
+                              CommandParameter="InMover"
                               IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
-                              Converter={StaticResource convBrushType}, ConverterParameter=None}"
+                              Converter={StaticResource convBrushType}, ConverterParameter=InMover}"
                 			  Content="Сужалка" />
 
                 <ToggleButton 

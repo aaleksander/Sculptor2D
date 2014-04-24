@@ -40,7 +40,7 @@ namespace Sculptor2D
 			buttonToolBrush.PreviewMouseDown += new MouseButtonEventHandler(ToolButton_PreviewMouseDown);
 			
 			canvas.CanvasEvent += new DrawingCanvas.CanvasEventHandler(Canvas_CanvasEvent);
-
+			
 			//тестовые данные			
 /*			var p = new GraphicsPolygon();
 			p.AddPoint(500, 100);
@@ -56,12 +56,12 @@ namespace Sculptor2D
 			canvas.GraphicsList.Add(p); */
 		}
 
+	
 		void Canvas_CanvasEvent(object sender, CanvasEventArgs e)
 		{
 			statusBar.Content = e.Text;			
 		}
 		
-		//TODO: сделать универсальный ввод для пера и мыши.
         void ToolButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             canvas.Tool = (ToolType)Enum.Parse(typeof(ToolType),

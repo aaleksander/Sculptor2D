@@ -71,6 +71,7 @@
     <Compile Include="DrawLibrary\Brushes\BrushBase.cs" />
     <Compile Include="DrawLibrary\Brushes\BrushMover.cs" />
     <Compile Include="DrawLibrary\Brushes\BrushOutMover.cs" />
+    <Compile Include="DrawLibrary\Brushes\BrushPincher.cs" />
     <Compile Include="DrawLibrary\Brushes\BrushSmoother.cs" />
     <Compile Include="DrawLibrary\Brushes\BrushTypeConverter.cs" />
     <Compile Include="DrawLibrary\DrawingCanvas.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="DrawLibrary\Tools\ToolTypeConverter.cs" />
     <Compile Include="Helpers\CollectionExt.cs" />
     <Compile Include="Helpers\MouseEventExt.cs" />
+    <Compile Include="Helpers\RelayKeyBindings.cs" />
     <Compile Include="Model\DB.cs" />
     <Compile Include="Model\ModelBase.cs" />
     <Compile Include="Model\PetaPoco.cs" />

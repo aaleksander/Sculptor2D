@@ -22,17 +22,16 @@ namespace DrawLibrary.Tools
 	{
 		private BrushBase _brush = new BrushBase(); //текущая кисть	
 
-		public override void OnMouseMove(DrawingCanvas aCanvas, MouseEventArgs e)
+		public override void OnMove(DrawingCanvas aCanvas, Point aPoint, bool aPressed)
         {
-        	IsDragging = e.AnyButtonPressed();
-
+        	IsDragging = aPressed;//e.AnyButtonPressed();
+        	
         	if( IsDragging )
-        		_brush.AddPath(e.GetPosition(aCanvas));
+        		_brush.AddPath(aPoint);
 
         	//TODO: если на канве есть выделенные элементы, то редактировать нолько их
-			if( e.LeftButtonPressed() )
+			if( aPressed && _brush.Path.Count > 2)
 			{//делаем "мазок"
-				IsDragging = true;
 				foreach(var clay in aCanvas.GraphicsList)
 				{
 					if( clay is Graphics.GraphicsClay ) //если это "глина"
@@ -44,14 +43,15 @@ namespace DrawLibrary.Tools
 			}
         }
 
-		public override void OnMouseDown(DrawingCanvas aCanvas, MouseButtonEventArgs e)
+		public override void OnDown(DrawingCanvas aCanvas, Point aPoint)//, MouseButtonEventArgs e)
 		{
-			_brush.AddPath(e.GetPosition(aCanvas)); //самая первая точка
+			//_brush.AddPath(e.GetPosition(aCanvas)); //самая первая точка
+			_brush.AddPath(aPoint); //самая первая точка
 		}
 		
-		public override void OnMouseUp(DrawingCanvas aCanvas, MouseButtonEventArgs e)
+		public override void OnUp(DrawingCanvas aCanvas, Point aPoint)
 		{
-			if( IsDragging == true ) //чето мазали, надо обновить
+			/*if( IsDragging == true ) //чето мазали, надо обновить
 			{
 				foreach(var clay in aCanvas.GraphicsList)
 				{
@@ -60,7 +60,7 @@ namespace DrawLibrary.Tools
 						//((GraphicsClay)clay).UpdateClay();
 					}
 				}
-			}
+			}*/
 			_brush.ClearPath();
 		}
 

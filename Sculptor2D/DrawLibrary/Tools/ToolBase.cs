@@ -48,14 +48,16 @@ namespace DrawLibrary.Tools
         }
         private Cursor toolCursor;
 
-        public virtual  void OnMouseClick(DrawingCanvas drawingCanvas, MouseButtonEventArgs e){}
+        //public virtual  void OnMouseClick(DrawingCanvas drawingCanvas, MouseButtonEventArgs e){}
 
-		public virtual void OnMouseDown(DrawingCanvas drawingCanvas, MouseButtonEventArgs e){}
+        public virtual void OnDown(DrawingCanvas drawingCanvas, Point aPoint){}//, MouseButtonEventArgs e){}
 
-		public virtual void OnMouseMove(DrawingCanvas drawingCanvas, MouseEventArgs e){}
+		public virtual void OnMove(DrawingCanvas drawingCanvas, Point aPoint, bool aPressed){}
 
-		public virtual void OnMouseUp(DrawingCanvas drawingCanvas, MouseButtonEventArgs e){}
+		public virtual void OnUp(DrawingCanvas drawingCanvas, Point aPoint){}
 
+		public virtual void KeyDown(DrawingCanvas drawingCanvas, Key aKey){}
+		
 		public virtual void SetCursor(DrawingCanvas drawingCanvas){}
 		
 		/// <summary>
@@ -72,7 +74,7 @@ namespace DrawLibrary.Tools
 
             aCanvas.GraphicsList.Add(o);
             //drawingCanvas.CaptureMouse();
-            aCanvas.ReleaseMouseCapture();
+            //aCanvas.ReleaseMouseCapture();
         }
 
 		//перетаскивание        

@@ -23,7 +23,7 @@ namespace DrawLibrary.Graphics
 			
 			_brush = new SolidColorBrush(Colors.LightGreen );
 			
-			//TODO:Свойство "Обводка" - Pen
+			//TODO: Свойство "Обводка" - Pen
 		}
 	}
 }

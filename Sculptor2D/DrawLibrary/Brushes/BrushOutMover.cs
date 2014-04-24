@@ -20,7 +20,7 @@ namespace DrawLibrary.Brushes
 		public BrushOutMover(): base()
 		{
 			_type = BrushType.OutMover;
-			Power = 30;
+			Power = 50;
 		}		
 		
 		public override bool Modify(DrawLibrary.Graphics.GraphicsClay aObj)
@@ -39,10 +39,10 @@ namespace DrawLibrary.Brushes
 					res = true;
 				}
 			}
-			
+
 			//if( res )
 			//	aObj.RefreshDrawing();
-		
+
 			return res;
 		}
 	}

@@ -52,7 +52,6 @@ namespace DrawLibrary.Graphics
 			{
 				tmp.Add(new Point(p.X, p.Y));
 			}
-//			Points.ToList().ForEach(x => tmp.Add(new Point(x.X, x.Y)));
 			
 			Points.Clear();
 			
@@ -135,6 +134,6 @@ namespace DrawLibrary.Graphics
 			RefreshDrawing();
 		}
 
-		//TODO: не должны рисоваться маркеры для вершин
+		//не должны рисоваться маркеры для вершин
 	}
 }

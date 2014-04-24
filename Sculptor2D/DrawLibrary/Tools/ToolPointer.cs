@@ -24,12 +24,11 @@ namespace DrawLibrary.Tools
 	/// </summary>
 	public class ToolPointer: ToolBase
 	{
-        public override void OnMouseMove(DrawingCanvas aCanvas, MouseEventArgs e)
+        public override void OnMove(DrawingCanvas aCanvas, Point aPoint, bool aPressed )
         {
-        	IsDragging = e.AnyButtonPressed();
-			Point point = e.GetPosition(aCanvas);
+        	IsDragging = aPressed;
 
-			if ( e.AllButtonReleases() ) //ничего не тащим, просто двигаемся
+			if ( !aPressed ) //ничего не тащим, просто двигаемся
 			{
 				//почистить у всех IsHit
 				foreach(var o in aCanvas.GraphicsList)
@@ -41,36 +40,34 @@ namespace DrawLibrary.Tools
 					GraphicsBase o = aCanvas[i];
 					if( o != null )
 					{
-				   		o.IsHit = o.Contains(point);
+				   		o.IsHit = o.Contains(aPoint);
 				   		if( o.IsHit )
 				   			break; //Горячим может быть только один объект
 					}
 				}
 			}
 
-			if( e.LeftButtonPressed() && _dragObject != null )
+			if( aPressed && _dragObject != null )
 			{//что-то тащим
-				_dragObject.Transform = new TranslateTransform(point.X - _startDragging.X, point.Y - _startDragging.Y);
+				_dragObject.Transform = new TranslateTransform(aPoint.X - _startDragging.X, aPoint.Y - _startDragging.Y);
 			}
         }
 
-        public override void OnMouseDown(DrawingCanvas aCanvas, MouseButtonEventArgs e)
-        {
-        	Point point = e.GetPosition(aCanvas);
-			_startDragging = point;
+        public override void OnDown(DrawingCanvas aCanvas, Point aPoint)//MouseButtonEventArgs e)
+        {        	
+			_startDragging = aPoint;
 
-        	var o = GetHitObject(aCanvas, point);
+        	var o = GetHitObject(aCanvas, aPoint);
 
-        	if( e.LeftButtonPressed() ) //нажали над каким-то  объектом
+        	if( Mouse.LeftButton == MouseButtonState.Pressed ) //e.LeftButtonPressed() ) //нажали над каким-то  объектом
         	{
         		_dragObject = o;
         	}
         }
 
-		public override void OnMouseUp(DrawingCanvas aCanvas, MouseButtonEventArgs e)
+		public override void OnUp(DrawingCanvas aCanvas, Point aPoint)
 		{
-			Point point = e.GetPosition(aCanvas);
-			var o = GetHitObject(aCanvas, point);
+			var o = GetHitObject(aCanvas, aPoint);
 			if( o == null && IsDragging == false) //просто клик по пустому месту
 			{
 				_dragObject = null;
@@ -87,10 +84,6 @@ namespace DrawLibrary.Tools
 			{//чето таскалли
 				_dragObject = null; //отпустили перетаскиваемый объект
 			}
-			/*if( _dragObject != null )
-			{
-				_dragObject.RefreshDrawing();
-			}*/
 
 			aCanvas.ReleaseMouseCapture();
 		}

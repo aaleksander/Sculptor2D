@@ -27,39 +27,43 @@ namespace DrawLibrary.Tools
 		
 		private T _obj = null; //рисуемый в данный момент объект
 
-        public override void OnMouseDown(DrawingCanvas drawingCanvas, MouseButtonEventArgs e)
-        {
-            if( e.RightButton == MouseButtonState.Pressed )
+		/// <summary>
+		/// нажатие како-нибудь кнопки
+		/// </summary>
+		/// <param name="aCanvas"></param>
+		/// <param name="aKey"></param>
+		public override void KeyDown(DrawingCanvas aCanvas, Key aKey)
+		{
+        	if( aKey == Key.Escape )
             { //закончили рисование
             	if( _obj != null )
             	{
             		_obj.DeleteLastPoint(); //удаляем последнюю которая тянулась за мышкой            	
             		_obj.IsSelected = false;
             		_obj = null;
-            		drawingCanvas.ReleaseMouseCapture();            		
+            		aCanvas.ReleaseMouseCapture();            		
             		return; 
             	}
             }
+		}
 
-            if( e.LeftButton == MouseButtonState.Pressed )
-            {
-				Point p = e.GetPosition(drawingCanvas);            
-	            if( _obj == null )
-	            { //начинаем рисовать новый объект
-	            	_obj = new T();
-	            	_obj.AddPoint(p); //это начало линии
-	            
-	            	AddNewObject(drawingCanvas, _obj); //добавляем новый объект
-	            	_obj.IsSelected = false;
-	            }
-
-	            //новая точка, она теперь будет тянуться за мышкой
-	           	_obj.AddPoint(p);
+		public override void OnDown(DrawingCanvas drawingCanvas, Point aPoint)//, MouseButtonEventArgs e)
+        {
+            if( _obj == null )
+            { //начинаем рисовать новый объект
+            	_obj = new T();
+            	_obj.AddPoint(aPoint); //это начало линии
+            
+            	AddNewObject(drawingCanvas, _obj); //добавляем новый объект
+            	_obj.IsSelected = false;
+            	drawingCanvas.CaptureMouse();
             }
-           	//drawingCanvas.CaptureMouse();
+
+            //новая точка, она теперь будет тянуться за мышкой
+           	_obj.AddPoint(aPoint);
         }
 
-        public override void OnMouseMove(DrawingCanvas drawingCanvas, MouseEventArgs e)
+        public override void OnMove(DrawingCanvas drawingCanvas, Point aPoint, bool aPressed)
         {
         	if( _obj == null ) //пока нечего рисовать
         		return;
@@ -67,8 +71,8 @@ namespace DrawLibrary.Tools
         	if( _obj.Count == 0 )
         		return;
 
-        	var p = e.GetPosition(drawingCanvas);
-        	drawingCanvas[drawingCanvas.Count - 1].MoveLastHandleTo(p);
+        	//var p = e.GetPosition(drawingCanvas);
+        	drawingCanvas[drawingCanvas.Count - 1].MoveLastHandleTo(aPoint);
         }		
 		
 	}
