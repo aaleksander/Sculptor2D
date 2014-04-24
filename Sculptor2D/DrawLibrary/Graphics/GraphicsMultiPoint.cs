@@ -240,9 +240,19 @@ namespace DrawLibrary.Graphics
 		public string ToSVG()
 		{
 			StringBuilder res = new StringBuilder();
+			bool first = true;
 			foreach(var p in Points)
 			{
-				res.Append(string.Format("{0} {1} ", p.X, p.Y));
+				if( !first )
+				{
+					res.Append(string.Format(", {0} {1} ", p.X, p.Y));
+				}
+				else
+				{
+					res.Append(string.Format("{0} {1} ", p.X, p.Y));
+					first = false;
+				}
+					
 			}
 			
 			if( IsClosed )
