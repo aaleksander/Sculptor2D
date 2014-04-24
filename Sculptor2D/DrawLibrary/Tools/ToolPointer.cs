@@ -26,7 +26,8 @@ namespace DrawLibrary.Tools
 	{
         public override void OnMove(DrawingCanvas aCanvas, Point aPoint, bool aPressed )
         {
-        	IsDragging = aPressed;
+        	if( Geometry.dist(_startDragging, aPoint) > 5 )
+        		IsDragging = aPressed;
 
 			if ( !aPressed ) //ничего не тащим, просто двигаемся
 			{
