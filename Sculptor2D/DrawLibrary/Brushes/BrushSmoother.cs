@@ -30,6 +30,9 @@ namespace DrawLibrary.Brushes
 		//TODO: разобраться, почему при большой мощности, линия начинает плясать.
 		public override bool Modify(GraphicsClay aObj)
 		{//возвращает истину, если кисть изменила объект (смогла дотянуться до его вершин и сдвинуть их)			
+			if( aObj.Count < 2 )
+				return false;
+			
 			bool res = false;
 			double d;
 			Point last = LastPoint, p, p1, p2;
