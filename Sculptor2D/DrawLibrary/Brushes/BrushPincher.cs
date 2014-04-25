@@ -21,6 +21,7 @@ namespace DrawLibrary.Brushes
 		{
 			_type = BrushType.Pincher;
 			Power = 30;
+			Size = 10;
 		}
 
 		public override bool Modify(DrawLibrary.Graphics.GraphicsClay aObj)

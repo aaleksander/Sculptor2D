@@ -59,26 +59,32 @@ namespace DrawLibrary.Brushes
 				p1 = tmp.Last();
 				p2 = tmp[1];
 				p = tmp[0];
-				d = Geometry.dist(last, p);
-				smoothP = Smooth(p, p1, p2, d);
-				if( smoothP.HasValue ) //эта точка не лежит на отрезке
+				d = Geometry.dist(last, p);//FIXME: вставить сюда контроль дистанции
+				if( d < Size )
 				{
-					tmp[0] = smoothP.Value;
-					res = true;
-				}				
-
+					smoothP = Smooth(p, p1, p2, d);
+					if( smoothP.HasValue ) //эта точка не лежит на отрезке
+					{
+						tmp[0] = smoothP.Value;
+						res = true;
+					}				
+				}
+				
 				p = tmp.Last();
 				p2 = tmp[0];
 				p = tmp[aObj.Count - 2];
 				d = Geometry.dist(last, p);
-				smoothP = Smooth(p, p1, p2, d);
-				if( smoothP.HasValue ) //эта точка не лежит на отрезке
+				if( d < Size )
 				{
-					tmp[tmp.Count - 1] = smoothP.Value;
-					res = true;
+					smoothP = Smooth(p, p1, p2, d);
+					if( smoothP.HasValue ) //эта точка не лежит на отрезке
+					{
+						tmp[tmp.Count - 1] = smoothP.Value;
+						res = true;
+					}
 				}
 			}
-			
+
 			if( res )
 			{//копируем обратно
 				aObj.Points.Clear();
@@ -87,15 +93,24 @@ namespace DrawLibrary.Brushes
 			}
 			return res;
 		}
-		
+
 		private Point? Smooth(Point p, Point p1, Point p2, double dist)
 		{
 			Point? res = null;
-			Point proj = Geometry.GetProjection(p,  p1, p2);
+			//Point proj = Geometry.GetProjection(p,  p1, p2);
+			Point proj = new Point((p1.X + p2.X)/2, (p1.Y + p2.Y)/2); //просто серединка основания
 			if( Geometry.dist(proj, p) > eps ) //эта точка не лежит на отрезке
 			{
-				Point vec = Geometry.GetVector(p, proj);
-				res = new Point(p.X + vec.X/dist*(Power/50), p.Y + vec.Y/dist*(Power/50));
+				Point vec = Geometry.GetVector(p, proj, false);
+				
+				var koef = Power*dist/Size/100;
+				res = new Point(p.X + vec.X*koef, p.Y + vec.Y*koef);
+				//res = new Point(p.X + vec.X/(Power/dist), p.Y + vec.Y/(Power/dist));
+				//res = new Point(p.X + vec.X/dist, p.Y + vec.Y/dist);
+
+				//res = new Point(p.X + vec.X/(1/Power), p.Y + vec.Y*(1/Power));
+				//res = new Point(p.X + vec.X/(Power/100), p.Y + vec.Y/(Power/100)); //кушеряшка, программа тут же вешается
+				//res = new Point(p.X + vec.X*(Power/50), p.Y + vec.Y*(Power/50)); //эта штука дает интересный эффект равного края
 			}
 
 			return res;

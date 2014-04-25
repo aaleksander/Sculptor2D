@@ -47,13 +47,13 @@ namespace Sculptor2D
 			p.AddPoint(300, 300);
 			p.AddPoint(150, 250);
 			canvas.GraphicsList.Add(p);
-			
-			p = new GraphicsPolygon();
+*/			
+			var p = new GraphicsPolygon();
 			p.AddPoint(60, 60);
 			p.AddPoint(400, 50);
 			p.AddPoint(400, 400);
 			p.AddPoint(50, 400);
-			canvas.GraphicsList.Add(p); */
+			canvas.GraphicsList.Add(p);
 		}
 
 	

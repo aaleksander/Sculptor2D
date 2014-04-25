@@ -43,8 +43,8 @@ namespace DrawLibrary.Graphics
 		/// </summary>
 		public void UpdateClay()
 		{
-			double maxLen = 2; //максимально возможная длина отрезка
-			double minLen = 0.4;  //минимально возможная длина отрезка
+			double maxLen = 10; //максимально возможная длина отрезка
+			double minLen = 3;  //минимально возможная длина отрезка
 			
 			Collection<Point> tmp = new Collection<Point>();
 
