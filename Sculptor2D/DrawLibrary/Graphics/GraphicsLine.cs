@@ -22,5 +22,17 @@ namespace DrawLibrary.Graphics
 		{
 
 		}
+		
+		/// <summary>
+		/// делает полную копию объекта
+		/// </summary>
+		/// <returns></returns>
+		public override GraphicsBase Clone()
+		{
+			GraphicsLine res = new GraphicsLine();
+			CloneAttributes(res);
+			return res;
+		}
+		
 	}
 }

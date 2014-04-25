@@ -25,5 +25,17 @@ namespace DrawLibrary.Graphics
 			
 			//TODO: Свойство "Обводка" - Pen
 		}
+		
+		/// <summary>
+		/// делает полную копию объекта
+		/// </summary>
+		/// <returns></returns>
+		public override GraphicsBase Clone()
+		{
+			GraphicsPolygon res = new GraphicsPolygon();
+			CloneAttributes(res);
+			return res;
+		}
+		
 	}
 }

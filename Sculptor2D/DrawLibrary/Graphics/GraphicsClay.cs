@@ -21,6 +21,10 @@ namespace DrawLibrary.Graphics
 	/// </summary>
 	public class GraphicsClay: GraphicsMultiPoint
 	{
+		public GraphicsClay():base()
+		{
+			
+		}
 		public GraphicsClay(GraphicsMultiPoint aGr):base()
 		{
 			//копируем все вершины
@@ -43,8 +47,8 @@ namespace DrawLibrary.Graphics
 		/// </summary>
 		public void UpdateClay()
 		{
-			double maxLen = 10; //максимально возможная длина отрезка
-			double minLen = 3;  //минимально возможная длина отрезка
+			double maxLen = 5; //максимально возможная длина отрезка
+			double minLen = 1;  //минимально возможная длина отрезка
 			
 			Collection<Point> tmp = new Collection<Point>();
 
@@ -134,6 +138,14 @@ namespace DrawLibrary.Graphics
 			RefreshDrawing();
 		}
 
+		public override GraphicsBase Clone()
+		{//FIXME: сделать универсальный класс
+			GraphicsClay res = new GraphicsClay();
+			CloneAttributes(res);
+			return res;
+		}
+		
+		
 		//не должны рисоваться маркеры для вершин
 	}
 }

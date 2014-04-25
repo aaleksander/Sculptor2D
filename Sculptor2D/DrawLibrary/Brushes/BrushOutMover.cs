@@ -34,8 +34,12 @@ namespace DrawLibrary.Brushes
 				d = Geometry.dist(last, p);
 				if( d < Size ) //Точка попала в область действия кисти
 				{
-					vec = Geometry.GetVector(last, p);				
-					aObj.Points[i] = new Point(p.X + vec.X/d*(Power/10), p.Y + vec.Y/d*(Power/10));
+					vec = Geometry.GetVector(last, p);
+
+					var koef = Power/d/10;
+					aObj.Points[i] = new Point(p.X + vec.X*koef, p.Y + vec.Y*koef);
+					
+					//aObj.Points[i] = new Point(p.X + vec.X/d*(Power/10), p.Y + vec.Y/d*(Power/10));
 					res = true;
 				}
 			}

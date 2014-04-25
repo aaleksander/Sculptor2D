@@ -90,6 +90,11 @@
     <Compile Include="DrawLibrary\Tools\ToolPointer.cs" />
     <Compile Include="DrawLibrary\Tools\ToolPolygone.cs" />
     <Compile Include="DrawLibrary\Tools\ToolTypeConverter.cs" />
+    <Compile Include="DrawLibrary\Undo\ActionAdd.cs" />
+    <Compile Include="DrawLibrary\Undo\ActionBase.cs" />
+    <Compile Include="DrawLibrary\Undo\ActionModify.cs" />
+    <Compile Include="DrawLibrary\Undo\ActionToClay.cs" />
+    <Compile Include="DrawLibrary\Undo\UndoManager.cs" />
     <Compile Include="Helpers\CollectionExt.cs" />
     <Compile Include="Helpers\MouseEventExt.cs" />
     <Compile Include="Helpers\RelayKeyBindings.cs" />
@@ -114,6 +119,7 @@
     <Folder Include="Commands" />
     <Folder Include="DrawLibrary\Graphics" />
     <Folder Include="DrawLibrary\Brushes" />
+    <Folder Include="DrawLibrary\Undo" />
     <Folder Include="ViewModel" />
     <Folder Include="Model" />
     <Folder Include="Helpers" />

@@ -105,12 +105,6 @@ namespace DrawLibrary.Brushes
 				
 				var koef = Power*dist/Size/100;
 				res = new Point(p.X + vec.X*koef, p.Y + vec.Y*koef);
-				//res = new Point(p.X + vec.X/(Power/dist), p.Y + vec.Y/(Power/dist));
-				//res = new Point(p.X + vec.X/dist, p.Y + vec.Y/dist);
-
-				//res = new Point(p.X + vec.X/(1/Power), p.Y + vec.Y*(1/Power));
-				//res = new Point(p.X + vec.X/(Power/100), p.Y + vec.Y/(Power/100)); //кушеряшка, программа тут же вешается
-				//res = new Point(p.X + vec.X*(Power/50), p.Y + vec.Y*(Power/50)); //эта штука дает интересный эффект равного края
 			}
 
 			return res;

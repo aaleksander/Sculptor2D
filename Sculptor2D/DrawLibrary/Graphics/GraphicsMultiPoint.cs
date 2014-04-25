@@ -8,10 +8,12 @@
  */
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
+using Sculptor2D.Helpers;
 
 namespace DrawLibrary.Graphics
 {
@@ -97,6 +99,9 @@ namespace DrawLibrary.Graphics
 		}
 		
 		public Collection<Point> Points{
+			set{
+				_points = value;
+			}
 			get{
 				return _points;
 			}
@@ -259,6 +264,15 @@ namespace DrawLibrary.Graphics
 				res.Append(" z ");
 			
 			return "M " + res.ToString();
+		}
+
+		
+		protected void CloneAttributes(GraphicsMultiPoint obj)
+		{
+			obj.Brush = this.Brush;
+			Points.ToList().ForEach(x => obj.AddPoint(x.X, x.Y));  //клонируем все вершины
+			obj.Id = Id;
+			obj.IsClosed = IsClosed;
 		}
 	}
 }

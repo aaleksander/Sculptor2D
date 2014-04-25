@@ -14,7 +14,7 @@ using System.Windows.Media;
 using DrawLibrary.Graphics;
 using Helpers;
 
-//TODO: редактор точек
+//TODO:редактор точек
 //TODO: масштабирование, вращение фигур
 //перемещение вершины
 namespace DrawLibrary.Tools

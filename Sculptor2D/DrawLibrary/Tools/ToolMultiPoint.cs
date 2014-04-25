@@ -10,6 +10,7 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 using DrawLibrary.Graphics;
+using DrawLibrary.Undo;
 
 namespace DrawLibrary.Tools
 {
@@ -40,8 +41,10 @@ namespace DrawLibrary.Tools
             	{
             		_obj.DeleteLastPoint(); //удаляем последнюю которая тянулась за мышкой            	
             		_obj.IsSelected = false;
+            		aCanvas.AddActionToHistory(new ActionAdd(_obj));
             		_obj = null;
-            		aCanvas.ReleaseMouseCapture();            		
+            		aCanvas.ReleaseMouseCapture();
+            		
             		return; 
             	}
             }
@@ -74,6 +77,5 @@ namespace DrawLibrary.Tools
         	//var p = e.GetPosition(drawingCanvas);
         	drawingCanvas[drawingCanvas.Count - 1].MoveLastHandleTo(aPoint);
         }		
-		
 	}
 }

@@ -32,8 +32,11 @@ namespace DrawLibrary.Graphics
 	{
 		public GraphicsBase()
 		{
+			Id = this.GetHashCode();
 		}
 
+		public int Id{set;get;}
+		
 		public GraphicsMode Mode{set; get;}
 
         public void RefreshDrawing()
@@ -76,21 +79,22 @@ namespace DrawLibrary.Graphics
         }	
 		private bool _isHit;  
 
-
 		/// <summary>
         /// Move handle to new point (resizing)
         /// </summary>
         public virtual void MoveHandleTo(Point point, int handleNumber){}
-        
+
         public virtual void MoveLastHandleTo(Point point){}        
-        
+
         /// <summary>
         /// попадает ли точка в объект
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
         public virtual bool Contains(Point point){return false;}
-        
+
         public virtual void DrawTracker(DrawingContext aCanvas){}
+
+        public virtual GraphicsBase Clone(){return null;}
 	}
 }

@@ -11,7 +11,9 @@ using System.Collections.Generic;
 using System.Windows;
 using DrawLibrary.Graphics;
 
-//TODO:redo/undo
+//TODO:я!!!!!!!!!! redo/undo!!!!!!!!!!!!!!!
+//TODO: перемещение объекта
+//TODO: модификация "глины"
 
 //FUTURE: кисть "по границе" - пригодится, если надо раздвинуть на определенную дистанцию
 //FUTURE: !Кисть "перемещалка - перемещает вершины, попавшие в зону ее действия.

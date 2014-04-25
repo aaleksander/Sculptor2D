@@ -12,6 +12,7 @@
 	>
 <Window.InputBindings>
     <local:RelayKeyBinding Key="Escape" Command="{Binding ElementName=canvas, Path=EscapeCommand}"/>
+	<local:RelayKeyBinding Key="Z" Modifiers="Control" Command="{Binding ElementName=canvas, Path=UndoCommand}"/>	
 </Window.InputBindings>
 	
 <Window.Resources>
@@ -119,7 +120,8 @@
 		</StatusBar>
 
 		<ToolBarTray Orientation="Vertical" VerticalAlignment="Top" Background="#FF8F8F8F" DockPanel.Dock="Left">
-			<ToolBar Style="{StaticResource DreamToolBar}" IsOverflowOpen="True" Background="#FF8F8F8F">
+			<ToolBar Style="{StaticResource DreamToolBar}" Background="#FF8F8F8F" 
+			         Name="tray1">
 				<!-- Стрелочка -->
                 <ToggleButton ToolTip="Выбор объектов" Tag="Pointer" Name="buttonToolPointer"
                              IsChecked="{Binding ElementName=canvas, Path=Tool, Mode=OneWay,
@@ -154,6 +156,7 @@
 				</ToggleButton>
 			
 				<Button Command="{Binding ElementName=canvas, Path=ToSVGCommand}" Content="В SVG"/>
+				<Button Command="{Binding ElementName=canvas, Path=UndoCommand}" Content="Undo"/>
 			</ToolBar>
 		</ToolBarTray>
 
@@ -235,10 +238,25 @@
 			</ToolBar>		
 		</ToolBarTray>
 
-
-		<ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
-			<cnv:DrawingCanvas x:Name="canvas" Background="#00000000" Width="2000" Height="2000"
-				/>
+		<StackPanel DockPanel.Dock="Bottom">
+			<Slider Orientation="Horizontal" HorizontalAlignment="Left" Minimum="1" Maximum="30" 
+			        Width="300" x:Name="slider"/>
+		</StackPanel>
+		
+		<ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" Name="scrollViewer">
+<!--			<cnv:DrawingCanvas x:Name="canvas" Background="#00000000" Width="2000" Height="2000"/>-->
+            <Grid Name="grid" Width="400" Height="400" RenderTransformOrigin="0.5,0.5">
+                <Grid.LayoutTransform>
+                    <TransformGroup>
+                        <ScaleTransform x:Name="scaleTransform"/>
+                    </TransformGroup>
+                </Grid.LayoutTransform>
+                <Viewbox Grid.Column="0" Grid.Row="0">
+                    <cnv:DrawingCanvas x:Name="canvas" Background="#00000000" Width="2000" Height="2000"/>
+                </Viewbox>
+            </Grid>	
 		</ScrollViewer>
+	
+	
 	</DockPanel>
 </Window>

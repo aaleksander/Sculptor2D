@@ -7,10 +7,12 @@
  * Для изменения этого шаблона используйте Сервис | Настройка | Кодирование | Правка стандартных заголовков.
  */
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -20,12 +22,13 @@ using Commands;
 using DrawLibrary.Brushes;
 using DrawLibrary.Graphics;
 using DrawLibrary.Tools;
+using DrawLibrary.Undo;
 
 //FUTURE: Блокирование некоторых вершин (участка), относительно друг-друга. Например, вырезы под сборку
 //FUTURE: Слои и интерфейс для них
 
 //TODO:000 сделать зумминг и скроллинг с помощью мыши
-//TODO: сделать изображение кисти (кружок под мышкой)
+//TODO:сделать изображение кисти (кружок под мышкой)
 //FUTURE: загрузка изображений-подложек
 namespace DrawLibrary
 {
@@ -36,7 +39,7 @@ namespace DrawLibrary
     {
         public CanvasEventArgs(string s) 
         {
-    		Text = s; 
+    		Text = s;
     	}
         public String Text {get; private set;}
     }
@@ -60,6 +63,8 @@ namespace DrawLibrary
 //			UpdateCursor();
 //			GraphicsList.Add(_cursor);			
 
+			_undoManager = new UndoManager(this);
+			
             // создадим список инструментов
             _tools = new ToolBase[(int)ToolType.Max];
 
@@ -88,8 +93,8 @@ namespace DrawLibrary
             this.MouseDown += new MouseButtonEventHandler(DrawingCanvas_MouseDown);
             this.MouseMove += new MouseEventHandler(DrawingCanvas_MouseMove);
             this.MouseUp += new MouseButtonEventHandler(DrawingCanvas_MouseUp);
-            
-            this.LostMouseCapture += new MouseEventHandler(DrawingCanvas_LostMouseCapture);
+
+            //this.LostMouseCapture += new MouseEventHandler(DrawingCanvas_LostMouseCapture);
             
             this.Focus();
 //            this.OnStylusDown += new StylusDownEventHandler(StylusDown);
@@ -137,15 +142,27 @@ namespace DrawLibrary
                 return _graphicsList.Count;
             }
         }		
-        
-        internal VisualCollection GraphicsList
+
+        public VisualCollection GraphicsList
         {
             get
             {
                 return _graphicsList;
             }
-        }       
+        }
 
+        /// <summary>
+        /// заменяет объект по индексу на новый
+        /// </summary>
+        /// <param name="aIndex"></param>
+        /// <param name="aObj"></param>
+        public void ReplaceObject(int aIndex, Visual aObj)
+        {
+        	GraphicsList.RemoveAt(aIndex);
+        	InvalidateVisual();
+        	GraphicsList.Insert(aIndex, aObj);
+        	InvalidateVisual();
+        }        
 
         internal GraphicsBase this[int index]
         {
@@ -259,7 +276,8 @@ namespace DrawLibrary
         void DrawingCanvas_MouseMove(object sender, MouseEventArgs e)
         {
         	Move(e.GetPosition(this), e.LeftButton == MouseButtonState.Pressed);
-        }     
+        	e.Handled = true;
+        }
 
 		#endregion двигаем мышку/перо        
 		
@@ -270,8 +288,7 @@ namespace DrawLibrary
         void DrawingCanvas_LostMouseCapture(object sender, MouseEventArgs e)
         {
             if ( this.IsMouseCaptured )
-            {
-            	
+            {            	
                 //CancelCurrentOperation();
                 //UpdateState();
             }
@@ -437,14 +454,14 @@ namespace DrawLibrary
             }
 		}
 
-		private void ToClay(GraphicsMultiPoint aObj)
+		private void ToClay(GraphicsMultiPoint aObj)//FIXME: параметр не нужен
 		{	
 			int index = _graphicsList.IndexOf(SelectedObject);
 
-			GraphicsList.Insert(index, new GraphicsClay((GraphicsMultiPoint)SelectedObject));
+			GraphicsClay newO = new GraphicsClay((GraphicsMultiPoint)SelectedObject);
+			AddActionToHistory(new ActionToClay(SelectedObject, newO.Id));
 			
-			_graphicsList.RemoveAt(index + 1);
-			
+			ReplaceObject(index, newO);
 		}
 
 		private bool CanToClay(GraphicsMultiPoint a)
@@ -581,5 +598,56 @@ namespace DrawLibrary
             _tools[(int)Tool].KeyDown(this, Key.Escape);
 		}	
 		#endregion кнопка escape
+		
+		#region Undo
+		UndoManager _undoManager;
+        public void AddActionToHistory(ActionBase command)
+        {
+            _undoManager.AddActionToHistory(command);
+        }		
+		
+		private DelegateCommand undoCommand;
+		public ICommand UndoCommand
+		{
+            get
+            {
+                if (undoCommand == null)
+                {
+                    undoCommand = new DelegateCommand(Undo, CanUndo);
+                }
+                return undoCommand;
+            }
+		}
+
+		private void Undo()
+		{	
+			_undoManager.Undo();
+		//	canvas.GraphicsList.Add(p);		
+
+//			ReplaceObject(0, p);
+		}
+		
+		private bool CanUndo()
+		{
+			return _undoManager.CanUndo;
+		}
+		#endregion Undo
+		
+		/// <summary>
+		/// возвращает коллекцию объектов, которые потенциально могу измениться.
+		/// </summary>
+		/// <returns></returns>
+		public Collection<GraphicsBase> GetPotentObjects()
+		{
+			//FIXME: учитывать активный слой и свойства (заморозка, например), объектов
+			Collection<GraphicsBase> res = new Collection<GraphicsBase>();
+			foreach(var o in GraphicsList)
+			{
+				if( o is GraphicsMultiPoint )
+					res.Add( ((GraphicsMultiPoint)o).Clone());
+			}
+			return res;
+		}
+		
 	}
 }
