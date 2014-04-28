@@ -78,6 +78,7 @@
     <Compile Include="DrawLibrary\Geometry.cs" />
     <Compile Include="DrawLibrary\Graphics\GraphicsBase.cs" />
     <Compile Include="DrawLibrary\Graphics\GraphicsClay.cs" />
+    <Compile Include="DrawLibrary\Graphics\GraphicsCursor.cs" />
     <Compile Include="DrawLibrary\Graphics\GraphicsLine.cs" />
     <Compile Include="DrawLibrary\Graphics\GraphicsMultiPoint.cs" />
     <Compile Include="DrawLibrary\Graphics\GraphicsPolygon.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Helpers\CollectionExt.cs" />
     <Compile Include="Helpers\MouseEventExt.cs" />
     <Compile Include="Helpers\RelayKeyBindings.cs" />
+    <Compile Include="Helpers\SerializationHelper.cs" />
     <Compile Include="Model\DB.cs" />
     <Compile Include="Model\ModelBase.cs" />
     <Compile Include="Model\PetaPoco.cs" />

@@ -15,7 +15,7 @@ using DrawLibrary.Graphics;
 using Helpers;
 
 //TODO:редактор точек
-//TODO: масштабирование, вращение фигур
+//TODO:масштабирование, вращение фигур
 //перемещение вершины
 namespace DrawLibrary.Tools
 {
@@ -107,5 +107,12 @@ namespace DrawLibrary.Tools
 
         private GraphicsBase _dragObject;        
         private Point _startDragging;
+        
+        
+		public override void SetCursor(DrawingCanvas drawingCanvas)
+		{
+			drawingCanvas.SetCursor(DrawingCursorType.None);
+			drawingCanvas.Cursor = Cursors.Arrow;
+		}
 	}
 }

@@ -8,6 +8,7 @@
  */
 using System;
 using System.Collections.ObjectModel;
+using System.Drawing.Text;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -79,5 +80,14 @@ namespace DrawLibrary.Tools
 				return _brush;
 			}
 		}
+		
+		private GraphicsCursor _cursor = null;
+		public override void SetCursor(DrawingCanvas drawingCanvas)
+		{
+			_cursor = drawingCanvas.SetCursor(DrawingCursorType.Brush);
+			_cursor.Size = Brush.Size;
+			
+			drawingCanvas.Cursor = Cursors.None;
+		}		
 	}
 }

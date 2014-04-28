@@ -50,10 +50,9 @@ namespace DrawLibrary.Graphics
 				return _brush;
 			}
 		}
-		
+
 		public override void Draw(DrawingContext aContext)
 		{
-
 			if( _points.Count < 2 )
 				return;
 			//обнулим матрицу трансформации
@@ -64,7 +63,7 @@ namespace DrawLibrary.Graphics
 					_points[i] = Transform.Transform(_points[i]);
 				}
 				Transform = null;
-			}		
+			}
 
             StreamGeometry geometry = new StreamGeometry();
             geometry.FillRule = FillRule.EvenOdd;			

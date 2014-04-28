@@ -23,7 +23,7 @@ namespace DrawLibrary.Tools
 		public ToolMultiPoint(): base()
 		{
 		}
-		
+
 		protected Func<GraphicsBase> addFunc = null;
 		
 		private T _obj = null; //рисуемый в данный момент объект
@@ -43,8 +43,7 @@ namespace DrawLibrary.Tools
             		_obj.IsSelected = false;
             		aCanvas.AddActionToHistory(new ActionAdd(_obj));
             		_obj = null;
-            		aCanvas.ReleaseMouseCapture();
-            		
+            		aCanvas.ReleaseMouseCapture();            		
             		return; 
             	}
             }
@@ -76,6 +75,14 @@ namespace DrawLibrary.Tools
 
         	//var p = e.GetPosition(drawingCanvas);
         	drawingCanvas[drawingCanvas.Count - 1].MoveLastHandleTo(aPoint);
-        }		
+        }
+
+
+		public override void SetCursor(DrawingCanvas drawingCanvas)
+		{
+			drawingCanvas.SetCursor(DrawingCursorType.None);
+			drawingCanvas.Cursor = Cursors.Cross;
+		}
+        
 	}
 }

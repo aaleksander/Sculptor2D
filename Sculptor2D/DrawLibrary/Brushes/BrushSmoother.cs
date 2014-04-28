@@ -26,8 +26,6 @@ namespace DrawLibrary.Brushes
 			Power = 50;
 		}
 		
-		
-		//TODO: разобраться, почему при большой мощности, линия начинает плясать.
 		public override bool Modify(GraphicsClay aObj)
 		{//возвращает истину, если кисть изменила объект (смогла дотянуться до его вершин и сдвинуть их)			
 			if( aObj.Count < 2 )
@@ -62,7 +60,7 @@ namespace DrawLibrary.Brushes
 				p1 = tmp.Last();
 				p2 = tmp[1];
 				p = tmp[0];
-				d = Geometry.dist(last, p);//FIXME: вставить сюда контроль дистанции
+				d = Geometry.dist(last, p);
 				if( d < Size )
 				{
 					smoothP = Smooth(p, p1, p2, d);

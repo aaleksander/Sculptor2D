@@ -11,10 +11,10 @@ using System.Collections.Generic;
 using System.Windows;
 using DrawLibrary.Graphics;
 
+//TODO: примитивные объекты (эллипс, прямоугольник)
 //FUTURE: кисть "по границе" - пригодится, если надо раздвинуть на определенную дистанцию
 //FUTURE: !Кисть "перемещалка - перемещает вершины, попавшие в зону ее действия.
 //FUTURE: Кисть "по линейке". Если надо выровнять строго в линию. (хотя это можно сделать клиппингом)
-//FUTURE: Кисть "вытягивалка". Вытягивает нонкий хвостик
 //FUTURE: Кисть "умная ровнялка". Запоминает всю траекторию мазка и старается приблизить к нему окружающие контуры
 
 //FUTURE: панель свойств объекта
@@ -33,6 +33,19 @@ namespace DrawLibrary.Brushes
 		Pincher,	//"отщипывает" вершины
 		Max
 	}
+	
+	
+    public class BrushEventArgs
+    {
+        public BrushEventArgs(double aSize, double aPower) 
+        {
+    		Size = aSize;
+    		Power = aPower;
+    	}
+        
+        public double Size {get; private set;}
+        public double Power {get; private set;}
+    }
 
 	/// <summary>
 	/// базовая кисть
@@ -97,6 +110,7 @@ namespace DrawLibrary.Brushes
 		{
 			set{
 				_power = value;
+				SendEvent();
 			}
 			get{
 				return _power;
@@ -109,11 +123,26 @@ namespace DrawLibrary.Brushes
 		{
 			set{
 				_size = value;
+				SendEvent();
 			}
 			get{
 				return _size;
 			}
 		}
-		private Double _size;		
+		private Double _size;	
+
+
+		#region события кисти
+		public delegate void BrushEventHandler(object sender, BrushEventArgs e);
+		public event BrushEventHandler BrushEvent;
+
+		protected virtual void SendEvent()
+        {
+            if (BrushEvent != null)
+                BrushEvent(this, new BrushEventArgs(_size, _power));
+        }		
+		#endregion события кисти
+
+		
 	}
 }

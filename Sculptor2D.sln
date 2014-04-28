@@ -4,6 +4,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # SharpDevelop 4.2.2.8818
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sculptor2D", "Sculptor2D\Sculptor2D.csproj", "{E58D07A4-7D6B-453A-95DD-FB7E377272CB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{BC894EA4-702E-454B-B247-1B183C73D3D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -14,5 +16,9 @@ Global
 		{E58D07A4-7D6B-453A-95DD-FB7E377272CB}.Debug|x86.ActiveCfg = Debug|x86
 		{E58D07A4-7D6B-453A-95DD-FB7E377272CB}.Release|x86.Build.0 = Release|x86
 		{E58D07A4-7D6B-453A-95DD-FB7E377272CB}.Release|x86.ActiveCfg = Release|x86
+		{BC894EA4-702E-454B-B247-1B183C73D3D2}.Debug|x86.Build.0 = Debug|x86
+		{BC894EA4-702E-454B-B247-1B183C73D3D2}.Debug|x86.ActiveCfg = Debug|x86
+		{BC894EA4-702E-454B-B247-1B183C73D3D2}.Release|x86.Build.0 = Release|x86
+		{BC894EA4-702E-454B-B247-1B183C73D3D2}.Release|x86.ActiveCfg = Release|x86
 	EndGlobalSection
 EndGlobal

@@ -18,11 +18,13 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml.Serialization;
 using Commands;
 using DrawLibrary.Brushes;
 using DrawLibrary.Graphics;
 using DrawLibrary.Tools;
 using DrawLibrary.Undo;
+using DrawToolsLib;
 
 //FUTURE: Блокирование некоторых вершин (участка), относительно друг-друга. Например, вырезы под сборку
 //FUTURE: Слои и интерфейс для них
@@ -141,7 +143,7 @@ namespace DrawLibrary
             {
                 return _graphicsList.Count;
             }
-        }		
+        }
 
         public VisualCollection GraphicsList
         {
@@ -250,7 +252,8 @@ namespace DrawLibrary
         }
         
         #endregion отпустили мышку/перо
-
+        
+        
 
 		#region двигаем мышку/перо        
         void Move(Point aPoint, bool aPressed)
@@ -259,7 +262,12 @@ namespace DrawLibrary
             {
                 return;
             }
-
+            
+            //если инструмент подразумевает продвинутую кисть, то надо ее перерисовать под мышкой
+            if( _cursor != null )
+            {
+            	_cursor.Transform = new TranslateTransform(aPoint.X, aPoint.Y);
+            }
 			_tools[(int)Tool].OnMove(this, aPoint, aPressed);
         }
 
@@ -339,7 +347,19 @@ namespace DrawLibrary
                     SetValue(ToolProperty, value);                    
                     SendEvent("Я включил " + Tool.ToString());
                     //TODO: включаем нужный курсор
-                    //tools[(int)Tool].SetCursor(this);
+                    /*
+                    if( Tool == ToolType.Brush )
+                    {
+                    	var t = SetCursor(DrawingCursorType.Brush);
+                    	t.Size = Brush.Size;
+                    	Cursor = null;
+                    }
+                    else
+                    {
+                    	SetCursor(DrawingCursorType.None);
+                    	Cursor = Cursors.Arrow;
+                    }*/
+                    _tools[(int)Tool].SetCursor(this);
                 }
             }
         }
@@ -492,13 +512,30 @@ namespace DrawLibrary
 			var t = (BrushType)Enum.Parse(typeof(BrushType), aBrushName);
             if ((int)t >= 0 && (int)t < (int)BrushType.Max)
             {
-            	((ToolBrush)_tools[(int)Tool]).Brush = GetBrushFromCache(t);
+            	var tmp = GetBrushFromCache(t);
+            	
+            	((ToolBrush)_tools[(int)Tool]).Brush = tmp;
+            	
+            	tmp.BrushEvent += new BrushBase.BrushEventHandler(BrushChanged);
+            	
+            	
                 SendEvent("Я включил " + Brush.ToString());
-                //TODO: включаем нужный курсор
-                //tools[(int)Tool].SetCursor(this);
+                
+                _tools[(int)Tool].SetCursor(this);
+                
+                //SetCursor(DrawingCursorType.Brush);
              }
             
              onPropertyChanged("Brush");
+		}
+		
+		void BrushChanged(object sender, BrushEventArgs e)
+		{
+			var t = (GraphicsCursor)GetObjectBy(x => x is GraphicsCursor);
+			if( t == null )
+				return;
+			
+			t.Size = e.Size;
 		}
 		
 		private bool CanSetBrush(String a)
@@ -648,6 +685,57 @@ namespace DrawLibrary
 			}
 			return res;
 		}
+
+        public GraphicsBase GetObjectBy(Func<GraphicsBase, bool> aPredicate)
+        {
+        	foreach(var o in _graphicsList)
+        	{
+        		if( aPredicate((GraphicsBase)o) )
+        			return (GraphicsBase)o;
+        	}
+        	
+        	return null;
+        }
+        
+        public int GetIndexBy(Func<GraphicsBase, bool> aPredicate)
+        {        	
+        	Visual o = null;
+        	for( int i=0; i< _graphicsList.Count; i++)//var o in _graphicsList)
+        	{
+        		o = _graphicsList[i];
+        		if( aPredicate((GraphicsBase)o) )
+        			return i;
+        	}
+        	
+        	return -1;
+        }
 		
+        
+        #region работа с курсором
+        private GraphicsCursor _cursor = null;
+        public GraphicsCursor SetCursor(DrawingCursorType aType)
+        {        	
+        	if( _cursor != null)
+        	{
+        		_graphicsList.Remove(_cursor);
+        	}
+
+        	_cursor = null;
+        	//создаем занового, нужного типа
+        	switch(aType)
+        	{
+        		case DrawingCursorType.Brush:
+        			_cursor = new GraphicsCursor(this, aType);        			
+        			break;
+        	}
+        	
+        	if( _cursor != null )
+        	{
+        		_graphicsList.Add(_cursor);
+        	}
+        	
+        	return _cursor;
+        }
+        #endregion работа с курсором
 	}
 }
