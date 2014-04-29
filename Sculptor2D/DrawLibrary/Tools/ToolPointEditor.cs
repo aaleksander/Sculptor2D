@@ -62,8 +62,8 @@ namespace DrawLibrary.Tools
         
         public override void OnMove(DrawingCanvas aCanvas, Point aPoint, bool aPressed ) 
         {
-        	if( Geometry.dist(_startDragging, aPoint) > 5 )
-        		IsDragging = aPressed;
+        	//if( Geometry.dist(_startDragging, aPoint) > 5 )
+        	IsDragging = aPressed;
 
         	if( !aPressed )
         		SimpleMove(aCanvas, aPoint);
@@ -73,18 +73,6 @@ namespace DrawLibrary.Tools
 				if( _dragObject != null && _dragObject is GraphicsServicePoint ) //тащим точку
 				{
 					((GraphicsServicePoint)_dragObject).Move(aPoint);
-					/*
-					_dragObject.Transform = new TranslateTransform(aPoint.X - _startDragging.X, aPoint.Y - _startDragging.Y);
-		            //обновим матрицы у сервисных объектов
-		            foreach(var o in aCanvas.GraphicsList)
-		            {
-		            	if( o is GraphicsService && ((GraphicsService)o).IsYourOwner(_dragObject))
-		            	{
-		            		
-		            		//((GraphicsBase)o).Transform = _dragObject.Transform;
-		            		//((GraphicsBase)o).RefreshDrawing();
-		            	}
-		            }*/
 				}
         	}
         }

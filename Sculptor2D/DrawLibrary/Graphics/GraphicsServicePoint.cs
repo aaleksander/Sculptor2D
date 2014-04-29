@@ -19,15 +19,23 @@ namespace DrawLibrary.Graphics
 	{
 		private int _pointHashCode;
 		private Point _point;
-		private static Brush 	_br = new SolidColorBrush(Colors.Black);
-		private static Brush 	_brHit = new SolidColorBrush(Colors.Red);
+		private static Brush 	_br;// = new SolidColorBrush(Colors.Black);
+		private static Brush 	_brHit;// = new SolidColorBrush(Colors.Red);
 		private static Pen 		_pn = new Pen(new SolidColorBrush(Colors.White), 1);
 		
 		public GraphicsServicePoint(GraphicsBase aObj, Point aPoint, int aHash): base(aObj)
 		{
 			_point = aPoint;
 			_pointHashCode = aHash;
-			
+
+			Color col = Colors.Black;
+			col.A = 100;
+			_br = new SolidColorBrush(col);
+
+			col = Colors.Red;
+			col.A = 100;
+			_brHit = new SolidColorBrush(col);
+
 			RefreshDrawing();
 		}
 		
@@ -49,7 +57,8 @@ namespace DrawLibrary.Graphics
 //			var obj = (GraphicsMultiPoint) OwnerCanvas.GetObjectBy(x => IsYourOwner(x)); //ищем, чей это объект
 //			if( obj == null )
 //				return;
-			
+			//FIXME: почему IsHist=true - не работает?
+			IsHit = true;
 			Point p;
 			GraphicsMultiPoint obj = (GraphicsMultiPoint)Owner;
 			for(int i=0; i<obj.Points.Count; i++)
@@ -58,7 +67,6 @@ namespace DrawLibrary.Graphics
 				if( i == _pointHashCode ) //нашли нужную точку
 				{
 					obj.Points[i] = new Point(aPoint.X, aPoint.Y);
-					//_pointHashCode = obj.Points[i].GetHashCode();
 					break;
 				}
 			}
