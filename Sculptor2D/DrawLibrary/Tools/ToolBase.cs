@@ -60,6 +60,8 @@ namespace DrawLibrary.Tools
 		
 		public virtual void SetCursor(DrawingCanvas drawingCanvas){}
 		
+		public virtual void Init(DrawingCanvas drawingCanvas){}
+		
 		/// <summary>
 		/// добавляем новый объект на канву
 		/// </summary>

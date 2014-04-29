@@ -22,7 +22,12 @@ namespace DrawLibrary.Graphics
 	/// </summary>
 	public class GraphicsMultiPoint: GraphicsBase
 	{
-		public GraphicsMultiPoint(): base()
+		public GraphicsMultiPoint()
+		{
+			_points = new Collection<Point>();
+		}
+		
+		public GraphicsMultiPoint(DrawingCanvas aCanvas): base(aCanvas)
 		{
 			_points = new Collection<Point>();
 		}
@@ -66,7 +71,7 @@ namespace DrawLibrary.Graphics
 			}
 
             StreamGeometry geometry = new StreamGeometry();
-            geometry.FillRule = FillRule.EvenOdd;			
+            geometry.FillRule = FillRule.EvenOdd;
 			using (StreamGeometryContext ctx = geometry.Open())
             {
 				Point p1 = _points[0];
@@ -74,13 +79,23 @@ namespace DrawLibrary.Graphics
 				ctx.PolyLineTo(_points, true, true);
             }
 
-			Color col = (IsHit)? Colors.Red: Colors.Blue;
-			//col.A = 100; //прозрачность
+			Color col = Colors.Blue;
 			aContext.DrawGeometry(_brush, new Pen(new SolidColorBrush(col), 2), geometry);
-        	
+
+			if( IsHit ) //надо подсветить поверх всех объектов
+			{
+				OwnerCanvas.GraphicsList.Add(new GraphicsServiceContour(this, true));
+			}
+
 			if ( IsSelected )
             {
-                DrawTracker(aContext);
+				//нарисовать еще один контур, только потоньше (пунктиром?) и другим цветом
+				OwnerCanvas.GraphicsList.Add(new GraphicsServiceContour(this, false));
+				switch (Mode)
+				{
+				case GraphicsMode.Selected:	DrawTracker(aContext); break;
+				case GraphicsMode.Points:	DrawPoints(); break;
+				}
             }
 		}		
 
@@ -164,7 +179,7 @@ namespace DrawLibrary.Graphics
 			_points.Add(aP);
 			
 			return _points.Count;
-		}        
+		}
 
 		/// <summary>
 		/// возвращает прямоугольник, очерчивающий этот объект (опирается на точки)
@@ -194,7 +209,7 @@ namespace DrawLibrary.Graphics
 			
 			return new Rect(left, top, right-left, bottom-top);
 		}
-		
+
 		/// <summary>
 		/// рисует маркеры, за которые можно наскать объект
 		/// </summary>
@@ -207,23 +222,17 @@ namespace DrawLibrary.Graphics
 			DrawOneTracker(aContext, r.Left - 8, r.Bottom + 8);
 			DrawOneTracker(aContext, r.Right + 8, r.Top - 8);
 			DrawOneTracker(aContext, r.Right + 8, r.Bottom + 8);
-			
-			//RenderOptions = RenderOptions.EdgeModeProperty;
-			//aContext.DrawRectangle(br1, p1, new Rect(r.Left, r.Top, size, size));
-			//aContext.DrawRectangle(br1, p1, new Rect(r.Left, r.Bottom, size, size));
-			
-			//aContext.DrawRectangle(null, new Pen(new SolidColorBrush(Colors.Red), 1), getRect());
-
-			
-			
-//			var br = new SolidColorBrush(Colors.Black);
-//			var pn = new Pen(new SolidColorBrush(Colors.White), 1);
-//			foreach(var p in _points)
-//			{
-//				aContext.DrawEllipse(br, pn, new Point(p.X, p.Y), 4, 4);
-//			}
         }
-		
+
+		public override void DrawPoints()
+		{
+			for(int i=0; i<Points.Count; i++)
+			{
+				OwnerCanvas.GraphicsList.Add(new GraphicsServicePoint(this, Points[i], i));
+				//aContext.DrawEllipse(br, pn, new Point(p.X, p.Y), 4, 4);
+			}
+        }		
+
 		/// <summary>
 		/// рисует один прямоугольник
 		/// </summary>

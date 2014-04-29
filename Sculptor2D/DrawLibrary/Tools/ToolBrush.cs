@@ -36,6 +36,9 @@ namespace DrawLibrary.Tools
         	if( IsDragging )
         		_brush.AddPath(aPoint);
 
+        	//создаем полигон, в глину, выделяем стрелкой, лепить, выбираем кисть, "мажем" - вылетаетю
+        	
+        	
         	//TODO: если на канве есть выделенные элементы, то редактировать нолько их
 			if( aPressed && _brush.Path.Count > 2)
 			{//делаем "мазок"
@@ -56,6 +59,12 @@ namespace DrawLibrary.Tools
 			}
         }
 
+		
+		public override void Init(DrawingCanvas drawingCanvas)
+		{
+			drawingCanvas.UnselectAll();
+		}		
+		
 		public override void OnDown(DrawingCanvas aCanvas, Point aPoint)//, MouseButtonEventArgs e)
 		{
 			_objects = aCanvas.GetPotentObjects(); //клонируем себе объектов

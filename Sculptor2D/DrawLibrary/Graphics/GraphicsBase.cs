@@ -7,9 +7,13 @@
  * Для изменения этого шаблона используйте Сервис | Настройка | Кодирование | Правка стандартных заголовков.
  */
 using System;
-//using System.Drawing;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
+
+//using System.Drawing;
+
+
 
 namespace DrawLibrary.Graphics
 {
@@ -30,18 +34,36 @@ namespace DrawLibrary.Graphics
 	/// </summary>
 	public class GraphicsBase: DrawingVisual
 	{
-		public GraphicsBase()
+		public GraphicsBase(){}
+		
+		public GraphicsBase(DrawingCanvas aCanvas)
 		{
 			Id = this.GetHashCode();
+			OwnerCanvas = aCanvas;
 		}
 
 		public int Id{set;get;}
-		
-		public GraphicsMode Mode{set; get;}
 
+		public GraphicsMode Mode{
+			set{
+				_mode = value;
+				RefreshDrawing();
+			}
+			get{
+				return _mode;
+			}
+		}
+		private GraphicsMode _mode;
+		public DrawingCanvas OwnerCanvas{set;get;}
+		
         public void RefreshDrawing()
         {
             DrawingContext dc = this.RenderOpen();
+
+            if( OwnerCanvas != null )
+            {
+            	OwnerCanvas.RemoveService(this);
+            }
             
             Draw(dc);
 
@@ -54,7 +76,7 @@ namespace DrawLibrary.Graphics
         {
             get 
             { 
-                return Mode == GraphicsMode.Selected; 
+                return Mode == GraphicsMode.Selected || Mode == GraphicsMode.Points; 
             }
             set 
             {
@@ -62,8 +84,8 @@ namespace DrawLibrary.Graphics
 
                 RefreshDrawing();
             }
-        }	
-  
+        }
+
         public bool IsHit
         {
             get 
@@ -72,6 +94,7 @@ namespace DrawLibrary.Graphics
             }
             set
             {
+            	
                 _isHit = value;
 
                 RefreshDrawing();
@@ -84,10 +107,10 @@ namespace DrawLibrary.Graphics
         /// </summary>
         public virtual void MoveHandleTo(Point point, int handleNumber){}
 
-        public virtual void MoveLastHandleTo(Point point){}        
-        
+        public virtual void MoveLastHandleTo(Point point){}
+
         public virtual Point GetCenter(){return new Point(0, 0);}
-        
+
 
         /// <summary>
         /// попадает ли точка в объект
@@ -97,6 +120,7 @@ namespace DrawLibrary.Graphics
         public virtual bool Contains(Point point){return false;}
 
         public virtual void DrawTracker(DrawingContext aCanvas){}
+        public virtual void DrawPoints(){}
 
         public virtual GraphicsBase Clone(){return null;}
 	}

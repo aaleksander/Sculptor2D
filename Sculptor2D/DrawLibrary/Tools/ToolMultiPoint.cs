@@ -41,6 +41,7 @@ namespace DrawLibrary.Tools
             	{
             		_obj.DeleteLastPoint(); //удаляем последнюю которая тянулась за мышкой            	
             		_obj.IsSelected = false;
+            		_obj.OwnerCanvas = aCanvas;
             		aCanvas.AddActionToHistory(new ActionAdd(_obj));
             		_obj = null;
             		aCanvas.ReleaseMouseCapture();            		

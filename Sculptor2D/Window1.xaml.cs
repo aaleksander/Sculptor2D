@@ -57,12 +57,14 @@ namespace Sculptor2D
 			
 			//тестовые данные			
 /*			var p = new GraphicsPolygon();
+			p.OwnerCanvas = canvas;
 			p.AddPoint(500, 100);
 			p.AddPoint(300, 300);
 			p.AddPoint(150, 250);
 			canvas.GraphicsList.Add(p);
 		
-			var p = new GraphicsPolygon();
+			p = new GraphicsPolygon();
+			p.OwnerCanvas = canvas;
 			p.AddPoint(60, 60);
 			p.AddPoint(400, 50);
 			p.AddPoint(400, 400);

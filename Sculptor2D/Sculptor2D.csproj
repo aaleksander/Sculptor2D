@@ -83,11 +83,13 @@
     <Compile Include="DrawLibrary\Graphics\GraphicsMultiPoint.cs" />
     <Compile Include="DrawLibrary\Graphics\GraphicsPolygon.cs" />
     <Compile Include="DrawLibrary\Graphics\GraphicsService.cs" />
+    <Compile Include="DrawLibrary\Graphics\GraphicsServiceContour.cs" />
+    <Compile Include="DrawLibrary\Graphics\GraphicsServicePoint.cs" />
     <Compile Include="DrawLibrary\Tools\ToolBase.cs" />
     <Compile Include="DrawLibrary\Tools\ToolBrush.cs" />
-    <Compile Include="DrawLibrary\Tools\ToolEditor.cs" />
     <Compile Include="DrawLibrary\Tools\ToolLine.cs" />
     <Compile Include="DrawLibrary\Tools\ToolMultiPoint.cs" />
+    <Compile Include="DrawLibrary\Tools\ToolPointEditor.cs" />
     <Compile Include="DrawLibrary\Tools\ToolPointer.cs" />
     <Compile Include="DrawLibrary\Tools\ToolPolygone.cs" />
     <Compile Include="DrawLibrary\Tools\ToolTypeConverter.cs" />

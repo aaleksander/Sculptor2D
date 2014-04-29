@@ -18,10 +18,7 @@ namespace DrawLibrary.Graphics
 	/// </summary>
 	public class GraphicsLine: GraphicsMultiPoint
 	{
-		public GraphicsLine()
-		{
-
-		}
+		public GraphicsLine(){}
 		
 		/// <summary>
 		/// делает полную копию объекта

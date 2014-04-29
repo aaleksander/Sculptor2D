@@ -14,7 +14,8 @@ using System.Windows.Media;
 using DrawLibrary.Graphics;
 using Helpers;
 
-//TODO:редактор точек
+//TODO:я история действий для вращения, редактора точек, перемещения
+
 //TODO:масштабирование фигур
 //перемещение вершины
 namespace DrawLibrary.Tools
@@ -24,29 +25,36 @@ namespace DrawLibrary.Tools
 	/// </summary>
 	public class ToolPointer: ToolBase
 	{
+		
+		protected void SimpleMove(DrawingCanvas aCanvas, Point aPoint)
+		{
+			//почистить у всех IsHit
+			//foreach(var o in aCanvas.GraphicsList)
+			for(int i=aCanvas.GraphicsList.Count - 1; i >= 0; i--)
+			{
+				((GraphicsBase)aCanvas.GraphicsList[i]).IsHit = false;
+			}
+			
+			_dragObject = null;
+			for(int i=aCanvas.Count - 1; i>=0; i-- ) //идем сверху-вниз
+			{ //просто подсвечиваем
+				GraphicsBase o = aCanvas[i];
+		   		o.IsHit = o.Contains(aPoint);
+		   		if( o.IsHit )
+		   		{
+		   			//aCanvas.UpdateServiceObjects();
+		   			break; //Горячим может быть только один объект
+		   		}
+			}
+		}
+		
         public override void OnMove(DrawingCanvas aCanvas, Point aPoint, bool aPressed )
         {
         	if( Geometry.dist(_startDragging, aPoint) > 5 )
         		IsDragging = aPressed;
 
 			if ( !aPressed ) //ничего не тащим, просто двигаемся
-			{
-				//почистить у всех IsHit
-				foreach(var o in aCanvas.GraphicsList)
-					((GraphicsBase)o).IsHit = false;
-				
-				_dragObject = null;
-				for(int i=aCanvas.Count - 1; i>=0; i-- ) //идем сверху-вниз
-				{ //просто подсвечиваем
-					GraphicsBase o = aCanvas[i];
-					if( o != null )
-					{
-				   		o.IsHit = o.Contains(aPoint);
-				   		if( o.IsHit )
-				   			break; //Горячим может быть только один объект
-					}
-				}
-			}
+				SimpleMove(aCanvas, aPoint);
 
 			if( aPressed )
 			{//что-то тащим
@@ -57,14 +65,37 @@ namespace DrawLibrary.Tools
 						var c = aCanvas.SelectedObject.GetCenter();
 						var a  = Geometry.GetAngle(_startDragging, c, aPoint, c);
 						aCanvas.SelectedObject.Transform = new RotateTransform(a, c.X, c.Y);
-						aCanvas.SelectedObject.RefreshDrawing();
+						
+			            //обновим матрицы у сервисных объектов
+			            foreach(var o in aCanvas.GraphicsList)
+			            {
+			            	if( o is GraphicsService && ((GraphicsService)o).IsYourOwner(aCanvas.SelectedObject))
+			            	{
+			            		((GraphicsBase)o).Transform = aCanvas.SelectedObject.Transform;
+			            		((GraphicsBase)o).RefreshDrawing();
+			            	}
+			            }
+
+			            aCanvas.SelectedObject.RefreshDrawing();
+						
 						_startDragging = aPoint;
 					}
 				}
 				else
 				{
 					if( _dragObject != null ) //тащим
+					{
 						_dragObject.Transform = new TranslateTransform(aPoint.X - _startDragging.X, aPoint.Y - _startDragging.Y);
+			            //обновим матрицы у сервисных объектов
+			            foreach(var o in aCanvas.GraphicsList)
+			            {
+			            	if( o is GraphicsService && ((GraphicsService)o).IsYourOwner(_dragObject))
+			            	{
+			            		((GraphicsBase)o).Transform = _dragObject.Transform;
+			            		//((GraphicsBase)o).RefreshDrawing();
+			            	}
+			            }						
+					}
 				}
 			}
         }
@@ -104,7 +135,7 @@ namespace DrawLibrary.Tools
 			aCanvas.ReleaseMouseCapture();
 		}
 
-        private GraphicsBase GetHitObject(DrawingCanvas aCanvas, Point aPoint)
+        protected GraphicsBase GetHitObject(DrawingCanvas aCanvas, Point aPoint)
         {        	
 			for(int i = aCanvas.Count - 1; i >= 0; i-- ) //объекты сверху должны "попасть" под мышку первыми
 			{
@@ -120,8 +151,8 @@ namespace DrawLibrary.Tools
 			return null;
         }
 
-        private GraphicsBase _dragObject;        
-        private Point _startDragging;
+        protected GraphicsBase _dragObject;        
+        protected Point _startDragging;
         
         
 		public override void SetCursor(DrawingCanvas drawingCanvas)
@@ -129,5 +160,14 @@ namespace DrawLibrary.Tools
 			drawingCanvas.SetCursor(DrawingCursorType.None);
 			drawingCanvas.Cursor = Cursors.Arrow;
 		}
+		
+		public override void Init(DrawingCanvas drawingCanvas)
+		{
+			if( drawingCanvas.SelectedObject != null )
+			{
+				drawingCanvas.SelectedObject.Mode = GraphicsMode.Selected;
+			}
+		}
+		
 	}
 }

@@ -70,7 +70,7 @@ namespace DrawLibrary
             _tools = new ToolBase[(int)ToolType.Max];
 
             _tools[(int)ToolType.Pointer] = new ToolPointer();
-            _tools[(int)ToolType.Editor] = new ToolEditor();
+            _tools[(int)ToolType.Editor] = new ToolPointEditor();
             _tools[(int)ToolType.Line] = new ToolLine();
             _tools[(int)ToolType.Polygone] = new ToolPolygone();
             _tools[(int)ToolType.Brush] = new ToolBrush();
@@ -345,20 +345,8 @@ namespace DrawLibrary
                 {
                     SetValue(ToolProperty, value);                    
                     SendEvent("Я включил " + Tool.ToString());
-                    //TODO: включаем нужный курсор
-                    /*
-                    if( Tool == ToolType.Brush )
-                    {
-                    	var t = SetCursor(DrawingCursorType.Brush);
-                    	t.Size = Brush.Size;
-                    	Cursor = null;
-                    }
-                    else
-                    {
-                    	SetCursor(DrawingCursorType.None);
-                    	Cursor = Cursors.Arrow;
-                    }*/
                     _tools[(int)Tool].SetCursor(this);
+                    _tools[(int)Tool].Init(this);
                 }
             }
         }
@@ -376,7 +364,6 @@ namespace DrawLibrary
             }
 
         }
-
 
         #region Visual Children Overrides
 
@@ -419,16 +406,18 @@ namespace DrawLibrary
         }
         #endregion Visual Children Overrides        
 
-
         public void UnselectAll()
         {
-        	foreach(var g in _graphicsList)
+        	//foreach(var g in _graphicsList)
+        	GraphicsBase g;
+        	for(int i=0; i<_graphicsList.Count; i++)
         	{
-        		if( g is GraphicsBase )
+        		g = (GraphicsBase)_graphicsList[i];
+        		if( g is GraphicsBase && !(g is GraphicsService) )
         			((GraphicsBase)g).IsSelected = false;
         	}
 
-        	//FIXME: удалить все сервисные объекты
+        	RemoveService(null);
         }
 
         public GraphicsBase SelectedObject
@@ -453,43 +442,42 @@ namespace DrawLibrary
         /// <param name="aObj"></param>
         public void SelectObject(GraphicsBase aObj, GraphicsMode aMode)
         {
-        	if( aMode == GraphicsMode.Selected )
-        	{
-        		aObj.IsSelected = true;
-        	}
+       		aObj.IsSelected = aMode == GraphicsMode.Selected || aMode == GraphicsMode.Points;
+       		aObj.Mode = aMode;
+       		aObj.RefreshDrawing();
         }
 
         #region Команда "превратить в глину"
-		private DelegateCommand<GraphicsMultiPoint> toClayCommand;
+		private DelegateCommand toClayCommand;
 		public ICommand ToClayCommand
 		{
             get
             {
                 if (toClayCommand == null)
                 {
-                    toClayCommand = new DelegateCommand<GraphicsMultiPoint>(ToClay, CanToClay);
+                    toClayCommand = new DelegateCommand(ToClay, CanToClay);
                 }
                 return toClayCommand;
             }
 		}
 
-		private void ToClay(GraphicsMultiPoint aObj)//FIXME: параметр не нужен
+		private void ToClay()
 		{	
 			int index = _graphicsList.IndexOf(SelectedObject);
 
-			GraphicsClay newO = new GraphicsClay((GraphicsMultiPoint)SelectedObject);
+			RemoveService(SelectedObject);
+			
+			GraphicsClay newO = new GraphicsClay(this, (GraphicsMultiPoint)SelectedObject);
 			AddActionToHistory(new ActionToClay(SelectedObject, newO.Id));
 			
 			ReplaceObject(index, newO);
 		}
 
-		private bool CanToClay(GraphicsMultiPoint a)
+		private bool CanToClay()
 		{
-			return SelectedObject != null;
-			//FIXME: добавить проверку на соответствие типов && Type(SelectedObject) is GraphicsMultiPoint;
+			return SelectedObject != null && SelectedObject is GraphicsMultiPoint;
 		}
-		#endregion
-		
+		#endregion	
 		
 		
         #region Команды переключения кистей
@@ -737,5 +725,50 @@ namespace DrawLibrary
         	return _cursor;
         }
         #endregion работа с курсором
+
+        #region Работа с сервисными объектами
+
+        /// <summary>
+        /// перемещает сервисные объекты наверх
+        /// </summary>
+        /// <param name="aObject"></param>
+        public void UpdateServiceObjects()
+        {
+            List<GraphicsBase> list = new List<GraphicsBase>();
+
+            for(int i = Count - 1; i >= 0; i--)
+            {
+                if ( GraphicsList[i] is GraphicsService )
+                {
+                	list.Insert(0, (GraphicsBase)GraphicsList[i]);
+                    GraphicsList.RemoveAt(i);
+                }
+            }
+
+            // Add all items from temporary list to the end of GraphicsList
+            foreach(GraphicsBase g in list)
+            {
+                GraphicsList.Add(g);
+            }
+
+        }
+        
+        /// <summary>
+        /// удалить все сервисные объекты определенного объекта
+        /// </summary>
+        public void RemoveService(GraphicsBase aOwner)
+        {             	
+        	for(int i=GraphicsList.Count - 1; i >= 0; i--)
+        	{
+        		if( GraphicsList[i] is GraphicsService )
+        		{
+        			if( aOwner != null )
+        				if( ((GraphicsService)GraphicsList[i]).IsYourOwner(aOwner)) //это его хозяин
+        					GraphicsList.RemoveAt(i);
+        		}
+        			
+        	}
+        }
+        #endregion        
 	}
 }

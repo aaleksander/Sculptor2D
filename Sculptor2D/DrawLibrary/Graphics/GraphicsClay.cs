@@ -21,11 +21,11 @@ namespace DrawLibrary.Graphics
 	/// </summary>
 	public class GraphicsClay: GraphicsMultiPoint
 	{
-		public GraphicsClay():base()
-		{
-			
+		public GraphicsClay(DrawingCanvas aCanvas):base(aCanvas)
+		{			
 		}
-		public GraphicsClay(GraphicsMultiPoint aGr):base()
+		
+		public GraphicsClay(DrawingCanvas aCanvas, GraphicsMultiPoint aGr):base(aCanvas)
 		{
 			//копируем все вершины
 			foreach(var p in aGr.Points)
@@ -140,7 +140,7 @@ namespace DrawLibrary.Graphics
 
 		public override GraphicsBase Clone()
 		{//FIXME: сделать универсальный класс
-			GraphicsClay res = new GraphicsClay();
+			GraphicsClay res = new GraphicsClay(OwnerCanvas);
 			CloneAttributes(res);
 			return res;
 		}
