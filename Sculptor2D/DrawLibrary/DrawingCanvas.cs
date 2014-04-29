@@ -512,16 +512,15 @@ namespace DrawLibrary
             if ((int)t >= 0 && (int)t < (int)BrushType.Max)
             {
             	var tmp = GetBrushFromCache(t);
-            	
+
             	((ToolBrush)_tools[(int)Tool]).Brush = tmp;
-            	
+
             	tmp.BrushEvent += new BrushBase.BrushEventHandler(BrushChanged);
-            	
-            	
+
                 SendEvent("Я включил " + Brush.ToString());
-                
+
                 _tools[(int)Tool].SetCursor(this);
-                
+
                 //SetCursor(DrawingCursorType.Brush);
              }
             
@@ -730,6 +729,8 @@ namespace DrawLibrary
         	
         	if( _cursor != null )
         	{
+        		var p = Mouse.GetPosition(this);
+        		_cursor.Transform = new TranslateTransform(p.X, p.Y);
         		_graphicsList.Add(_cursor);
         	}
         	

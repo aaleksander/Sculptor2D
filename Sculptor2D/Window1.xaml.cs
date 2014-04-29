@@ -16,6 +16,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using DrawLibrary;
+using DrawLibrary.Brushes;
 using DrawLibrary.Graphics;
 using DrawLibrary.Tools;
 
@@ -50,6 +51,9 @@ namespace Sculptor2D
 			scrollViewer.ScrollChanged += OnScrollViewerScrollChanged;			
 			
 			slider.Value = 5;
+			
+			
+
 			
 			//тестовые данные			
 /*			var p = new GraphicsPolygon();
@@ -130,6 +134,30 @@ namespace Sculptor2D
             }
         }        
         
+        
+        #region Нажатие хитрых клавиш
+        private BrushType _prevBrush = BrushType.None;
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+        	if( e.Key == Key.LeftShift && canvas.Tool == ToolType.Brush && canvas.Brush.Type != BrushType.Smoother )
+        	{//нажали shift во время скульптинга
+        		_prevBrush = canvas.Brush.Type; //запомнили, что было
+        		canvas.SetBrushCommand.Execute("Smoother");
+        	}
+        }
+        
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+        	if( e.Key == Key.LeftShift && canvas.Tool == ToolType.Brush )
+        	{//отпустили шифт во время скульптинга
+        		if( _prevBrush != BrushType.None )
+        		{
+        			canvas.SetBrushCommand.Execute(_prevBrush.ToString());
+        		}
+        	}
+        }
+
+		#endregion
         
         void OnSliderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {

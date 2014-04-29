@@ -15,7 +15,7 @@ using DrawLibrary.Graphics;
 using Helpers;
 
 //TODO:редактор точек
-//TODO:масштабирование, вращение фигур
+//TODO:масштабирование фигур
 //перемещение вершины
 namespace DrawLibrary.Tools
 {
@@ -84,7 +84,7 @@ namespace DrawLibrary.Tools
 		public override void OnUp(DrawingCanvas aCanvas, Point aPoint)
 		{
 			var o = GetHitObject(aCanvas, aPoint);
-			if( o == null && IsDragging == false) //просто клик по пустому месту
+			if( o == null && IsDragging == false && !Keyboard.IsKeyDown(Key.LeftCtrl) ) //просто клик по пустому месту
 			{
 				_dragObject = null;
 				aCanvas.UnselectAll();
