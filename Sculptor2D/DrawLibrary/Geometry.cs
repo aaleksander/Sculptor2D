@@ -16,6 +16,8 @@ namespace DrawLibrary
 	/// </summary>
 	public static class Geometry
 	{
+		static double pi = 3.14159265358979323;
+		
 		/// <summary>
 		/// возвращает дистанцию между двумя точками
 		/// </summary>
@@ -65,5 +67,36 @@ namespace DrawLibrary
 		
 		    return new Point(p1.X + (p2.X - p1.X)*t, p1.Y + (p2.Y - p1.Y)*t);
 		}		
+
+		/// <summary>
+		/// возвращает угол между двумя отрезками
+		/// </summary>
+		/// <param name="p11"></param>
+		/// <param name="p12"></param>
+		/// <param name="p21"></param>
+		/// <param name="p22"></param>
+		/// <returns></returns>		
+		public static double GetAngle(Point p11, Point p12, Point p21, Point p22)
+		{			
+			var l1 = Math.Sqrt((p11.X - p12.X)*(p11.X - p12.X) + (p11.Y - p12.Y)*(p11.Y - p12.Y));
+    		var l2 = Math.Sqrt((p21.X - p22.X)*(p21.X - p22.X) + (p21.Y - p22.Y)*(p21.Y - p22.Y));
+
+    		var v1 = new Point(0, 0);
+    		var v2 = new Point(0, 0);
+    		v1.X = (p12.X/l1 - p11.X/l1);
+    		v1.Y = (p12.Y/l1 - p11.Y/l1);
+    		v2.X = (p22.X/l2 - p21.X/l2);
+    		v2.Y = (p22.Y/l2 - p21.Y/l2);
+
+    			
+    		double res = Math.Atan2(v1.X*v2.Y - v2.X*v1.Y, v1.X*v2.X + v1.Y*v2.Y);
+
+    		if (res < 0)
+        		res = pi + (pi - Math.Abs(res));
+
+    		//переводим в градусы    		
+    		return res*180/pi;
+		}
+		
 	}
 }

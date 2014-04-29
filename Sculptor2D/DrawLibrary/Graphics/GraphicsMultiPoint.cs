@@ -106,6 +106,19 @@ namespace DrawLibrary.Graphics
 			}
 		}
 
+		public override Point GetCenter()
+		{
+			var res = new Point(0, 0);
+			foreach(var p in _points)
+			{
+				res.X += p.X;
+				res.Y += p.Y;
+			}
+			res.X /=Count;
+			res.Y /=Count;
+			return res;
+		}
+		
 		public override void MoveLastHandleTo(Point aP)
 		{
 			_points[_points.Count - 1] = aP;

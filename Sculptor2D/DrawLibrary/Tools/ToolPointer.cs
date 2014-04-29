@@ -48,9 +48,24 @@ namespace DrawLibrary.Tools
 				}
 			}
 
-			if( aPressed && _dragObject != null )
+			if( aPressed )
 			{//что-то тащим
-				_dragObject.Transform = new TranslateTransform(aPoint.X - _startDragging.X, aPoint.Y - _startDragging.Y);
+				if( Keyboard.IsKeyDown(Key.LeftCtrl) ) //поворачиваем
+				{
+					if( aCanvas.SelectedObject != null )
+					{
+						var c = aCanvas.SelectedObject.GetCenter();
+						var a  = Geometry.GetAngle(_startDragging, c, aPoint, c);
+						aCanvas.SelectedObject.Transform = new RotateTransform(a, c.X, c.Y);
+						aCanvas.SelectedObject.RefreshDrawing();
+						_startDragging = aPoint;
+					}
+				}
+				else
+				{
+					if( _dragObject != null ) //тащим
+						_dragObject.Transform = new TranslateTransform(aPoint.X - _startDragging.X, aPoint.Y - _startDragging.Y);
+				}
 			}
         }
 

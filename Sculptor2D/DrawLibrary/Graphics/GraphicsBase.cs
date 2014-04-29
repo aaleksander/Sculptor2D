@@ -85,6 +85,9 @@ namespace DrawLibrary.Graphics
         public virtual void MoveHandleTo(Point point, int handleNumber){}
 
         public virtual void MoveLastHandleTo(Point point){}        
+        
+        public virtual Point GetCenter(){return new Point(0, 0);}
+        
 
         /// <summary>
         /// попадает ли точка в объект
