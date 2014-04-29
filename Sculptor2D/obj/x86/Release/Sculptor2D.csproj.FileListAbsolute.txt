@@ -1,0 +1,10 @@
+D:\Aleksander\dev\Sculptor2D\Sculptor2D\bin\Release\Sculptor2D.exe
+D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Release\Sculptor2D.csprojResolveAssemblyReference.cache
+D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Release\Window1.g.cs
+D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Release\App.g.cs
+D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Release\GeneratedInternalTypeHelper.g.cs
+D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Release\Sculptor2D_MarkupCompile.cache
+D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Release\Sculptor2D_MarkupCompile.lref
+D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Release\Window1.baml
+D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Release\Sculptor2D.g.resources
+D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Release\Sculptor2D.exe
