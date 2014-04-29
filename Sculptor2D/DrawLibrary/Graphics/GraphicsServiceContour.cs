@@ -30,7 +30,10 @@ namespace DrawLibrary.Graphics
 			}
 			
 			if( !aHot )
-				_pen = new Pen(new SolidColorBrush(Colors.Black), 0.5);
+			{
+				_pen = new Pen(new SolidColorBrush(Colors.White), 1);
+				_pen.DashStyle = DashStyles.Dash;
+			}
 			
 			RefreshDrawing();
 		}
@@ -58,6 +61,7 @@ namespace DrawLibrary.Graphics
 				ctx.PolyLineTo(_points, true, true);
             }
 
+			aContext.DrawGeometry(null, new Pen(new SolidColorBrush(Colors.Black), 1), geometry);
 			aContext.DrawGeometry(null, _pen, geometry);
 		}
 	}

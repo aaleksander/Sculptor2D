@@ -215,13 +215,15 @@ namespace DrawLibrary.Graphics
 		/// </summary>
 		/// <param name="aContext"></param>
 		public override void DrawTracker(DrawingContext aContext)
-		{
-			var r = GetRect();
+		{			
+			//var r = GetRect();
+			
+			//TODO: создать сервисный объект - общий прямоугольник
 
-			DrawOneTracker(aContext, r.Left - 8, r.Top - 8);
-			DrawOneTracker(aContext, r.Left - 8, r.Bottom + 8);
-			DrawOneTracker(aContext, r.Right + 8, r.Top - 8);
-			DrawOneTracker(aContext, r.Right + 8, r.Bottom + 8);
+			//DrawOneTracker(aContext, r.Left - 8, r.Top - 8);
+			//DrawOneTracker(aContext, r.Left - 8, r.Bottom + 8);
+			//DrawOneTracker(aContext, r.Right + 8, r.Top - 8);
+			//DrawOneTracker(aContext, r.Right + 8, r.Bottom + 8);
         }
 
 		public override void DrawPoints()
