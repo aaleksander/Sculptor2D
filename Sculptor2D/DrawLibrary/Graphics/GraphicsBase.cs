@@ -111,7 +111,6 @@ namespace DrawLibrary.Graphics
 
         public virtual Point GetCenter(){return new Point(0, 0);}
 
-
         /// <summary>
         /// попадает ли точка в объект
         /// </summary>

@@ -144,8 +144,7 @@ namespace DrawLibrary.Graphics
 			CloneAttributes(res);
 			return res;
 		}
-		
-		
+
 		//не должны рисоваться маркеры для вершин
 	}
 }
