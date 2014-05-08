@@ -9,6 +9,7 @@
 using System;
 using System.Windows;
 using System.Windows.Media;
+using DrawLibrary.Serialize;
 
 namespace DrawLibrary.Graphics
 {
@@ -37,5 +38,9 @@ namespace DrawLibrary.Graphics
 			return res;
 		}
 		
+        public override SerializeBase GetSerializebleObject()
+        {
+        	return new SerializePolygon(this);
+        }
 	}
 }

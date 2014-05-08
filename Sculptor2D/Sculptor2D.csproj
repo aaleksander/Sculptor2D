@@ -31,6 +31,12 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\Install\C#\JSon.NET\Bin\Net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\Install\C#\JSon.NET\Bin\Net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -85,6 +91,11 @@
     <Compile Include="DrawLibrary\Graphics\GraphicsService.cs" />
     <Compile Include="DrawLibrary\Graphics\GraphicsServiceContour.cs" />
     <Compile Include="DrawLibrary\Graphics\GraphicsServicePoint.cs" />
+    <Compile Include="DrawLibrary\Serialize\Loader.cs" />
+    <Compile Include="DrawLibrary\Serialize\SerializeBase.cs" />
+    <Compile Include="DrawLibrary\Serialize\Saver.cs" />
+    <Compile Include="DrawLibrary\Serialize\SerializeMultiPoint.cs" />
+    <Compile Include="DrawLibrary\Serialize\SerializePolygon.cs" />
     <Compile Include="DrawLibrary\Tools\ToolBase.cs" />
     <Compile Include="DrawLibrary\Tools\ToolBrush.cs" />
     <Compile Include="DrawLibrary\Tools\ToolLine.cs" />
@@ -124,6 +135,7 @@
     <Folder Include="DrawLibrary\Graphics" />
     <Folder Include="DrawLibrary\Brushes" />
     <Folder Include="DrawLibrary\Undo" />
+    <Folder Include="DrawLibrary\Serialize" />
     <Folder Include="ViewModel" />
     <Folder Include="Model" />
     <Folder Include="Helpers" />

@@ -52,9 +52,6 @@ namespace Sculptor2D
 			
 			slider.Value = 5;
 			
-			
-
-			
 			//тестовые данные			
 /*			var p = new GraphicsPolygon();
 			p.OwnerCanvas = canvas;

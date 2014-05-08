@@ -10,6 +10,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
+using DrawLibrary.Serialize;
 
 //using System.Drawing;
 
@@ -122,5 +123,10 @@ namespace DrawLibrary.Graphics
         public virtual void DrawPoints(){}
 
         public virtual GraphicsBase Clone(){return null;}
+        
+        public virtual SerializeBase GetSerializebleObject()
+        {
+        	throw new Exception("Не реализован метод GetSeializebleObject");
+        }
 	}
 }

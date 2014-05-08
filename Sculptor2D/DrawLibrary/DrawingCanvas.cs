@@ -478,8 +478,7 @@ namespace DrawLibrary
 			return SelectedObject != null && SelectedObject is GraphicsMultiPoint;
 		}
 		#endregion	
-		
-		
+
         #region Команды переключения кистей
 		private DelegateCommand<String> setBrushCommand;
 		public ICommand SetBrushCommand
@@ -562,7 +561,7 @@ namespace DrawLibrary
 
 		private Collection<BrushBase> _cacheBrush = new Collection<BrushBase>();
 		#endregion		
-		
+
 		#region команда "копировать в svg"
 		private DelegateCommand toSVGCommand;
 		public ICommand ToSVGCommand
@@ -595,6 +594,31 @@ namespace DrawLibrary
 			return SelectedObject is GraphicsMultiPoint;
 		}		
 		#endregion копировать в svg
+
+		#region Команда "Сохранить"
+		private DelegateCommand saveCommand;
+		public ICommand SaveCommand
+		{
+            get
+            {
+                if (saveCommand == null)
+                {
+                    saveCommand = new DelegateCommand(Save);
+                }
+                return saveCommand;
+            }
+		}
+
+		private void Save()
+		{	
+			foreach(var o in _graphicsList)
+			{
+				
+			}
+			
+		}		
+		#endregion
+		
 		
 		#region кнопка Escape
 		private DelegateCommand escapeCommand;

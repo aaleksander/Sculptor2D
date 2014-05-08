@@ -16,9 +16,12 @@ D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Debug\App.g.cs
 D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Debug\GeneratedInternalTypeHelper.g.cs
 D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Debug\Sculptor2D_MarkupCompile.cache
 D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Debug\Sculptor2D_MarkupCompile.lref
-D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Debug\Sculptor2D.exe
-D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Debug\Sculptor2D.pdb
 D:\Aleksander\dev\Sculptor2D\Sculptor2D\bin\Debug\Sculptor2D.exe
 D:\Aleksander\dev\Sculptor2D\Sculptor2D\bin\Debug\Sculptor2D.pdb
 D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Debug\Window1.baml
 D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Debug\Sculptor2D.g.resources
+D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Debug\Sculptor2D.exe
+D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Debug\Sculptor2D.pdb
+D:\Aleksander\dev\Sculptor2D\Sculptor2D\bin\Debug\Newtonsoft.Json.dll
+D:\Aleksander\dev\Sculptor2D\Sculptor2D\bin\Debug\Newtonsoft.Json.pdb
+D:\Aleksander\dev\Sculptor2D\Sculptor2D\bin\Debug\Newtonsoft.Json.xml

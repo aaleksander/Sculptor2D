@@ -7,6 +7,7 @@
  * Для изменения этого шаблона используйте Сервис | Настройка | Кодирование | Правка стандартных заголовков.
  */
 using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using DrawLibrary.Graphics;
@@ -35,6 +36,9 @@ namespace DrawLibrary.Tools
 	/// </summary>
 	public class ToolBase
 	{
+		protected Collection<GraphicsBase> _objects;  //сюда поместятся все объекты, которые можно изменить (для последующего undo)
+		protected Collection<int> _modifiedIDs = new Collection<int>(); //список идешников объектов, у которых что-то поменялось
+
         /// <summary>
         /// Курсор инструмента
         /// </summary>

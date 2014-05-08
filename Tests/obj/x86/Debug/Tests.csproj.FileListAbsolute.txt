@@ -1,8 +1,11 @@
 D:\Aleksander\dev\Sculptor2D\Tests\bin\Debug\Tests.dll
 D:\Aleksander\dev\Sculptor2D\Tests\bin\Debug\Tests.pdb
 D:\Aleksander\dev\Sculptor2D\Tests\bin\Debug\nunit.framework.dll
+D:\Aleksander\dev\Sculptor2D\Tests\bin\Debug\Sculptor2D.exe
+D:\Aleksander\dev\Sculptor2D\Tests\bin\Debug\Sculptor2D.pdb
 D:\Aleksander\dev\Sculptor2D\Tests\obj\x86\Debug\Tests.csprojResolveAssemblyReference.cache
 D:\Aleksander\dev\Sculptor2D\Tests\obj\x86\Debug\Tests.dll
 D:\Aleksander\dev\Sculptor2D\Tests\obj\x86\Debug\Tests.pdb
-D:\Aleksander\dev\Sculptor2D\Tests\bin\Debug\Sculptor2D.exe
-D:\Aleksander\dev\Sculptor2D\Tests\bin\Debug\Sculptor2D.pdb
+D:\Aleksander\dev\Sculptor2D\Tests\bin\Debug\Newtonsoft.Json.dll
+D:\Aleksander\dev\Sculptor2D\Tests\bin\Debug\Newtonsoft.Json.pdb
+D:\Aleksander\dev\Sculptor2D\Tests\bin\Debug\Newtonsoft.Json.xml

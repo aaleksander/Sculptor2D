@@ -126,16 +126,15 @@
     			</ControlTemplate>
     		</Setter.Value>
     	</Setter>
-    </Style>	
-    
+    </Style>    
 </Window.Resources>
 
 	<DockPanel LastChildFill="True">
-		<ToolBar DockPanel.Dock="Top">
-			<Menu>
-				<MenuItem Header="Файл" />
-			</Menu>
-		</ToolBar>
+		<Menu DockPanel.Dock="Top">
+			<MenuItem Header="Файл">
+				<MenuItem Header="Сохранить" Command="{Binding ElementName=canvas, Path=SaveCommand}"></MenuItem>
+			</MenuItem>				
+		</Menu>
 		<StatusBar DockPanel.Dock="Bottom">
 			<StatusBarItem>
 				<Label Name="statusBar"/>

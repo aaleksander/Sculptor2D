@@ -26,8 +26,6 @@ namespace DrawLibrary.Tools
 	{
 		private BrushBase _brush = new BrushBase(); //текущая кисть	
 
-		private Collection<GraphicsBase> _objects;  //сюда поместятся все объекты, которые можно изменить (для последующего undo)
-		private Collection<int> _modifiedIDs = new Collection<int>(); //список идешников объектов, у которых что-то поменялось
 		
 		public override void OnMove(DrawingCanvas aCanvas, Point aPoint, bool aPressed)
         {

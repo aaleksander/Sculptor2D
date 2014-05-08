@@ -13,6 +13,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
+using DrawLibrary.Serialize;
 using Sculptor2D.Helpers;
 
 namespace DrawLibrary.Graphics
@@ -23,16 +24,12 @@ namespace DrawLibrary.Graphics
 	public class GraphicsMultiPoint: GraphicsBase
 	{
 		public GraphicsMultiPoint()
-		{
-			_points = new Collection<Point>();
-		}
+		{}
 		
 		public GraphicsMultiPoint(DrawingCanvas aCanvas): base(aCanvas)
-		{
-			_points = new Collection<Point>();
-		}
+		{}
 
-		private Collection<Point> _points;
+		private Collection<Point> _points = new Collection<Point>();
 		protected bool _isClosed = false;
 		protected Brush _brush = null;
 
@@ -289,7 +286,6 @@ namespace DrawLibrary.Graphics
 			return "M " + res.ToString();
 		}
 
-		
 		protected void CloneAttributes(GraphicsMultiPoint obj)
 		{
 			obj.Brush = this.Brush;
@@ -297,5 +293,12 @@ namespace DrawLibrary.Graphics
 			obj.Id = Id;
 			obj.IsClosed = IsClosed;
 		}
+		
+		
+        public override SerializeBase GetSerializebleObject()
+        {
+        	return new SerializeMultiPoint(this);
+        }
+		
 	}
 }

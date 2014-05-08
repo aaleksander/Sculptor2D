@@ -30,15 +30,17 @@ namespace Model
 
         public DB(string cs) : base(cs) { }
 
-//        public IEnumerable<T> SelectByRN<T>(int aRN)
         public T SelectByRN<T>(int aRN)
         {
-            var res = Query<T>(SQLFactory._SelectByRN<T>(aRN));
-            if( res.Count() == 0 )
+            try{
+				var res = this.Single<T>(aRN);//    // Query<T>(SQLFactory._SelectByRN<T>(aRN));            	
+            	return res;
+            }catch(InvalidOperationException)
+            {
             	throw new EmptySelectException();
-            return res.First<T>();
+            }
         }
-        
+
         public List<T> SelectAll<T>(string aOrder = "")
         {
         	Sql s = SQLFactory.Select<T>();
