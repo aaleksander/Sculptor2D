@@ -54,16 +54,15 @@ namespace DrawLibrary.Tools
 				}
 			}
         }
-
 		
 		public override void Init(DrawingCanvas drawingCanvas)
 		{
 			drawingCanvas.UnselectAll();
 		}		
-		
+
 		public override void OnDown(DrawingCanvas aCanvas, Point aPoint)//, MouseButtonEventArgs e)
 		{
-			InitObjectsForHistory(aCanvas);
+			InitObjectsForHistory(aCanvas, x => x is GraphicsMultiPoint);
 			//_objects = aCanvas.GetPotentObjects(); //клонируем себе объектов
 			//_modifiedIDs.Clear();
 
@@ -86,7 +85,7 @@ namespace DrawLibrary.Tools
 				return _brush;
 			}
 		}
-		
+
 		private GraphicsCursor _cursor = null;
 		public override void SetCursor(DrawingCanvas drawingCanvas)
 		{

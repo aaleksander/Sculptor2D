@@ -94,6 +94,7 @@
     <Compile Include="DrawLibrary\Serialize\Loader.cs" />
     <Compile Include="DrawLibrary\Serialize\SerializeBase.cs" />
     <Compile Include="DrawLibrary\Serialize\Saver.cs" />
+    <Compile Include="DrawLibrary\Serialize\SerializeClay.cs" />
     <Compile Include="DrawLibrary\Serialize\SerializeMultiPoint.cs" />
     <Compile Include="DrawLibrary\Serialize\SerializePolygon.cs" />
     <Compile Include="DrawLibrary\Tools\ToolBase.cs" />

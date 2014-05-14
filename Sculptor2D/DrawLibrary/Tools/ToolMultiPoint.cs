@@ -42,6 +42,7 @@ namespace DrawLibrary.Tools
             		_obj.DeleteLastPoint(); //удаляем последнюю которая тянулась за мышкой            	
             		_obj.IsSelected = false;
             		_obj.OwnerCanvas = aCanvas;
+            		_obj.RefreshDrawing();
             		aCanvas.AddActionToHistory(new ActionAdd(_obj));
             		_obj = null;
             		aCanvas.ReleaseMouseCapture();            		
@@ -56,8 +57,9 @@ namespace DrawLibrary.Tools
             { //начинаем рисовать новый объект
             	_obj = new T();
             	_obj.AddPoint(aPoint); //это начало линии
-            
+
             	AddNewObject(drawingCanvas, _obj); //добавляем новый объект
+            	//drawingCanvas.AddObject(_obj);
             	_obj.IsSelected = false;
             	drawingCanvas.CaptureMouse();
             }

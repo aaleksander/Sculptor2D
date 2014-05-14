@@ -47,6 +47,8 @@ namespace DrawLibrary.Graphics
 		{
 			Id = aObj.Id;
 			OwnerCanvas = aCanvas;
+			IsSelected = aObj.isSelected;
+			Mode = aObj.mode;
 		}
 
 		public int Id{set;get;}
@@ -132,7 +134,7 @@ namespace DrawLibrary.Graphics
         public virtual SerializeBase GetSerializebleObject()
         {
         	SerializeBase res = new SerializeBase(this);
-        	
+
         	return res;
         }
 	}

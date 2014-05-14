@@ -47,7 +47,9 @@ namespace DrawLibrary.Undo
 
             if ( objectToDelete != null )
             {
-                drawingCanvas.GraphicsList.Remove(objectToDelete);
+            	drawingCanvas.RemoveService(objectToDelete);
+                drawingCanvas.GraphicsList.Remove(objectToDelete); 
+                //drawingCanvas.RemoveObject(objectToDelete);
             }
         }
 

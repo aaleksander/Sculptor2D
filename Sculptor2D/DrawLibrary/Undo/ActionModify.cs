@@ -10,6 +10,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DrawLibrary.Graphics;
+using DrawLibrary.Serialize;
 
 namespace DrawLibrary.Undo
 {
@@ -18,22 +19,22 @@ namespace DrawLibrary.Undo
 	/// </summary>
 	public class ActionModify: ActionBase
 	{
-        Collection<GraphicsBase> _objects;
+        Collection<SerializeBase> _objects;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="aObjects"></param>
         /// <param name="aIds"></param>
-        public ActionModify(Collection<GraphicsBase> aObjects, Collection<int> aIDs): base()
+        public ActionModify(Collection<SerializeBase> aObjects, Collection<int> aIDs): base()
         {
-        	_objects = new Collection<GraphicsBase>();
-        	GraphicsBase o;
+        	_objects = new Collection<SerializeBase>();
+        	SerializeBase o;
         	//клонируем все объекты, для которых есть id
         	foreach(int id in aIDs)
         	{
         		o = aObjects.First(x => x.Id == id);
-        		_objects.Add(o.Clone());
+        		_objects.Add(o);//.CreateGraphicsObject() );
         	}
         }
 
@@ -46,28 +47,28 @@ namespace DrawLibrary.Undo
         	GraphicsBase b;
         	int i;
         	//восстанавливаем все объекты обратно
-        	foreach(var o in _objects)
+        	foreach(SerializeBase o in _objects)
         	{
         		objectToReplace = null;
-        		
+
             	for(i=0; i<aCanvas.GraphicsList.Count; i++)
             	{
             		b = (GraphicsBase)aCanvas.GraphicsList[i];
 	                if ( b.Id == o.Id )
 	                {
-	                    objectToReplace = o;
+	                	objectToReplace = o.CreateGraphicsObject();
+	                	objectToReplace.OwnerCanvas = aCanvas;
 	                    break;
 	                }
 	            }
 
 	            if( objectToReplace != null )
 	            {
+	            	aCanvas.RemoveService(objectToReplace);
 	            	aCanvas.ReplaceObject(i, objectToReplace);
-	            	//objectToReplace.RefreshDrawing();
+	            	aCanvas.RefreshServiceObjects(objectToReplace); //обновить сервисные объекты этого объекта
 	            }
         	}
-
-
         }
 
         /// <summary>

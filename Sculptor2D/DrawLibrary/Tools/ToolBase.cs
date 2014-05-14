@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using DrawLibrary.Graphics;
+using DrawLibrary.Serialize;
 using DrawLibrary.Undo;
 
 namespace DrawLibrary.Tools
@@ -39,16 +40,16 @@ namespace DrawLibrary.Tools
 	{
 		
 		#region для undo/redo
-		protected Collection<GraphicsBase> _objects;  //сюда поместятся все объекты, которые можно изменить (для последующего undo)
+		protected Collection<SerializeBase> _objects;  //сюда поместятся все объекты, которые можно изменить (для последующего undo)
 		protected Collection<int> _modifiedIDs = new Collection<int>(); //список идешников объектов, у которых что-то поменялось
 
 		/// <summary>
 		/// инициализируем объекты для последующих откатов
 		/// </summary>
 		/// <param name="aCanvas"></param>
-		protected void InitObjectsForHistory(DrawingCanvas aCanvas)
+		protected void InitObjectsForHistory(DrawingCanvas aCanvas, Func<GraphicsBase, bool> func)
 		{
-			_objects = aCanvas.GetPotentObjects();
+			_objects = aCanvas.GetPotentObjects(func);
 			_modifiedIDs.Clear();			
 		}
 
@@ -109,6 +110,8 @@ namespace DrawLibrary.Tools
             //o.Clip = new RectangleGeometry(new Rect(0, 0, drawingCanvas.ActualWidth, drawingCanvas.ActualHeight));
 
             aCanvas.GraphicsList.Add(o);
+            //aCanvas.AddObject(o);
+            
             //drawingCanvas.CaptureMouse();
             //aCanvas.ReleaseMouseCapture();
         }

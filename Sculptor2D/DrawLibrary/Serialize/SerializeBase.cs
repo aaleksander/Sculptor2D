@@ -25,6 +25,9 @@ namespace DrawLibrary.Serialize
 		[JsonProperty("Type")]
 		public String Type{set;get;}
 
+		public bool isSelected; //это не пойдет в файл, но нужно для реализации undo/redo
+		public GraphicsMode mode;
+
 		//public SerializeBase(){}
 
 		/// <summary>
@@ -35,6 +38,8 @@ namespace DrawLibrary.Serialize
 		{
 			Id = aObj.Id;
 			Type = "Base";
+			isSelected = aObj.IsSelected;
+			mode =aObj.Mode;
 		}
 
 		/// <summary>
@@ -51,8 +56,7 @@ namespace DrawLibrary.Serialize
 		/// </summary>
 		public virtual GraphicsBase CreateGraphicsObject()
 		{
-			GraphicsBase res = new GraphicsBase();
-			res.Id = Id;
+			GraphicsBase res = new GraphicsBase(null, this);
 			return res;
 		}
 	}

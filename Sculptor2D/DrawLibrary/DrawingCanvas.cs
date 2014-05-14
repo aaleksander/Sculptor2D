@@ -22,6 +22,7 @@ using System.Xml.Serialization;
 using Commands;
 using DrawLibrary.Brushes;
 using DrawLibrary.Graphics;
+using DrawLibrary.Serialize;
 using DrawLibrary.Tools;
 using DrawLibrary.Undo;
 using DrawToolsLib;
@@ -108,22 +109,22 @@ namespace DrawLibrary
 //			_cursor = new DrawingVisual();
 //            DrawingContext dc = _cursor.RenderOpen();
 //            dc.DrawEllipse(null, new Pen(new SolidColorBrush(Colors.Black), 1), new Point(0, 0), 10, 10);
-//            dc.Close();            
-            
+//            dc.Close();
+
             //_graphicsList.Add(_cursor);
 		}
-		
+
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		public void onPropertyChanged(string aProp){			
-			_onPropertyChanged(new PropertyChangedEventArgs(aProp));						
-		}		
+			_onPropertyChanged(new PropertyChangedEventArgs(aProp));
+		}
 
 		protected void _onPropertyChanged(PropertyChangedEventArgs e)
 		{
 			if( PropertyChanged != null )
 				PropertyChanged(this, e);
-		}		
+		}
 
 		#region события хоста
 		public delegate void CanvasEventHandler(object sender, CanvasEventArgs e);
@@ -151,18 +152,38 @@ namespace DrawLibrary
                 return _graphicsList;
             }
         }
+        
+//        public void AddObject(GraphicsBase aObj)
+//        {
+//        	_graphicsList.Add(aObj);
+//        	base.AddVisualChild(aObj);
+//        	base.AddLogicalChild(aObj);
+//        }
+//        
+//        public void RemoveObject(GraphicsBase aObj)
+//        {
+//        	_graphicsList.Remove(aObj);
+//        	base.RemoveVisualChild(aObj);
+//        	base.RemoveLogicalChild(aObj);
+//        }        
 
         /// <summary>
         /// заменяет объект по индексу на новый
         /// </summary>
         /// <param name="aIndex"></param>
         /// <param name="aObj"></param>
-        public void ReplaceObject(int aIndex, Visual aObj)
+        public void ReplaceObject(int aIndex, GraphicsBase aObj)
         {
         	GraphicsList.RemoveAt(aIndex);
         	InvalidateVisual();
         	GraphicsList.Insert(aIndex, aObj);
         	InvalidateVisual();
+        }
+
+        public void RefreshServiceObjects(GraphicsBase aObj)
+        {
+        	RemoveService(aObj);
+        	aObj.RefreshDrawing();
         }
 
         internal GraphicsBase this[int index]
@@ -683,14 +704,14 @@ namespace DrawLibrary
 		/// возвращает коллекцию объектов, которые потенциально могу измениться.
 		/// </summary>
 		/// <returns></returns>
-		public Collection<GraphicsBase> GetPotentObjects()
+		public Collection<SerializeBase> GetPotentObjects(Func<GraphicsBase, bool> aFunc)
 		{
 			//FIXME: учитывать активный слой и свойства (заморозка, например), объектов
-			Collection<GraphicsBase> res = new Collection<GraphicsBase>();
-			foreach(var o in GraphicsList)
+			Collection<SerializeBase> res = new Collection<SerializeBase>();
+			foreach(GraphicsBase o in GraphicsList)
 			{
-				if( o is GraphicsMultiPoint )
-					res.Add( ((GraphicsMultiPoint)o).Clone());
+				if( aFunc( (GraphicsBase)o) )
+					res.Add(o.GetSerializebleObject());
 			}
 			return res;
 		}

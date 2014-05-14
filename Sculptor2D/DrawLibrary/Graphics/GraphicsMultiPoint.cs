@@ -36,6 +36,8 @@ namespace DrawLibrary.Graphics
 			_points = new Collection<Point>();
 			foreach(var p in aObj.Points)
 				_points.Add(new Point(p.X, p.Y));
+			
+			Brush = aObj.brush;
 		}
 		
 		private Collection<Point> _points = new Collection<Point>();
@@ -91,12 +93,14 @@ namespace DrawLibrary.Graphics
 			if( IsHit ) //надо подсветить поверх всех объектов
 			{
 				OwnerCanvas.GraphicsList.Add(new GraphicsServiceContour(this, true));
+				//OwnerCanvas.AddObject(new GraphicsServiceContour(this, true));
 			}
 
 			if ( IsSelected )
             {
 				//нарисовать еще один контур, только потоньше (пунктиром?) и другим цветом
 				OwnerCanvas.GraphicsList.Add(new GraphicsServiceContour(this, false));
+				//OwnerCanvas.AddObject(new GraphicsServiceContour(this, false));
 				switch (Mode)
 				{
 				case GraphicsMode.Selected:	DrawTracker(aContext); break;
@@ -237,6 +241,7 @@ namespace DrawLibrary.Graphics
 			for(int i=0; i<Points.Count; i++)
 			{
 				OwnerCanvas.GraphicsList.Add(new GraphicsServicePoint(this, Points[i], i));
+				//OwnerCanvas.AddObject(new GraphicsServicePoint(this, Points[i], i));
 				//aContext.DrawEllipse(br, pn, new Point(p.X, p.Y), 4, 4);
 			}
         }		
@@ -306,7 +311,7 @@ namespace DrawLibrary.Graphics
 			//obj.Mode = Mode;
 		}
 
-        public SerializeBase GetSerializebleObject<T>()
+        public override SerializeBase GetSerializebleObject()
         {
         	return new SerializeMultiPoint(this);
         }

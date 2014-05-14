@@ -24,7 +24,7 @@ namespace DrawLibrary.Graphics
 
 		public bool IsYourOwner(GraphicsBase aObj)
 		{
-			return aObj == _owner;
+			return aObj.Id == _owner.Id;
 		}		
 
 		public GraphicsBase Owner{

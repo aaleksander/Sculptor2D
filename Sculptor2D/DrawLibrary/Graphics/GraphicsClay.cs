@@ -28,7 +28,16 @@ namespace DrawLibrary.Graphics
 		public GraphicsClay(DrawingCanvas aCanvas):base(aCanvas)
 		{			
 		}
-		
+
+		public GraphicsClay(DrawingCanvas aCanvas, SerializeClay aobj): base(aCanvas, aobj)
+		{
+			Brush = null;
+			if( IsClosed )
+				Brush = new SolidColorBrush(Colors.SandyBrown);	
+
+			RefreshDrawing();
+		}
+
 		public GraphicsClay(DrawingCanvas aCanvas, GraphicsMultiPoint aGr):base(aCanvas)
 		{
 			//копируем все вершины
@@ -36,9 +45,9 @@ namespace DrawLibrary.Graphics
 			{
 				AddPoint(p.X, p.Y);
 			}
-			
+
 			IsClosed = aGr.IsClosed;
-			
+
 			Brush = null;
 			if( IsClosed )
 				Brush = new SolidColorBrush(Colors.SandyBrown);			
@@ -149,6 +158,9 @@ namespace DrawLibrary.Graphics
 			return res;
 		}
 
-		//не должны рисоваться маркеры для вершин
+		public override SerializeBase GetSerializebleObject()
+		{
+			return new SerializeClay(this);
+		}
 	}
 }

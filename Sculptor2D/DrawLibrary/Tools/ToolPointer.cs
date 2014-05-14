@@ -46,7 +46,7 @@ namespace DrawLibrary.Tools
 		   		o.IsHit = o.Contains(aPoint);
 		   		if( o.IsHit )
 		   		{
-		   			//aCanvas.UpdateServiceObjects();
+		   			aCanvas.UpdateServiceObjects();
 		   			break; //Горячим может быть только один объект
 		   		}
 			}
@@ -106,6 +106,8 @@ namespace DrawLibrary.Tools
 
         public override void OnDown(DrawingCanvas aCanvas, Point aPoint)//MouseButtonEventArgs e)
         {        	
+        	//InitObjectsForHistory(aCanvas);
+        	
 			_startDragging = aPoint;
 
         	var o = GetHitObject(aCanvas, aPoint);

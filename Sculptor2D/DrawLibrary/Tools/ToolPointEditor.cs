@@ -55,7 +55,7 @@ namespace DrawLibrary.Tools
 
         public override void OnDown(DrawingCanvas aCanvas, Point aPoint)//MouseButtonEventArgs e)
         {        	
-        	InitObjectsForHistory(aCanvas);
+        	InitObjectsForHistory(aCanvas, x => x is GraphicsMultiPoint);
 			_startDragging = aPoint;
 
         	var o = GetHitObject(aCanvas, aPoint);

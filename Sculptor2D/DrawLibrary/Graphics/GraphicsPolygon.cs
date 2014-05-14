@@ -29,7 +29,7 @@ namespace DrawLibrary.Graphics
 		
 		public GraphicsPolygon(DrawingCanvas aCanvas, SerializePolygon aObj):base(aCanvas, aObj)
 		{}
-		
+
 		/// <summary>
 		/// делает полную копию объекта
 		/// </summary>
@@ -40,7 +40,7 @@ namespace DrawLibrary.Graphics
 			CloneAttributes(res);
 			return res;
 		}
-		
+
         public override SerializeBase GetSerializebleObject()
         {
         	return new SerializePolygon(this);

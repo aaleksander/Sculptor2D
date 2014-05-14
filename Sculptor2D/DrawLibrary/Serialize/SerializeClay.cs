@@ -1,34 +1,29 @@
 ﻿/*
  * Сделано в SharpDevelop.
  * Пользователь: AnufrievAA
- * Дата: 08.05.2014
- * Время: 13:42
+ * Дата: 14.05.2014
+ * Время: 13:11
  * 
  * Для изменения этого шаблона используйте Сервис | Настройка | Кодирование | Правка стандартных заголовков.
  */
 using System;
 using DrawLibrary.Graphics;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace DrawLibrary.Serialize
 {
 	/// <summary>
-	/// Description of SerializePolygon.
+	/// Description of SerializeClay.
 	/// </summary>
-	[JsonObject]
-	public class SerializePolygon: SerializeMultiPoint
+	public class SerializeClay: SerializeMultiPoint
 	{
-		public SerializePolygon(JObject aObj): base(aObj)
+		public SerializeClay(GraphicsMultiPoint aObj):base(aObj)
 		{
-			Type = "Polygon";
-			_jObject = aObj;
+			Type = "Clay";
 		}
-		private JObject _jObject;
-
-		public SerializePolygon(GraphicsPolygon aObj): base(aObj)
+		
+		public override GraphicsBase CreateGraphicsObject()
 		{
-			Type = "Polygon";
+			return new GraphicsClay(null, this);
 		}
 	}
 }

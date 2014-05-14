@@ -9,6 +9,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Media;
 using DrawLibrary.Graphics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -27,17 +28,19 @@ namespace DrawLibrary.Serialize
 		[JsonProperty("IsClosed")]
 		public bool IsClosed{set;get;}
 
+		public Brush brush;
 		
 		public SerializeMultiPoint(GraphicsMultiPoint aObj):base(aObj)
 		{
 			Type = "MultiPoint";
+			brush = aObj.Brush;
 			
 			Points = new Collection<Point>();
 			foreach(var p in aObj.Points)
 			{
 				Points.Add(new Point(p.X, p.Y));
 			}
-			
+
 			IsClosed = aObj.IsClosed;
 		}
 		
@@ -64,6 +67,14 @@ namespace DrawLibrary.Serialize
 		protected void JPoints2Points(GraphicsMultiPoint aRes)
 		{
 			aRes.Points.Add(new Point(10, 1));
+		}
+		
+		/// <summary>
+		/// возвращает графический объект, полностью восстановленный
+		/// </summary>
+		public override GraphicsBase CreateGraphicsObject()
+		{
+			return new GraphicsMultiPoint(null, this);
 		}
 		
 	}
