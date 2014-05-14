@@ -19,25 +19,24 @@ namespace DrawLibrary.Serialize
 	[JsonObject]
 	public class SerializePolygon: SerializeMultiPoint
 	{
+		public SerializePolygon(JObject aObj): base(aObj)
+		{
+			Type = "Polygon";
+			_jObject = aObj;
+		}
+		private JObject _jObject;
+
 		public SerializePolygon(GraphicsPolygon aObj): base(aObj)
 		{
 			Type = "Polygon";
 		}
 		
-		
-		public SerializePolygon(JObject aObj): base(aObj)
-		{
-			Type = "Polygon";
-			_jObject = aObj;
-		}		
-		private JObject _jObject;
-
 		public override GraphicsBase CreateGraphicsObject()
 		{
 			GraphicsPolygon res = new GraphicsPolygon();
-			
+
 			JPoints2Points(res);
-			
+
 			return res;
 		}		
 	}

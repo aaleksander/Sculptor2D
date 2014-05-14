@@ -36,6 +36,11 @@ namespace DrawLibrary.Tools
 					aCanvas.SelectObject(_dragObject, GraphicsMode.Points );
 				}
 			}
+			
+			if( IsDragging == true && _dragObject != null )
+			{
+				AddModifiedToHistory(aCanvas);
+			}
 
 			aCanvas.ReleaseMouseCapture();
 		}
@@ -50,6 +55,7 @@ namespace DrawLibrary.Tools
 
         public override void OnDown(DrawingCanvas aCanvas, Point aPoint)//MouseButtonEventArgs e)
         {        	
+        	InitObjectsForHistory(aCanvas);
 			_startDragging = aPoint;
 
         	var o = GetHitObject(aCanvas, aPoint);
@@ -72,7 +78,8 @@ namespace DrawLibrary.Tools
         	{
 				if( _dragObject != null && _dragObject is GraphicsServicePoint ) //тащим точку
 				{
-					((GraphicsServicePoint)_dragObject).Move(aPoint);
+					var o = ((GraphicsServicePoint)_dragObject).Move(aPoint);
+					AddObjectToModified(o); //запомним для отката
 				}
         	}
         }

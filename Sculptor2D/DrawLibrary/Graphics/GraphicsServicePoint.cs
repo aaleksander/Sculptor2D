@@ -52,7 +52,7 @@ namespace DrawLibrary.Graphics
 			return Geometry.dist(point, _point) < 4;
 		}
 		
-		public void Move(Point aPoint)
+		public GraphicsMultiPoint Move(Point aPoint)
 		{
 //			var obj = (GraphicsMultiPoint) OwnerCanvas.GetObjectBy(x => IsYourOwner(x)); //ищем, чей это объект
 //			if( obj == null )
@@ -70,8 +70,10 @@ namespace DrawLibrary.Graphics
 					break;
 				}
 			}
-			
-			obj.RefreshDrawing();			
-		}			
+
+			obj.RefreshDrawing();
+
+			return obj;
+		}
 	}
 }

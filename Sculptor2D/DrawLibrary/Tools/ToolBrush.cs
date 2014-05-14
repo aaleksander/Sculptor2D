@@ -34,9 +34,6 @@ namespace DrawLibrary.Tools
         	if( IsDragging )
         		_brush.AddPath(aPoint);
 
-        	//создаем полигон, в глину, выделяем стрелкой, лепить, выбираем кисть, "мажем" - вылетаетю
-        	
-        	
         	//TODO: если на канве есть выделенные элементы, то редактировать нолько их
 			if( aPressed && _brush.Path.Count > 2)
 			{//делаем "мазок"
@@ -47,9 +44,10 @@ namespace DrawLibrary.Tools
 					{
 						o = (GraphicsClay)clay;
 						if( _brush.Modify(o) )//то кисть ее модифицирует
-						{					
-							if( !_modifiedIDs.Contains(o.Id) )
-								_modifiedIDs.Add(o.Id);
+						{	
+							AddObjectToModified(o);
+							//if( !_modifiedIDs.Contains(o.Id) )
+							//	_modifiedIDs.Add(o.Id);
 							((GraphicsClay)clay).UpdateClay();
 						}						
 					}
@@ -65,16 +63,17 @@ namespace DrawLibrary.Tools
 		
 		public override void OnDown(DrawingCanvas aCanvas, Point aPoint)//, MouseButtonEventArgs e)
 		{
-			_objects = aCanvas.GetPotentObjects(); //клонируем себе объектов
-			_modifiedIDs.Clear();
+			InitObjectsForHistory(aCanvas);
+			//_objects = aCanvas.GetPotentObjects(); //клонируем себе объектов
+			//_modifiedIDs.Clear();
 
-			//_brush.AddPath(e.GetPosition(aCanvas)); //самая первая точка
 			_brush.AddPath(aPoint); //самая первая точка
 		}
 
 		public override void OnUp(DrawingCanvas aCanvas, Point aPoint)
 		{
-			aCanvas.AddActionToHistory(new ActionModify(_objects, _modifiedIDs));
+			//aCanvas.AddActionToHistory(new ActionModify(_objects, _modifiedIDs));
+			AddModifiedToHistory(aCanvas);
 			_brush.ClearPath();
 		}
 

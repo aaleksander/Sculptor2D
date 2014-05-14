@@ -163,7 +163,7 @@ namespace DrawLibrary
         	InvalidateVisual();
         	GraphicsList.Insert(aIndex, aObj);
         	InvalidateVisual();
-        }        
+        }
 
         internal GraphicsBase this[int index]
         {
@@ -475,7 +475,7 @@ namespace DrawLibrary
 
 		private bool CanToClay()
 		{
-			return SelectedObject != null && SelectedObject is GraphicsMultiPoint;
+			return SelectedObject != null && SelectedObject is GraphicsMultiPoint && !(SelectedObject is GraphicsClay);
 		}
 		#endregion	
 
@@ -618,8 +618,7 @@ namespace DrawLibrary
 			
 		}		
 		#endregion
-		
-		
+
 		#region кнопка Escape
 		private DelegateCommand escapeCommand;
 		public ICommand EscapeCommand
@@ -645,7 +644,7 @@ namespace DrawLibrary
             _tools[(int)Tool].KeyDown(this, Key.Escape);
 		}	
 		#endregion кнопка escape
-		
+
 		#region Undo
 		UndoManager _undoManager;
         public void AddActionToHistory(ActionBase command)
@@ -679,7 +678,7 @@ namespace DrawLibrary
 			return _undoManager.CanUndo;
 		}
 		#endregion Undo
-		
+
 		/// <summary>
 		/// возвращает коллекцию объектов, которые потенциально могу измениться.
 		/// </summary>

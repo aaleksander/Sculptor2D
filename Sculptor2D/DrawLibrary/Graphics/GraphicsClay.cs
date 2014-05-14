@@ -16,6 +16,8 @@ using Helpers;
 using System.Linq;
 using Sculptor2D.Helpers;
 
+//FIXME: если объект выделен, а мы его отменяем (Ctrl+z), то от него остается контур
+
 namespace DrawLibrary.Graphics
 {
 	/// <summary>
@@ -49,7 +51,7 @@ namespace DrawLibrary.Graphics
 		/// </summary>
 		public void UpdateClay()
 		{
-			double maxLen = 5; //максимально возможная длина отрезка
+			double maxLen = 3; //максимально возможная длина отрезка
 			double minLen = 1;  //минимально возможная длина отрезка
 			
 			Collection<Point> tmp = new Collection<Point>();

@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using DrawLibrary.Graphics;
+using DrawLibrary.Undo;
 
 namespace DrawLibrary.Tools
 {
@@ -36,8 +37,37 @@ namespace DrawLibrary.Tools
 	/// </summary>
 	public class ToolBase
 	{
+		
+		#region для undo/redo
 		protected Collection<GraphicsBase> _objects;  //сюда поместятся все объекты, которые можно изменить (для последующего undo)
 		protected Collection<int> _modifiedIDs = new Collection<int>(); //список идешников объектов, у которых что-то поменялось
+
+		/// <summary>
+		/// инициализируем объекты для последующих откатов
+		/// </summary>
+		/// <param name="aCanvas"></param>
+		protected void InitObjectsForHistory(DrawingCanvas aCanvas)
+		{
+			_objects = aCanvas.GetPotentObjects();
+			_modifiedIDs.Clear();			
+		}
+
+		/// <summary>
+		/// какой-то объект в ходе действия поменялся, надо его запомнить
+		/// </summary>
+		/// <param name="aObject"></param>
+		protected void AddObjectToModified(GraphicsBase aObject)
+		{
+			if( !_modifiedIDs.Contains(aObject.Id) )
+				_modifiedIDs.Add(aObject.Id);
+		}
+
+		protected void AddModifiedToHistory(DrawingCanvas aCanvas)
+		{
+			aCanvas.AddActionToHistory(new ActionModify(_objects, _modifiedIDs));
+		}
+		#endregion для undo/redo
+			
 
         /// <summary>
         /// Курсор инструмента

@@ -59,10 +59,11 @@ namespace DrawLibrary.Undo
 	                    break;
 	                }
 	            }
-	            
+
 	            if( objectToReplace != null )
 	            {
 	            	aCanvas.ReplaceObject(i, objectToReplace);
+	            	//objectToReplace.RefreshDrawing();
 	            }
         	}
 

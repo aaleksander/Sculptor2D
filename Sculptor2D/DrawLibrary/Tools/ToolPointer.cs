@@ -25,7 +25,11 @@ namespace DrawLibrary.Tools
 	/// </summary>
 	public class ToolPointer: ToolBase
 	{
-		
+		/// <summary>
+		/// простое перемещение указателя
+		/// </summary>
+		/// <param name="aCanvas"></param>
+		/// <param name="aPoint"></param>
 		protected void SimpleMove(DrawingCanvas aCanvas, Point aPoint)
 		{
 			//почистить у всех IsHit
@@ -34,7 +38,7 @@ namespace DrawLibrary.Tools
 			{
 				((GraphicsBase)aCanvas.GraphicsList[i]).IsHit = false;
 			}
-			
+
 			_dragObject = null;
 			for(int i=aCanvas.Count - 1; i>=0; i-- ) //идем сверху-вниз
 			{ //просто подсвечиваем

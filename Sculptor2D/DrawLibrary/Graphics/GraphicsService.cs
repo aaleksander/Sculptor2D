@@ -19,14 +19,14 @@ namespace DrawLibrary.Graphics
 		{
 			_owner = aObj;
 		}
-		
+
 		private GraphicsBase _owner; //владелец этого сервисного объекта
-		
+
 		public bool IsYourOwner(GraphicsBase aObj)
 		{
 			return aObj == _owner;
 		}		
-		
+
 		public GraphicsBase Owner{
 			get{ return _owner; }
 		}

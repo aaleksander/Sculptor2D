@@ -42,6 +42,12 @@ namespace DrawLibrary.Graphics
 			Id = this.GetHashCode();
 			OwnerCanvas = aCanvas;
 		}
+		
+		public GraphicsBase(DrawingCanvas aCanvas, SerializeBase aObj)
+		{
+			Id = aObj.Id;
+			OwnerCanvas = aCanvas;
+		}
 
 		public int Id{set;get;}
 
@@ -69,7 +75,7 @@ namespace DrawLibrary.Graphics
             Draw(dc);
 
             dc.Close();
-        }	
+        }
 
         public virtual void Draw(DrawingContext drawingContext){}
 
@@ -82,7 +88,6 @@ namespace DrawLibrary.Graphics
             set 
             {
            		Mode = value? GraphicsMode.Selected: GraphicsMode.None;
-
                 RefreshDrawing();
             }
         }
@@ -123,10 +128,12 @@ namespace DrawLibrary.Graphics
         public virtual void DrawPoints(){}
 
         public virtual GraphicsBase Clone(){return null;}
-        
+
         public virtual SerializeBase GetSerializebleObject()
         {
-        	throw new Exception("Не реализован метод GetSeializebleObject");
+        	SerializeBase res = new SerializeBase(this);
+        	
+        	return res;
         }
 	}
 }

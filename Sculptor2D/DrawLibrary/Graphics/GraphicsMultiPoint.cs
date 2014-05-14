@@ -29,6 +29,15 @@ namespace DrawLibrary.Graphics
 		public GraphicsMultiPoint(DrawingCanvas aCanvas): base(aCanvas)
 		{}
 
+		public GraphicsMultiPoint(DrawingCanvas aCanvas, SerializeMultiPoint aObj):base(aCanvas, aObj)
+		{
+			IsClosed = aObj.IsClosed;
+			
+			_points = new Collection<Point>();
+			foreach(var p in aObj.Points)
+				_points.Add(new Point(p.X, p.Y));
+		}
+		
 		private Collection<Point> _points = new Collection<Point>();
 		protected bool _isClosed = false;
 		protected Brush _brush = null;
@@ -292,13 +301,14 @@ namespace DrawLibrary.Graphics
 			Points.ToList().ForEach(x => obj.AddPoint(x.X, x.Y));  //клонируем все вершины
 			obj.Id = Id;
 			obj.IsClosed = IsClosed;
+			obj.OwnerCanvas = OwnerCanvas;
+			//obj.IsSelected = IsSelected;
+			//obj.Mode = Mode;
 		}
-		
-		
-        public override SerializeBase GetSerializebleObject()
+
+        public SerializeBase GetSerializebleObject<T>()
         {
         	return new SerializeMultiPoint(this);
         }
-		
 	}
 }

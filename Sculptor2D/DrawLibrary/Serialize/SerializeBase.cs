@@ -13,7 +13,6 @@ using Newtonsoft.Json.Linq;
 
 namespace DrawLibrary.Serialize
 {
-
 	/// <summary>
 	/// Description of SerializeBase.
 	/// </summary>

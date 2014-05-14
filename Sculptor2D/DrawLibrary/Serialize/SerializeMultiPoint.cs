@@ -24,8 +24,11 @@ namespace DrawLibrary.Serialize
 		[JsonProperty("Points")]
 		public Collection<Point> Points{set;get;}
 
-		//public SerializeMultiPoint(){}
-		public SerializeMultiPoint(GraphicsMultiPoint aObj): base(aObj)
+		[JsonProperty("IsClosed")]
+		public bool IsClosed{set;get;}
+
+		
+		public SerializeMultiPoint(GraphicsMultiPoint aObj):base(aObj)
 		{
 			Type = "MultiPoint";
 			
@@ -34,8 +37,10 @@ namespace DrawLibrary.Serialize
 			{
 				Points.Add(new Point(p.X, p.Y));
 			}
+			
+			IsClosed = aObj.IsClosed;
 		}
-
+		
 		public SerializeMultiPoint(JObject aObj): base(aObj)
 		{
 			Type = "MultiPoint";			

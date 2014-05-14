@@ -26,7 +26,6 @@ namespace DrawLibrary.Serialize
 		{
 			_file = System.IO.File.ReadAllText(aFileName);
 
-			
 			_graphConstructors = new Dictionary<string, ConstructorDelegate>
 			{
 				{"Base", 	this._NewBase},
