@@ -124,12 +124,18 @@
     <Compile Include="Properties\WPFAssemblyInfo.cs" />
     <Compile Include="ViewModel\ListViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="View\InputBox.xaml.cs">
+      <DependentUpon>InputBox.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Window1.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Styles.xaml" />
+    <Page Include="View\InputBox.xaml" />
     <Page Include="Window1.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +150,7 @@
     <Folder Include="ViewModel" />
     <Folder Include="Model" />
     <Folder Include="Helpers" />
+    <Folder Include="View" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

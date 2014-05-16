@@ -46,7 +46,6 @@ namespace DrawLibrary.Serialize
 
 		public SerializeMultiPoint(JObject aObj): base(aObj)
 		{
-			//TODO: чтение IsClosed
 			
 			Type = "MultiPoint";
 			
@@ -57,7 +56,9 @@ namespace DrawLibrary.Serialize
 			{
 				tmp = Point.Parse(p.ToString());
 				Points.Add(tmp);
-			}			               
+			}		
+
+			IsClosed = bool.Parse(aObj["IsClosed"].ToString());
 		}
 
 		

@@ -18,7 +18,9 @@ using System.Windows.Media;
 using DrawLibrary;
 using DrawLibrary.Brushes;
 using DrawLibrary.Graphics;
+using DrawLibrary.Misc;
 using DrawLibrary.Tools;
+using Sculptor2D.View;
 
 namespace Sculptor2D
 {
@@ -51,6 +53,9 @@ namespace Sculptor2D
 			scrollViewer.ScrollChanged += OnScrollViewerScrollChanged;
 
 			slider.Value = 5;
+			
+			
+			//canvas.Layers.Add(new Layer("123"));
 		}
 
         void OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -169,5 +174,24 @@ namespace Sculptor2D
 
             e.Handled = true;
         }
+        
+        /// <summary>
+        /// добавить новый слой
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+		void Button_Click(object sender, RoutedEventArgs e)
+		{
+			InputBox dlg = new InputBox();
+			
+			dlg.Prompt = "Название слоя:";
+			dlg.Value = "";
+			
+			var res = dlg.ShowDialog();
+			if( res.HasValue == true && res.Value == true )
+			{
+				canvas.AddLayer(dlg.Value);
+			}
+		}
 	}
 }

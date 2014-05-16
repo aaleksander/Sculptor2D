@@ -34,12 +34,12 @@ namespace DrawLibrary.Graphics
 		/// делает полную копию объекта
 		/// </summary>
 		/// <returns></returns>
-		public override GraphicsBase Clone()
-		{
-			GraphicsPolygon res = new GraphicsPolygon();
-			CloneAttributes(res);
-			return res;
-		}
+//		public override GraphicsBase Clone()
+//		{
+//			GraphicsPolygon res = new GraphicsPolygon();
+//			CloneAttributes(res);
+//			return res;
+//		}
 
         public override SerializeBase GetSerializebleObject()
         {

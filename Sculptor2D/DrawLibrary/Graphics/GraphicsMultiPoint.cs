@@ -57,7 +57,7 @@ namespace DrawLibrary.Graphics
 		public Brush Brush{
 			set{
 				_brush = value;
-				//TODO: Сделать в graphicsBase эту штуку OnPropertyChanged("Brush");
+				onPropertyChanged("Brush");
 			}
 			get{
 				return _brush;
@@ -69,8 +69,9 @@ namespace DrawLibrary.Graphics
 			if( _points.Count < 2 )
 				return;
 			
-//			if( Layer.IsVisible == false ) //не нужно его рисовать
-//				return;
+			if( Layer != null )
+				if( Layer.IsVisible == false ) //не нужно его рисовать
+					return;
 
 			//обнулим матрицу трансформации
 			if( Transform != null )

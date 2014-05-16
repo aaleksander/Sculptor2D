@@ -25,3 +25,6 @@ D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Debug\Sculptor2D.pdb
 D:\Aleksander\dev\Sculptor2D\Sculptor2D\bin\Debug\Newtonsoft.Json.dll
 D:\Aleksander\dev\Sculptor2D\Sculptor2D\bin\Debug\Newtonsoft.Json.pdb
 D:\Aleksander\dev\Sculptor2D\Sculptor2D\bin\Debug\Newtonsoft.Json.xml
+D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Debug\View\InputBox.baml
+D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Debug\View\InputBox.g.cs
+D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Debug\Styles.baml

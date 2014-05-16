@@ -16,6 +16,12 @@
 </Window.InputBindings>
 	
 <Window.Resources>
+	<ResourceDictionary>
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary
+			Source="../Styles.xaml" />
+	</ResourceDictionary.MergedDictionaries>	
+	
 	<tools:ToolTypeConverter x:Key="convToolType"/>
 	<brushes:BrushTypeConverter x:Key="convBrushType"/>
 	
@@ -149,6 +155,7 @@
     		</Setter.Value>
     	</Setter>
     </Style>    
+	</ResourceDictionary>
 </Window.Resources>
 
 	<DockPanel LastChildFill="True">
@@ -392,15 +399,17 @@
 			<GroupBox Header="Слои" MinHeight="150">
 				<DockPanel LastChildFill="True">
 					<ToolBar DockPanel.Dock="Top">
-						<Button Content="+" ToolTip="Добавить слой"/>
+						<Button Content="+" ToolTip="Добавить слой" Click="Button_Click"/>
 						<Button Content="-" ToolTip="Удалить слой"/>
 						<Button Content="Вверх" />
 						<Button Content="Вниз" />
 					</ToolBar>
 					<DataGrid ItemsSource="{Binding ElementName=canvas, Path=Layers}" AutoGenerateColumns="False"
-						IsReadOnly="True" HeadersVisibility="None">
+						HeadersVisibility="None" CanUserAddRows="False" Style="{StaticResource DataGridStyle2}"
+					>
 						<DataGrid.Columns>
-							<DataGridTextColumn Binding="{Binding Name}" Width="*"/>
+							<DataGridCheckBoxColumn Binding="{Binding IsVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="10" /> 
+							<DataGridTextColumn Binding="{Binding Name}" Width="*" IsReadOnly="True"/>
 						</DataGrid.Columns>
 					</DataGrid>
 				</DockPanel>
@@ -411,7 +420,7 @@
 			<Slider Orientation="Horizontal" HorizontalAlignment="Left" Minimum="1" Maximum="30" 
 			        Width="300" x:Name="slider"/>
 		</StackPanel>
-		
+
 		<ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" Name="scrollViewer">
 <!--			<cnv:DrawingCanvas x:Name="canvas" Background="#00000000" Width="2000" Height="2000"/>-->
             <Grid Name="grid" Width="400" Height="400" RenderTransformOrigin="0.5,0.5">

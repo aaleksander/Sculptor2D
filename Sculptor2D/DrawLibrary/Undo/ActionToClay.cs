@@ -8,6 +8,7 @@
  */
 using System;
 using DrawLibrary.Graphics;
+using DrawLibrary.Serialize;
 
 namespace DrawLibrary.Undo
 {	
@@ -16,12 +17,12 @@ namespace DrawLibrary.Undo
 	/// </summary>
 	public class ActionToClay: ActionBase
 	{
-		private GraphicsBase _oldObj;
+		private SerializeBase _oldObj;
 		private int _newId;
 			
 		public ActionToClay(GraphicsBase _old, int aNewId)
 		{
-			_oldObj = _old.Clone();
+			_oldObj = _old.GetSerializebleObject();
 			_newId = aNewId;
 		}
 		
@@ -47,7 +48,7 @@ namespace DrawLibrary.Undo
 
             if ( objectToReplace != null )
             {
-            	aCanvas.ReplaceObject(i, _oldObj);
+            	aCanvas.ReplaceObject(i, _oldObj.CreateGraphicsObject());
             }
         }
 

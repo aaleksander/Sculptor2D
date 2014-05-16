@@ -132,7 +132,7 @@ namespace Tests
 		{//тестируем сохранение прямо из канваса
 			DrawingCanvas canvas = new DrawingCanvas();
 
-			canvas.SaveAs("test.scp");
+			//canvas.SaveAs("test.scp");
 		}
 		
 	}

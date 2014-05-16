@@ -110,6 +110,7 @@ namespace DrawLibrary.Tools
             //HelperFunctions.UnselectAll(drawingCanvas);
 
             o.IsSelected = true;
+            o.Layer = aCanvas.CurrLayer;
             //o.Clip = new RectangleGeometry(new Rect(0, 0, drawingCanvas.ActualWidth, drawingCanvas.ActualHeight));
 
             aCanvas.GraphicsList.Add(o);

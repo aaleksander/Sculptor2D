@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 using DrawLibrary.Graphics;
 using DrawLibrary.Serialize;
 
-//TODO: У слоя должно быть имя
+//TODO: добавить полупрозрачность
 
 namespace DrawLibrary.Misc
 {
@@ -23,13 +23,15 @@ namespace DrawLibrary.Misc
 		private int _id;
 		public Layer()
 		{
-			_id = GetHashCode();			
+			_id = GetHashCode();		
+			IsVisible = true;			
 		}
 
 		public Layer(String aName)
 		{
 			_id = GetHashCode();
 			Name = aName;
+			IsVisible = true;
 		}
 		
 		public Layer(SerializeLayer aObj): base(aObj)
@@ -44,7 +46,24 @@ namespace DrawLibrary.Misc
 			Name = aObj.Name;
 		}
 
-		public bool IsVisible{set;get;}
+		public Boolean IsVisible{
+			set{
+				_isVisible = value;
+
+				foreach(var o in Objects)
+				{
+					o.RefreshDrawing();
+				}
+
+				onPropertyChanged("IsVisible");
+			}
+			get{
+				return _isVisible;
+			}
+		}
+
+		private  Boolean _isVisible;
+
 		public String Name{set;get;}
 		
 		/// <summary>

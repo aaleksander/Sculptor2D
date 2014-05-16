@@ -29,7 +29,7 @@ using DrawLibrary.Undo;
 using DrawToolsLib;
 
 //FUTURE: Блокирование некоторых вершин (участка), относительно друг-друга. Например, вырезы под сборку
-//FUTURE: Слои и интерфейс для них
+//TODO: удаление слоя и ундо
 
 //TODO:000 скроллинг с помощью мыши
 //FUTURE: загрузка изображений-подложек
@@ -178,10 +178,28 @@ namespace DrawLibrary
         /// <param name="aObj"></param>
         public void ReplaceObject(int aIndex, GraphicsBase aObj)
         {
+        	GraphicsBase old = (GraphicsBase)GraphicsList[aIndex]; //объект, который мы удаляем
+        	Layer oldLayer = old.Layer; //слой, в котором находится данный объект
+        	//определим индекс объекта в слое
+        	int indx=0;
+        	foreach(var o in oldLayer.Objects)
+        	{
+        		if( o == old )
+        			break;
+        		indx++;
+        	}
+
+        	//удалим старый объект из слоя
+        	oldLayer.Objects.RemoveAt(indx);
         	GraphicsList.RemoveAt(aIndex);
-        	InvalidateVisual();
+        	
+        	
+        	//вставляем новый объект
         	GraphicsList.Insert(aIndex, aObj);
-        	InvalidateVisual();
+        	oldLayer.Objects.Insert(indx, aObj);
+        	aObj.Layer = oldLayer;
+        	
+        	aObj.RefreshDrawing();
         }
 
         public void RefreshServiceObjects(GraphicsBase aObj)
@@ -677,24 +695,26 @@ namespace DrawLibrary
 
 		#region Работа со слоями
 		ObservableCollection<Layer> _layers = new ObservableCollection<Layer>();
-		
+
 		public ObservableCollection<Layer> Layers{
 			get{
 				return _layers;
 			}
 		}
-		
+
 		public void AddLayer(string aName)
 		{
 			//сбрасываем у всех слоёв выделение
-			foreach(var l in _layers)
-			{
-				l.IsSelected = false;
-			}
+			//foreach(var l in _layers)
+			//{
+			//	l.IsSelected = false;
+			//}
 
 			Layer ll = new Layer(aName);
-			ll.IsSelected = true;
+			//ll.IsSelected = true;
 			_layers.Add(ll);
+			
+			CurrLayer = ll;
 		}
 		
 		

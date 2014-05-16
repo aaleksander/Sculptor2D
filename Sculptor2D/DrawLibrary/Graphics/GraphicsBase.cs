@@ -8,6 +8,7 @@
  */
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
 using DrawLibrary.Misc;
@@ -34,8 +35,21 @@ namespace DrawLibrary.Graphics
 	/// <summary>
 	/// Description of GraphicsBase.
 	/// </summary>
-	public class GraphicsBase: DrawingVisual
+	public class GraphicsBase: DrawingVisual, INotifyPropertyChanged
 	{
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		public void onPropertyChanged(string aProp){			
+			_onPropertyChanged(new PropertyChangedEventArgs(aProp));						
+		}		
+
+		protected void _onPropertyChanged(PropertyChangedEventArgs e)
+		{
+			if( PropertyChanged != null )
+				PropertyChanged(this, e);
+		}		
+		
 		public GraphicsBase()
 		{
 			Id = GetHashCode();
@@ -138,7 +152,7 @@ namespace DrawLibrary.Graphics
         public virtual void DrawTracker(DrawingContext aCanvas){}
         public virtual void DrawPoints(){}
 
-        public virtual GraphicsBase Clone(){return null;}
+//        public virtual GraphicsBase Clone(){return null;}
 
         public virtual SerializeBase GetSerializebleObject()
         {

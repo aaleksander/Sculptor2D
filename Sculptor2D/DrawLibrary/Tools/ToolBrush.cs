@@ -38,9 +38,9 @@ namespace DrawLibrary.Tools
 			if( aPressed && _brush.Path.Count > 2)
 			{//делаем "мазок"
 				GraphicsClay o;
-				foreach(var clay in aCanvas.GraphicsList)
+				foreach(GraphicsBase clay in aCanvas.GraphicsList)
 				{					
-					if( clay is Graphics.GraphicsClay ) //если это "глина"
+					if( clay is Graphics.GraphicsClay && clay.Layer.IsVisible ) //если это "глина"
 					{
 						o = (GraphicsClay)clay;
 						if( _brush.Modify(o) )//то кисть ее модифицирует

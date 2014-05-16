@@ -16,8 +16,6 @@ using Helpers;
 using System.Linq;
 using Sculptor2D.Helpers;
 
-//FIXME:
-
 namespace DrawLibrary.Graphics
 {
 	/// <summary>
@@ -151,12 +149,12 @@ namespace DrawLibrary.Graphics
 			RefreshDrawing();
 		}
 
-		public override GraphicsBase Clone()
-		{//FIXME: сделать универсальный класс
-			GraphicsClay res = new GraphicsClay(OwnerCanvas);
-			CloneAttributes(res);
-			return res;
-		}
+//		public override GraphicsBase Clone()
+//		{
+//			GraphicsClay res = new GraphicsClay(OwnerCanvas);
+//			CloneAttributes(res);
+//			return res;
+//		}
 
 		public override SerializeBase GetSerializebleObject()
 		{

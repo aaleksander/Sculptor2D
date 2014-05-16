@@ -142,13 +142,13 @@ namespace DrawLibrary.Tools
 		}
 
         protected GraphicsBase GetHitObject(DrawingCanvas aCanvas, Point aPoint)
-        {        	
+        {
 			for(int i = aCanvas.Count - 1; i >= 0; i-- ) //объекты сверху должны "попасть" под мышку первыми
 			{
 				GraphicsBase o = aCanvas[i];
 				if( o != null )
 				{
-					if( o.Contains(aPoint) )
+					if( o.Contains(aPoint) && o.Layer.IsVisible )
 					{
 						return o;
 					}

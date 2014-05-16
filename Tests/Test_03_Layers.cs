@@ -51,7 +51,7 @@ namespace Tests
 			Click(100, 100);
 			Click(50, 200);			
 			_canvas.EscapeCommand.Execute(null);
-			
+
 			Assert.AreEqual(_canvas.Layers[0].Objects.Count, 0, "добавилось не в тот слой");
 			Assert.AreEqual(_canvas.Layers[1].Objects.Count, 1, "не добавилось на слой");
 		}
