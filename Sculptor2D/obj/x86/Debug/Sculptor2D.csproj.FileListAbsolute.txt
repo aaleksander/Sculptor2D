@@ -28,7 +28,6 @@ D:\Aleksander\dev\Sculptor2D\Sculptor2D\bin\Debug\Newtonsoft.Json.xml
 D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Debug\View\InputBox.baml
 D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Debug\View\InputBox.g.cs
 D:\Aleksander\dev\Sculptor2D\Sculptor2D\obj\x86\Debug\Styles.baml
-D:\Aleksander\dev\tmp\Sculptor2D\Sculptor2D\obj\x86\Debug\Sculptor2D.csprojResolveAssemblyReference.cache
 D:\Aleksander\dev\tmp\Sculptor2D\Sculptor2D\obj\x86\Debug\Styles.baml
 D:\Aleksander\dev\tmp\Sculptor2D\Sculptor2D\obj\x86\Debug\View\InputBox.baml
 D:\Aleksander\dev\tmp\Sculptor2D\Sculptor2D\obj\x86\Debug\View\InputBox.g.cs
