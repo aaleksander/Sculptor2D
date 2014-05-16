@@ -30,5 +30,10 @@ namespace DrawLibrary.Serialize
 		{
 			Type = "Polygon";
 		}
+
+		public override GraphicsBase CreateGraphicsObject()
+		{
+			return new GraphicsPolygon(this);
+		}
 	}
 }

@@ -8,6 +8,7 @@
  */
 using System;
 using DrawLibrary.Graphics;
+using Newtonsoft.Json.Linq;
 
 namespace DrawLibrary.Serialize
 {
@@ -21,9 +22,16 @@ namespace DrawLibrary.Serialize
 			Type = "Clay";
 		}
 		
+		public SerializeClay(JObject aObj): base(aObj)
+		{
+			Type = "Clay";
+			_jObject = aObj;
+		}
+		private JObject _jObject;		
+		
 		public override GraphicsBase CreateGraphicsObject()
 		{
-			return new GraphicsClay(null, this);
+			return new GraphicsClay(this);
 		}
 	}
 }

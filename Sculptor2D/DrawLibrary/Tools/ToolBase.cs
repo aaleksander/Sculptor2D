@@ -65,7 +65,10 @@ namespace DrawLibrary.Tools
 
 		protected void AddModifiedToHistory(DrawingCanvas aCanvas)
 		{
-			aCanvas.AddActionToHistory(new ActionModify(_objects, _modifiedIDs));
+			if( _modifiedIDs.Count > 0 ) //что-то поменялось
+			{
+				aCanvas.AddActionToHistory(new ActionModify(_objects, _modifiedIDs));
+			}
 		}
 		#endregion для undo/redo
 			

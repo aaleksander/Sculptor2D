@@ -14,10 +14,8 @@ using System.Windows.Media;
 using DrawLibrary.Graphics;
 using Helpers;
 
-//TODO:история действий для вращения, редактора точек, перемещения
-
-//TODO:масштабирование фигур
-//перемещение вершины
+//TODO: масштабирование фигур и история для этого
+//TODO: групповое выделение
 namespace DrawLibrary.Tools
 {
 	/// <summary>
@@ -69,14 +67,14 @@ namespace DrawLibrary.Tools
 						var c = aCanvas.SelectedObject.GetCenter();
 						var a  = Geometry.GetAngle(_startDragging, c, aPoint, c);
 						aCanvas.SelectedObject.Transform = new RotateTransform(a, c.X, c.Y);
-						
+						AddObjectToModified(aCanvas.SelectedObject);
 			            //обновим матрицы у сервисных объектов
 			            foreach(var o in aCanvas.GraphicsList)
 			            {
 			            	if( o is GraphicsService && ((GraphicsService)o).IsYourOwner(aCanvas.SelectedObject))
 			            	{
 			            		((GraphicsBase)o).Transform = aCanvas.SelectedObject.Transform;
-			            		((GraphicsBase)o).RefreshDrawing();
+			            		((GraphicsBase)o).RefreshDrawing();			            		
 			            	}
 			            }
 
@@ -90,12 +88,13 @@ namespace DrawLibrary.Tools
 					if( _dragObject != null ) //тащим
 					{
 						_dragObject.Transform = new TranslateTransform(aPoint.X - _startDragging.X, aPoint.Y - _startDragging.Y);
+						AddObjectToModified(_dragObject );
 			            //обновим матрицы у сервисных объектов
 			            foreach(var o in aCanvas.GraphicsList)
 			            {
 			            	if( o is GraphicsService && ((GraphicsService)o).IsYourOwner(_dragObject))
 			            	{
-			            		((GraphicsBase)o).Transform = _dragObject.Transform;
+			            		((GraphicsBase)o).Transform = _dragObject.Transform;			            		
 			            		//((GraphicsBase)o).RefreshDrawing();
 			            	}
 			            }						
@@ -106,7 +105,7 @@ namespace DrawLibrary.Tools
 
         public override void OnDown(DrawingCanvas aCanvas, Point aPoint)//MouseButtonEventArgs e)
         {        	
-        	//InitObjectsForHistory(aCanvas);
+        	InitObjectsForHistory(aCanvas, x => x is GraphicsBase);
         	
 			_startDragging = aPoint;
 
@@ -122,7 +121,7 @@ namespace DrawLibrary.Tools
 		{
 			var o = GetHitObject(aCanvas, aPoint);
 			if( o == null && IsDragging == false && !Keyboard.IsKeyDown(Key.LeftCtrl) ) //просто клик по пустому месту
-			{
+			{				
 				_dragObject = null;
 				aCanvas.UnselectAll();
 			}
@@ -137,6 +136,7 @@ namespace DrawLibrary.Tools
 			{//чето таскалли
 				_dragObject = null; //отпустили перетаскиваемый объект
 			}
+			AddModifiedToHistory(aCanvas);
 
 			aCanvas.ReleaseMouseCapture();
 		}

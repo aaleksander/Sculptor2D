@@ -29,10 +29,10 @@ namespace DrawLibrary.Graphics
 		public GraphicsMultiPoint(DrawingCanvas aCanvas): base(aCanvas)
 		{}
 
-		public GraphicsMultiPoint(DrawingCanvas aCanvas, SerializeMultiPoint aObj):base(aCanvas, aObj)
+		public GraphicsMultiPoint(SerializeMultiPoint aObj):base(aObj)
 		{
 			IsClosed = aObj.IsClosed;
-			
+
 			_points = new Collection<Point>();
 			foreach(var p in aObj.Points)
 				_points.Add(new Point(p.X, p.Y));
@@ -68,6 +68,10 @@ namespace DrawLibrary.Graphics
 		{
 			if( _points.Count < 2 )
 				return;
+			
+//			if( Layer.IsVisible == false ) //не нужно его рисовать
+//				return;
+
 			//обнулим матрицу трансформации
 			if( Transform != null )
 			{

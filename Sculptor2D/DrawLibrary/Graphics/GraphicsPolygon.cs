@@ -27,7 +27,7 @@ namespace DrawLibrary.Graphics
 			//TODO: Свойство "Обводка" - Pen
 		}
 		
-		public GraphicsPolygon(DrawingCanvas aCanvas, SerializePolygon aObj):base(aCanvas, aObj)
+		public GraphicsPolygon(SerializePolygon aObj):base(aObj)
 		{}
 
 		/// <summary>

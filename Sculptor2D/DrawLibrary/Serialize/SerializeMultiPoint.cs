@@ -43,12 +43,24 @@ namespace DrawLibrary.Serialize
 
 			IsClosed = aObj.IsClosed;
 		}
-		
+
 		public SerializeMultiPoint(JObject aObj): base(aObj)
 		{
-			Type = "MultiPoint";			
-		}		
+			//TODO: чтение IsClosed
+			
+			Type = "MultiPoint";
+			
+			var  pp = aObj["Points"];
+			Points = new Collection<Point>();
+			Point tmp;
+			foreach(var p in pp)
+			{
+				tmp = Point.Parse(p.ToString());
+				Points.Add(tmp);
+			}			               
+		}
 
+		
 		private void CopyPoints(GraphicsMultiPoint res, JObject aObj)
 		{
 			var l = aObj["Points"];
@@ -74,7 +86,7 @@ namespace DrawLibrary.Serialize
 		/// </summary>
 		public override GraphicsBase CreateGraphicsObject()
 		{
-			return new GraphicsMultiPoint(null, this);
+			return new GraphicsMultiPoint(this);
 		}
 		
 	}

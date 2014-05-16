@@ -8,6 +8,7 @@
  */
 using System;
 using DrawLibrary.Graphics;
+using DrawLibrary.Serialize;
 
 namespace DrawLibrary.Undo
 {
@@ -16,13 +17,13 @@ namespace DrawLibrary.Undo
 	/// </summary>
 	public class ActionAdd: ActionBase
 	{
-        GraphicsBase _newObjectClone;
+        SerializeBase _newObjectClone;
 
         // Create this command with DrawObject instance added to the list
         public ActionAdd(GraphicsBase newObject): base()
         {
             // Keep copy of added object
-            _newObjectClone = newObject.Clone();
+            _newObjectClone = newObject.GetSerializebleObject();
         }
 
         /// <summary>
@@ -47,9 +48,7 @@ namespace DrawLibrary.Undo
 
             if ( objectToDelete != null )
             {
-            	drawingCanvas.RemoveService(objectToDelete);
-                drawingCanvas.GraphicsList.Remove(objectToDelete); 
-                //drawingCanvas.RemoveObject(objectToDelete);
+                drawingCanvas.RemoveObject(objectToDelete);
             }
         }
 

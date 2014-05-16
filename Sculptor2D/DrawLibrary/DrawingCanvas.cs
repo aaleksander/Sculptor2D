@@ -22,6 +22,7 @@ using System.Xml.Serialization;
 using Commands;
 using DrawLibrary.Brushes;
 using DrawLibrary.Graphics;
+using DrawLibrary.Misc;
 using DrawLibrary.Serialize;
 using DrawLibrary.Tools;
 using DrawLibrary.Undo;
@@ -58,8 +59,12 @@ namespace DrawLibrary
 
 		public DrawingCanvas(): base()
 		{
+			_root = new Root();
+			
 			_graphicsList = new VisualCollection(this);
 
+			AddLayer("Default");
+			
 //			_cursor = new DrawingVisual();
 //			_cursor.Transform = new TranslateTransform(0, 0);			
 //			UpdateCursor();
@@ -160,12 +165,11 @@ namespace DrawLibrary
 //        	base.AddLogicalChild(aObj);
 //        }
 //        
-//        public void RemoveObject(GraphicsBase aObj)
-//        {
-//        	_graphicsList.Remove(aObj);
-//        	base.RemoveVisualChild(aObj);
-//        	base.RemoveLogicalChild(aObj);
-//        }        
+        public void RemoveObject(GraphicsBase aObj)
+        {
+            RemoveService(aObj);
+            GraphicsList.Remove(aObj);
+        }        
 
         /// <summary>
         /// заменяет объект по индексу на новый
@@ -208,7 +212,7 @@ namespace DrawLibrary
        
         #region опустить мышку/перо
 
-        void Down(Point aP)
+        public void Down(Point aP)
         {
             if (_tools[(int)Tool] == null)
             {//не выбран ни один инструмент
@@ -238,7 +242,7 @@ namespace DrawLibrary
         void DrawingCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
         	Down(e.GetPosition(this));        	     
-        }        
+        }
 		
         
         #endregion опустить мышку/перо
@@ -246,7 +250,7 @@ namespace DrawLibrary
         
         #region поднять мышку/перо
         
-        void Up(Point aPoint)
+        public void Up(Point aPoint)
         {
             if (_tools[(int)Tool] == null)
             {
@@ -266,7 +270,7 @@ namespace DrawLibrary
         	Up(e.GetPosition(this));
         }
         
-        void DrawingCanvas_MouseUp(object sender, MouseButtonEventArgs e)
+        public void DrawingCanvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
         	Up(e.GetPosition(this));
         }
@@ -274,9 +278,8 @@ namespace DrawLibrary
         #endregion отпустили мышку/перо
         
         
-
 		#region двигаем мышку/перо        
-        void Move(Point aPoint, bool aPressed)
+        public void Move(Point aPoint, bool aPressed)
         {
             if (_tools[(int)Tool] == null)
             {
@@ -456,7 +459,7 @@ namespace DrawLibrary
         		return null;
         	}
         }
-        
+
         /// <summary>
         /// выеделить какой-то объект
         /// </summary>
@@ -631,13 +634,20 @@ namespace DrawLibrary
 		}
 
 		private void Save()
-		{	
-			foreach(var o in _graphicsList)
-			{
-				
-			}
-			
-		}		
+		{
+		}
+
+        public void SaveAs(string aFilename)
+        {
+        	var s = new Saver(aFilename);
+        	
+        	s.Save(_root);
+        	
+			_fileName = aFilename;
+        }
+		private string _fileName = null;
+
+		private Root _root = null;
 		#endregion
 
 		#region кнопка Escape
@@ -660,12 +670,80 @@ namespace DrawLibrary
             {
                 return;
             }
-
      
             _tools[(int)Tool].KeyDown(this, Key.Escape);
 		}	
 		#endregion кнопка escape
 
+		#region Работа со слоями
+		ObservableCollection<Layer> _layers = new ObservableCollection<Layer>();
+		
+		public ObservableCollection<Layer> Layers{
+			get{
+				return _layers;
+			}
+		}
+		
+		public void AddLayer(string aName)
+		{
+			//сбрасываем у всех слоёв выделение
+			foreach(var l in _layers)
+			{
+				l.IsSelected = false;
+			}
+
+			Layer ll = new Layer(aName);
+			ll.IsSelected = true;
+			_layers.Add(ll);
+		}
+		
+		
+		/// <summary>
+		/// ссылка на выделенный слой
+		/// </summary>
+		public Layer CurrLayer{
+			set{
+				foreach(var l in Layers)
+				{
+					l.IsSelected = l == value;
+				}
+			}
+			get{
+				foreach(var l in Layers)
+				{
+					if( l.IsSelected )
+						return l;
+				}
+				return null;
+			}
+		}
+		
+		/// <summary>
+		/// индекс выделенного слоя
+		/// </summary>
+		public int CurrLayerIndex{
+			set{
+				int res = 0;
+				foreach(var l in Layers)
+				{
+					l.IsSelected = res == value;
+					res++;
+				}
+			}
+			get{
+				int res = 0;
+				foreach(var l in Layers)
+				{
+					if( l.IsSelected )
+						return res;
+					res++;
+				}
+				return 0;
+			}
+		}
+		
+		#endregion Работа со слоями		
+		
 		#region Undo
 		UndoManager _undoManager;
         public void AddActionToHistory(ActionBase command)
@@ -739,7 +817,10 @@ namespace DrawLibrary
         	
         	return -1;
         }
-		
+        
+        
+
+        
         
         #region работа с курсором
         private GraphicsCursor _cursor = null;

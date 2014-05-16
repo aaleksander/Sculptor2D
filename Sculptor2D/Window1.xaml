@@ -5,7 +5,7 @@
     xmlns:tools="clr-namespace:DrawLibrary.Tools"
     xmlns:brushes="clr-namespace:DrawLibrary.Brushes"
     xmlns:local="clr-namespace:KeyBindingsWPF"
-	Title="Sculptor2D" Height="600" Width="800"
+	Title="Sculptor2D" Height="768" Width="1024"
 	WindowStartupLocation="CenterScreen"
 	UseLayoutRounding="True"
 	SnapsToDevicePixels="True"
@@ -231,9 +231,9 @@
 									<ScaleTransform ScaleX="0.4" ScaleY="0.4" />
 									<TranslateTransform X="25" Y="6"/>
 								</TransformGroup>
-							</Polygon.RenderTransform>							
+							</Polygon.RenderTransform>
 						</Polygon>
-					</Canvas>				
+					</Canvas>
                 </ToggleButton>
 
                 <ToggleButton ToolTip="Рисовать линии" Tag="Line" Name="buttonToolLine"
@@ -302,8 +302,7 @@
                              Converter={StaticResource convToolType}, ConverterParameter=Brush}"
 					Content="Лепить"
 					>
-				</ToggleButton>
-				
+				</ToggleButton>				
 			
 			
 				<Button Command="{Binding ElementName=canvas, Path=ToSVGCommand}" Content="В SVG"/>
@@ -312,82 +311,101 @@
 		</ToolBarTray>
 
 		<!--Кисти-->
-		<ToolBarTray DockPanel.Dock="Right" Orientation="Vertical" VerticalAlignment="Top" Background="#FF8F8F8F">
-			<ToolBar Style="{StaticResource DreamToolBar}" IsOverflowOpen="True"
-			         Background="#FF8F8F8F" Header="eee">
-                <ToggleButton	ToolTip="Отталкивает линии" 
-                             	Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
-                                CommandParameter="OutMover"
-                             	IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
-                             	Converter={StaticResource convBrushType}, ConverterParameter=OutMover}"
-                			 	Content="Отодвигалка" />
-				
-                <ToggleButton ToolTip="Выпрямляет линии" 
-                              Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
-                              CommandParameter="Smoother"
-                              IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
-                              Converter={StaticResource convBrushType}, ConverterParameter=Smoother}"
-                			  Content="Сглаживалка" />
-				
-                <ToggleButton ToolTip="Делает щипки на контуре" 
-                              Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
-                              CommandParameter="Pincher"
-                              IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
-                              Converter={StaticResource convBrushType}, ConverterParameter=Pincher}"
-                			  Content="Щипалка" />
-
-                <ToggleButton Visibility="Hidden"
-                			  ToolTip="Старается приблизить очертания контура к форме мазка кисти"
-                              Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
-                              CommandParameter="Smoother"
-                              IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
-                              Converter={StaticResource convBrushType}, ConverterParameter=None}"
-                			  Content="Повторялка" />
-
-                <ToggleButton Visibility="Hidden"
-                	          ToolTip="Стягивает все контуры к кисти"
-                              Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
-                              CommandParameter="InMover"
-                              IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
-                              Converter={StaticResource convBrushType}, ConverterParameter=InMover}"
-                			  Content="Сужалка" />
-
-                <ToggleButton 
-                	          ToolTip="Передвигает кусок контура"
-                              Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
-                              CommandParameter="Mover"
-                              IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
-                              Converter={StaticResource convBrushType}, ConverterParameter=None}"
-                			  Content="Перемещалка" />
-
-				<GroupBox Header="Параметры кисти">
-					<StackPanel Orientation="Vertical">						
-						<!--Слайдер "СИЛА"-->
-						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="Сила:" Margin="0, 0, 5, 0"/>
-							<TextBlock Text="{Binding ElementName=Power, Path=Value, StringFormat=N0}" />
+		<StackPanel DockPanel.Dock="Right" Width="150">
+			<ToolBarTray DockPanel.Dock="Right" Orientation="Vertical" VerticalAlignment="Top" Background="#FF8F8F8F">
+				<ToolBar Style="{StaticResource DreamToolBar}" IsOverflowOpen="True"
+				         Background="#FF8F8F8F" Header="eee">
+	                <ToggleButton	ToolTip="Отталкивает линии" 
+	                             	Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
+	                                CommandParameter="OutMover"
+	                             	IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
+	                             	Converter={StaticResource convBrushType}, ConverterParameter=OutMover}"
+	                			 	Content="Отодвигалка" />
+					
+	                <ToggleButton ToolTip="Выпрямляет линии" 
+	                              Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
+	                              CommandParameter="Smoother"
+	                              IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
+	                              Converter={StaticResource convBrushType}, ConverterParameter=Smoother}"
+	                			  Content="Сглаживалка" />
+					
+	                <ToggleButton ToolTip="Делает щипки на контуре" 
+	                              Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
+	                              CommandParameter="Pincher"
+	                              IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
+	                              Converter={StaticResource convBrushType}, ConverterParameter=Pincher}"
+	                			  Content="Щипалка" />
+	
+	                <ToggleButton Visibility="Hidden"
+	                			  ToolTip="Старается приблизить очертания контура к форме мазка кисти"
+	                              Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
+	                              CommandParameter="Smoother"
+	                              IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
+	                              Converter={StaticResource convBrushType}, ConverterParameter=None}"
+	                			  Content="Повторялка" />
+	
+	                <ToggleButton Visibility="Hidden"
+	                	          ToolTip="Стягивает все контуры к кисти"
+	                              Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
+	                              CommandParameter="InMover"
+	                              IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
+	                              Converter={StaticResource convBrushType}, ConverterParameter=InMover}"
+	                			  Content="Сужалка" />
+	
+	                <ToggleButton 
+	                	          ToolTip="Передвигает кусок контура"
+	                              Command="{Binding ElementName=canvas, Path=SetBrushCommand}"
+	                              CommandParameter="Mover"
+	                              IsChecked="{Binding ElementName=canvas, Path=Brush, Mode=OneWay,
+	                              Converter={StaticResource convBrushType}, ConverterParameter=None}"
+	                			  Content="Перемещалка" />
+	
+					<GroupBox Header="Параметры кисти">
+						<StackPanel Orientation="Vertical">						
+							<!--Слайдер "СИЛА"-->
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="Сила:" Margin="0, 0, 5, 0"/>
+								<TextBlock Text="{Binding ElementName=Power, Path=Value, StringFormat=N0}" />
+							</StackPanel>
+							<Slider Width="100" Maximum="100" Minimum="1" Name="Power"
+							        Value="{Binding ElementName=canvas, Path=Brush.Power, Mode=TwoWay}"
+								IsEnabled="{Binding ElementName=canvas, Path=Tool, Mode=OneWay,
+	                        	     Converter={StaticResource convToolType}, ConverterParameter=Brush}"
+							/>
+	
+							<!--Слайдер "РАЗМЕР"-->
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="Размер:" Margin="0, 0, 5, 0"/>
+								<TextBlock Text="{Binding ElementName=Size, Path=Value, StringFormat=N0}" />
+							</StackPanel>
+							<Slider Width="100" Maximum="100" Minimum="1" Name="Size"
+							        Value="{Binding ElementName=canvas, Path=Brush.Size, Mode=TwoWay}"
+								IsEnabled="{Binding ElementName=canvas, Path=Tool, Mode=OneWay,
+	                        	     Converter={StaticResource convToolType}, ConverterParameter=Brush}"						
+							/>					
 						</StackPanel>
-						<Slider Width="100" Maximum="100" Minimum="1" Name="Power"
-						        Value="{Binding ElementName=canvas, Path=Brush.Power, Mode=TwoWay}"
-							IsEnabled="{Binding ElementName=canvas, Path=Tool, Mode=OneWay,
-                        	     Converter={StaticResource convToolType}, ConverterParameter=Brush}"
-						/>
-
-						<!--Слайдер "РАЗМЕР"-->
-						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="Размер:" Margin="0, 0, 5, 0"/>
-							<TextBlock Text="{Binding ElementName=Size, Path=Value, StringFormat=N0}" />
-						</StackPanel>
-						<Slider Width="100" Maximum="100" Minimum="1" Name="Size"
-						        Value="{Binding ElementName=canvas, Path=Brush.Size, Mode=TwoWay}"
-							IsEnabled="{Binding ElementName=canvas, Path=Tool, Mode=OneWay,
-                        	     Converter={StaticResource convToolType}, ConverterParameter=Brush}"						
-						/>					
-					</StackPanel>
-				</GroupBox>
-				
-			</ToolBar>		
-		</ToolBarTray>
+					</GroupBox>
+					
+				</ToolBar>		
+			</ToolBarTray>
+			
+			<GroupBox Header="Слои" MinHeight="150">
+				<DockPanel LastChildFill="True">
+					<ToolBar DockPanel.Dock="Top">
+						<Button Content="+" ToolTip="Добавить слой"/>
+						<Button Content="-" ToolTip="Удалить слой"/>
+						<Button Content="Вверх" />
+						<Button Content="Вниз" />
+					</ToolBar>
+					<DataGrid ItemsSource="{Binding ElementName=canvas, Path=Layers}" AutoGenerateColumns="False"
+						IsReadOnly="True" HeadersVisibility="None">
+						<DataGrid.Columns>
+							<DataGridTextColumn Binding="{Binding Name}" Width="*"/>
+						</DataGrid.Columns>
+					</DataGrid>
+				</DockPanel>
+			</GroupBox>
+		</StackPanel>
 
 		<StackPanel DockPanel.Dock="Bottom">
 			<Slider Orientation="Horizontal" HorizontalAlignment="Left" Minimum="1" Maximum="30" 
@@ -406,8 +424,7 @@
                     <cnv:DrawingCanvas x:Name="canvas" Background="#00000000" Width="2000" Height="2000"/>
                 </Viewbox>
             </Grid>	
-		</ScrollViewer>
-	
+		</ScrollViewer>	
 	
 	</DockPanel>
 </Window>

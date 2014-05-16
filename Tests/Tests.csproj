@@ -59,6 +59,7 @@
     <Compile Include="Test_01_Cursor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test_02_SaveLoad.cs" />
+    <Compile Include="Test_03_Layers.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sculptor2D\Sculptor2D.csproj">

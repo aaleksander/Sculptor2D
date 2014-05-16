@@ -43,6 +43,12 @@ namespace DrawLibrary.Tools
             		_obj.IsSelected = false;
             		_obj.OwnerCanvas = aCanvas;
             		_obj.RefreshDrawing();
+            		
+            		//добавим в нужный слой
+            		_obj.Layer = aCanvas.CurrLayer;
+            		aCanvas.CurrLayer.Add(_obj);
+
+            		//Сохраняе в историю
             		aCanvas.AddActionToHistory(new ActionAdd(_obj));
             		_obj = null;
             		aCanvas.ReleaseMouseCapture();            		

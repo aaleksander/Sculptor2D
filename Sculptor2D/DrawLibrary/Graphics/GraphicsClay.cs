@@ -16,7 +16,7 @@ using Helpers;
 using System.Linq;
 using Sculptor2D.Helpers;
 
-//FIXME: если объект выделен, а мы его отменяем (Ctrl+z), то от него остается контур
+//FIXME:
 
 namespace DrawLibrary.Graphics
 {
@@ -26,10 +26,10 @@ namespace DrawLibrary.Graphics
 	public class GraphicsClay: GraphicsMultiPoint
 	{
 		public GraphicsClay(DrawingCanvas aCanvas):base(aCanvas)
-		{			
+		{
 		}
 
-		public GraphicsClay(DrawingCanvas aCanvas, SerializeClay aobj): base(aCanvas, aobj)
+		public GraphicsClay(SerializeClay aobj): base(aobj)
 		{
 			Brush = null;
 			if( IsClosed )

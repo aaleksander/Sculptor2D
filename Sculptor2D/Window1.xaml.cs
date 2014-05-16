@@ -35,38 +35,22 @@ namespace Sculptor2D
 		public Window1()
 		{
 			InitializeComponent();
-			
+
 			//связываем кнопки с холстом
 			buttonToolPointer.PreviewMouseDown += new MouseButtonEventHandler(ToolButton_PreviewMouseDown);
 			buttonToolEditor.PreviewMouseDown += new MouseButtonEventHandler(ToolButton_PreviewMouseDown);
 			buttonToolLine.PreviewMouseDown += new MouseButtonEventHandler(ToolButton_PreviewMouseDown);
 			buttonToolPolygone.PreviewMouseDown += new MouseButtonEventHandler(ToolButton_PreviewMouseDown);
 			buttonToolBrush.PreviewMouseDown += new MouseButtonEventHandler(ToolButton_PreviewMouseDown);
-			
+
 			canvas.CanvasEvent += new DrawingCanvas.CanvasEventHandler(Canvas_CanvasEvent);
-			
+
 			slider.ValueChanged += OnSliderValueChanged;
-			
+
 			scrollViewer.PreviewMouseWheel += OnPreviewMouseWheel;
-			scrollViewer.ScrollChanged += OnScrollViewerScrollChanged;			
-			
+			scrollViewer.ScrollChanged += OnScrollViewerScrollChanged;
+
 			slider.Value = 5;
-			
-			//тестовые данные			
-/*			var p = new GraphicsPolygon();
-			p.OwnerCanvas = canvas;
-			p.AddPoint(500, 100);
-			p.AddPoint(300, 300);
-			p.AddPoint(150, 250);
-			canvas.GraphicsList.Add(p);
-		
-			p = new GraphicsPolygon();
-			p.OwnerCanvas = canvas;
-			p.AddPoint(60, 60);
-			p.AddPoint(400, 50);
-			p.AddPoint(400, 400);
-			p.AddPoint(50, 400);
-			canvas.GraphicsList.Add(p);*/
 		}
 
         void OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)

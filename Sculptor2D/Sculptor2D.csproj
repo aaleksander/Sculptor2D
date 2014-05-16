@@ -91,10 +91,13 @@
     <Compile Include="DrawLibrary\Graphics\GraphicsService.cs" />
     <Compile Include="DrawLibrary\Graphics\GraphicsServiceContour.cs" />
     <Compile Include="DrawLibrary\Graphics\GraphicsServicePoint.cs" />
+    <Compile Include="DrawLibrary\Misc\Layer.cs" />
+    <Compile Include="DrawLibrary\Misc\Root.cs" />
     <Compile Include="DrawLibrary\Serialize\Loader.cs" />
     <Compile Include="DrawLibrary\Serialize\SerializeBase.cs" />
     <Compile Include="DrawLibrary\Serialize\Saver.cs" />
     <Compile Include="DrawLibrary\Serialize\SerializeClay.cs" />
+    <Compile Include="DrawLibrary\Serialize\SerializeLayer.cs" />
     <Compile Include="DrawLibrary\Serialize\SerializeMultiPoint.cs" />
     <Compile Include="DrawLibrary\Serialize\SerializePolygon.cs" />
     <Compile Include="DrawLibrary\Tools\ToolBase.cs" />
@@ -137,6 +140,7 @@
     <Folder Include="DrawLibrary\Brushes" />
     <Folder Include="DrawLibrary\Undo" />
     <Folder Include="DrawLibrary\Serialize" />
+    <Folder Include="DrawLibrary\Misc" />
     <Folder Include="ViewModel" />
     <Folder Include="Model" />
     <Folder Include="Helpers" />

@@ -10,6 +10,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
+using DrawLibrary.Misc;
 using DrawLibrary.Serialize;
 
 //using System.Drawing;
@@ -35,18 +36,21 @@ namespace DrawLibrary.Graphics
 	/// </summary>
 	public class GraphicsBase: DrawingVisual
 	{
-		public GraphicsBase(){}
-		
+		public GraphicsBase()
+		{
+			Id = GetHashCode();
+		}
+
 		public GraphicsBase(DrawingCanvas aCanvas)
 		{
 			Id = this.GetHashCode();
 			OwnerCanvas = aCanvas;
 		}
-		
-		public GraphicsBase(DrawingCanvas aCanvas, SerializeBase aObj)
+
+		public GraphicsBase(SerializeBase aObj)
 		{
 			Id = aObj.Id;
-			OwnerCanvas = aCanvas;
+			OwnerCanvas = aObj.ownerCanvas;
 			IsSelected = aObj.isSelected;
 			Mode = aObj.mode;
 		}
@@ -64,7 +68,12 @@ namespace DrawLibrary.Graphics
 		}
 		private GraphicsMode _mode;
 		public DrawingCanvas OwnerCanvas{set;get;}
-		
+
+		/// <summary>
+		/// Слой, которому принадлежит объект
+		/// </summary>
+		public Layer Layer{set;get;}
+
         public void RefreshDrawing()
         {
             DrawingContext dc = this.RenderOpen();

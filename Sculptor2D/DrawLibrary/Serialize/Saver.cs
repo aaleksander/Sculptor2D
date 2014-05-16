@@ -28,12 +28,12 @@ namespace DrawLibrary.Serialize
 		public void Save(GraphicsBase aObj)
 		{
 			var sObj = aObj.GetSerializebleObject();
-			_file.Write( JsonConvert.SerializeObject(sObj) );
+			_file.Write( JsonConvert.SerializeObject(sObj, Formatting.Indented) );
 		}
 
 		public void Dispose()
 		{
-			//TODO: надо бы потом запаковать
+			//TODO: надо бы потом запаковать в ZipStream
 			_file.Dispose();
 		}
 	}
