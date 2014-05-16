@@ -404,9 +404,13 @@
 						<Button Content="Вверх" />
 						<Button Content="Вниз" />
 					</ToolBar>
-					<DataGrid ItemsSource="{Binding ElementName=canvas, Path=Layers}" AutoGenerateColumns="False"
-						HeadersVisibility="None" CanUserAddRows="False" Style="{StaticResource DataGridStyle2}"
-					>
+					<DockPanel LastChildFill="True" DockPanel.Dock="Bottom">
+						<Label Content="%" DockPanel.Dock="Left" />
+						<Slider Maximum="255" 
+					        Value="{Binding ElementName=layerGrid, Path=SelectedItem.Alpha, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+					</DockPanel>
+					<DataGrid ItemsSource="{Binding ElementName=canvas, Path=Layers}" AutoGenerateColumns="False" Name="layerGrid"
+						HeadersVisibility="None" CanUserAddRows="False" Style="{StaticResource DataGridStyle2}">
 						<DataGrid.Columns>
 							<DataGridCheckBoxColumn Binding="{Binding IsVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="10" /> 
 							<DataGridTextColumn Binding="{Binding Name}" Width="*" IsReadOnly="True"/>

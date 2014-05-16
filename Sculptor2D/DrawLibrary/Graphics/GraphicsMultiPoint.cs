@@ -83,6 +83,7 @@ namespace DrawLibrary.Graphics
 				Transform = null;
 			}
 
+			
             StreamGeometry geometry = new StreamGeometry();
             geometry.FillRule = FillRule.EvenOdd;
 			using (StreamGeometryContext ctx = geometry.Open())
@@ -93,7 +94,18 @@ namespace DrawLibrary.Graphics
             }
 
 			Color col = Colors.Blue;
-			aContext.DrawGeometry(_brush, new Pen(new SolidColorBrush(col), 2), geometry);
+			if( Layer != null )
+				col.A = Layer.Alpha;
+			
+			Brush tmpBrush = null;
+			if( _brush != null )
+			{
+				tmpBrush = _brush.Clone();
+				if( Layer != null )
+					tmpBrush.Opacity = Layer.Alpha/255.0;
+			}
+			
+			aContext.DrawGeometry(tmpBrush, new Pen(new SolidColorBrush(col), 2), geometry);
 
 			if( IsHit ) //надо подсветить поверх всех объектов
 			{

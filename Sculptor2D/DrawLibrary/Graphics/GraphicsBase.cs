@@ -67,8 +67,21 @@ namespace DrawLibrary.Graphics
 			OwnerCanvas = aObj.ownerCanvas;
 			IsSelected = aObj.isSelected;
 			Mode = aObj.mode;
+			//TODO: прозрачность
 		}
 
+/*		public byte Alpha{
+			set{
+				SetAlpha(value);
+				
+				onPropertyChanged("Alpha");
+			}
+			get{
+				return _alpha;
+			}
+		}
+		private byte _alpha;*/
+		
 		public int Id{set;get;}
 
 		public GraphicsMode Mode{
@@ -152,6 +165,12 @@ namespace DrawLibrary.Graphics
         public virtual void DrawTracker(DrawingContext aCanvas){}
         public virtual void DrawPoints(){}
 
+//        protected virtual void SetAlpha(byte a)
+//        {
+//        	_alpha = a;
+//        	RefreshDrawing();
+//        }
+        
 //        public virtual GraphicsBase Clone(){return null;}
 
         public virtual SerializeBase GetSerializebleObject()

@@ -148,10 +148,19 @@ namespace DrawLibrary.Tools
 				GraphicsBase o = aCanvas[i];
 				if( o != null )
 				{
-					if( o.Contains(aPoint) && o.Layer.IsVisible )
+					if( o is GraphicsService ) //у сервисных объектов нет слоев, они всегда сверху
 					{
-						return o;
+						if( o.Contains(aPoint) )
+						{
+								return o;
+						}
 					}
+					else
+					{
+						if( o.Layer.IsVisible && o.Contains(aPoint))
+							return o;
+					}
+						
 				}
 			}
 			return null;
@@ -159,8 +168,8 @@ namespace DrawLibrary.Tools
 
         protected GraphicsBase _dragObject;        
         protected Point _startDragging;
-        
-        
+
+
 		public override void SetCursor(DrawingCanvas drawingCanvas)
 		{
 			drawingCanvas.SetCursor(DrawingCursorType.None);

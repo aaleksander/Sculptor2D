@@ -25,6 +25,7 @@ namespace DrawLibrary.Misc
 		{
 			_id = GetHashCode();		
 			IsVisible = true;			
+			Alpha = 255;
 		}
 
 		public Layer(String aName)
@@ -32,6 +33,7 @@ namespace DrawLibrary.Misc
 			_id = GetHashCode();
 			Name = aName;
 			IsVisible = true;
+			Alpha = 255;
 		}
 		
 		public Layer(SerializeLayer aObj): base(aObj)
@@ -44,6 +46,8 @@ namespace DrawLibrary.Misc
 			}
 			
 			Name = aObj.Name;
+			
+			//Alpha = aObj.Alpha;
 		}
 
 		public Boolean IsVisible{
@@ -61,9 +65,26 @@ namespace DrawLibrary.Misc
 				return _isVisible;
 			}
 		}
-
 		private  Boolean _isVisible;
 
+		
+		public byte Alpha{
+			set{
+				_alpha = value;
+				//изменить прозрачность у объекта
+				foreach(GraphicsBase o in Objects)
+				{
+					o.RefreshDrawing();
+				}
+				
+				onPropertyChanged("Alpha");
+			}
+			get{
+				return _alpha;
+			}
+		}
+		private byte _alpha;		
+		
 		public String Name{set;get;}
 		
 		/// <summary>
